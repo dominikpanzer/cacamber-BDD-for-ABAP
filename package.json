@@ -1,0 +1,19 @@
+{
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "unit": "npm run downport && rm -rf output && abap_transpile abap_transpile.json && echo RUNNING && node output/index.mjs",
+    "downport": "rm -rf downport && cp -r src downport && abaplint --fix abaplint-downport.json",
+    "test": "npm run unit",
+    "abaplint": "abaplint --format codeframe"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dominikpanzer/cacamber-BDD-for-ABAP.git"
+  },
+  "devDependencies": {
+    "@abaplint/cli": "^2.97.9",
+    "@abaplint/transpiler-cli": "^2.6.15",
+    "@abaplint/runtime": "^2.6.15"
+  }
+}
