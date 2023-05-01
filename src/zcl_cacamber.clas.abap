@@ -4,6 +4,10 @@ CLASS zcl_cacamber DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
+
+    TYPES: feature_t TYPE c LENGTH 255.
+    TYPES: scenario_t TYPE c LENGTH 255.
+
     METHODS: configure IMPORTING pattern    TYPE string
                                  methodname TYPE char30.
     METHODS: when IMPORTING step TYPE string.
@@ -13,8 +17,8 @@ CLASS zcl_cacamber DEFINITION
     METHODS: or IMPORTING step TYPE string.
 
     METHODS constructor IMPORTING testclass_instance TYPE REF TO object OPTIONAL.
-    METHODS feature IMPORTING feature TYPE char255.
-    METHODS scenario IMPORTING scenario TYPE char255.
+    METHODS feature IMPORTING feature TYPE feature_t.
+    METHODS scenario IMPORTING scenario TYPE scenario_t.
 
 
   PROTECTED SECTION.
@@ -31,8 +35,8 @@ CLASS zcl_cacamber DEFINITION
     TYPES: parameters_tt TYPE STANDARD TABLE OF parameter_ts WITH DEFAULT KEY.
 
     DATA: configuration TYPE configuration_tt.
-    DATA: current_feature TYPE char255.
-    DATA: current_scenario TYPE char255.
+    DATA: current_feature TYPE feature_t.
+    DATA: current_scenario TYPE scenario_t.
 
   PRIVATE SECTION.
     CLASS-DATA testclass_instance TYPE REF TO object.

@@ -192,7 +192,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
-    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'INTEGER' ]-value->*  act = matched_parameters[ name = 'INTEGER' ]-value->* ).
+    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'INTEGER' ]-value->* act = matched_parameters[ name = 'INTEGER' ]-value->* ).
 
   ENDMETHOD.
 
@@ -200,13 +200,13 @@ CLASS scaffolding_tests IMPLEMENTATION.
 * i don't like this test case design
     cacamber->configure( pattern = '^your name is (.+) (.+)$' methodname = 'WHENYOURNAMEIS' ).
 
-    cacamber->given('your name is Marty McFly' ).
+    cacamber->given( 'your name is Marty McFly' ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Marker not set' exp = abap_true act = method_has_been_called ).
   ENDMETHOD.
 
   METHOD can_set_a_feature.
-    DATA feature TYPE char255 VALUE 'Log in feature'.
+    DATA feature TYPE zcl_cacamber=>feature_t VALUE 'Log in feature'.
 
     cacamber->feature( feature ).
 
@@ -214,7 +214,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD can_set_a_scenario.
-    DATA scenario TYPE char255 VALUE 'Log in is successfull'.
+    DATA scenario TYPE zcl_cacamber=>scenario_t VALUE 'Log in is successfull'.
 
     cacamber->scenario( scenario ).
 
