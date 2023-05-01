@@ -20,21 +20,21 @@ ENDCLASS.
 
 CLASS acceptance_discount_calculatio IMPLEMENTATION.
   METHOD setup.
-    feature('Discount Calcuation').
-    configure( pattern = '^the customers first name is (.+) and his last name is (.+)$' methodname = 'set_first_and_second_name').
-    configure( pattern = '^his birthdate according to our CRM system is (.+)' methodname = 'set_birthdate').
-    configure( pattern = '^the sales clerk lets the system calculate the customers discount on a (.+)$' methodname = 'calculate_discount').
-    configure( pattern = '^the discount is (.+)% \\m\/$' methodname = 'eval_slayer_oldschool_discount').
+    feature( 'Discount Calcuation' ).
+    configure( pattern = '^the customers first name is (.+) and his last name is (.+)$' methodname = 'set_first_and_second_name' ).
+    configure( pattern = '^his birthdate according to our CRM system is (.+)' methodname = 'set_birthdate' ).
+    configure( pattern = '^the sales clerk lets the system calculate the customers discount on a (.+)$' methodname = 'calculate_discount' ).
+    configure( pattern = '^the discount is (.+)% \\m\/$' methodname = 'eval_slayer_oldschool_discount' ).
 
     discount_calculator = NEW zcl_bdd_example( ).
   ENDMETHOD.
 
   METHOD discount_on_slayer_albums.
-    scenario('Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)').
-    given('the customers first name is Dominik and his last name is Panzer').
-    and('his birthdate according to our CRM system is 06.06.2006').
-    when('the sales clerk lets the system calculate the customers discount on a Slayer Album').
-    then('the discount is 66% \m/').
+    scenario( 'Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)' ).
+    given( 'the customers first name is Dominik and his last name is Panzer' ).
+    and( 'his birthdate according to our CRM system is 06.06.2006' ).
+    when( 'the sales clerk lets the system calculate the customers discount on a Slayer Album' ).
+    then( 'the discount is 66% \m/' ).
   ENDMETHOD.
 
 
@@ -97,7 +97,7 @@ CLASS scuffolding_discount_calculati IMPLEMENTATION.
 
   METHOD can_calculate_discount.
     DATA(discount) = discount_calculator->calculate_discount( 'Slayer Album' ).
-    cl_abap_unit_assert=>assert_equals( msg = 'Error' exp = 0 act = discount ).
+    cl_abap_unit_assert=>assert_equals( exp = 0 act = discount ).
   ENDMETHOD.
 
 ENDCLASS.

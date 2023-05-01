@@ -13,8 +13,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
 
 
   PRIVATE SECTION.
-    DATA: cacamber               TYPE REF TO zcl_cacamber,
-          method_has_been_called TYPE abap_bool.
+    DATA: cacamber TYPE REF TO zcl_cacamber.
+    DATA: method_has_been_called TYPE abap_bool.
     METHODS: setup.
     METHODS: can_store_configuration FOR TESTING RAISING cx_static_check.
     METHODS: can_store_two_configurations FOR TESTING RAISING cx_static_check.
@@ -31,11 +31,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
     METHODS: call_a_method_dynamically FOR TESTING RAISING cx_static_check.
     METHODS: added_vars_to_paras_int FOR TESTING RAISING cx_static_check.
     METHODS: given_calls_a_method FOR TESTING RAISING cx_static_check.
-    METHODS: can_set_a_feature FOR TESTING RAISING cx_static_check,
-      can_set_a_scenario FOR TESTING RAISING cx_static_check.
-
-
-
+    METHODS: can_set_a_feature FOR TESTING RAISING cx_static_check.
+    METHODS: can_set_a_scenario FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -57,7 +54,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
     cacamber->configure( pattern = 'pattern2' methodname = 'methodname2' ).
 
     DATA(expected_configuration) = VALUE zcl_cacamber=>configuration_tt( ( pattern = 'pattern' methodname = 'METHODNAME' )
-                                                                          ( pattern = 'pattern2' methodname = 'METHODNAME2') ).
+                                                                          ( pattern = 'pattern2' methodname = 'METHODNAME2' ) ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Configuration is wrong' exp = expected_configuration act = cacamber->configuration ).
   ENDMETHOD.
@@ -132,7 +129,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
-    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'FIRST_NAME' ]-value->*  act = matched_parameters[ name = 'FIRST_NAME' ]-value->* ).
+    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'FIRST_NAME' ]-value->* act = matched_parameters[ name = 'FIRST_NAME' ]-value->* ).
   ENDMETHOD.
 
   METHOD added_vars_to_paras_char30.
@@ -148,7 +145,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
-    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'FIRST_NAME' ]-value->*  act = matched_parameters[ name = 'FIRST_NAME' ]-value->* ).
+    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'FIRST_NAME' ]-value->* act = matched_parameters[ name = 'FIRST_NAME' ]-value->* ).
 
   ENDMETHOD.
 
@@ -181,7 +178,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
-    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'DATE' ]-value->*  act = matched_parameters[ name = 'DATE' ]-value->* ).
+    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'DATE' ]-value->* act = matched_parameters[ name = 'DATE' ]-value->* ).
 
   ENDMETHOD.
 

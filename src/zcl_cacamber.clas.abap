@@ -76,7 +76,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
       FIND ALL OCCURRENCES OF REGEX configuration_entry->pattern  IN step  RESULTS DATA(findings).
       LOOP AT findings  REFERENCE INTO DATA(finding).
         LOOP AT finding->submatches REFERENCE INTO DATA(submatch).
-          DATA(variable) = substring(  val = step off = submatch->offset len = submatch->length ).
+          DATA(variable) = substring( val = step off = submatch->offset len = submatch->length ).
           APPEND variable TO variables.
         ENDLOOP.
       ENDLOOP.
@@ -112,7 +112,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
       IF matches( val = variables[ sy-tabix ] regex = '^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$' ).
         cl_abap_datfm=>conv_date_ext_to_int( EXPORTING im_datext = variables[ sy-tabix ]
                                                        im_datfmdes = '1'
-       IMPORTING ex_datint = parameter_value->*  ).
+       IMPORTING ex_datint = parameter_value->* ).
       ELSE.
         parameter_value->* = |{ variables[ sy-tabix ] ALPHA = IN }|.
       ENDIF.
@@ -154,7 +154,6 @@ CLASS zcl_cacamber IMPLEMENTATION.
   METHOD feature.
     current_feature = feature.
   ENDMETHOD.
-
 
   METHOD scenario.
     current_scenario = scenario.
