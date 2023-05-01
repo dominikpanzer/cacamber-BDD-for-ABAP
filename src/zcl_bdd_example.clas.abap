@@ -4,16 +4,11 @@ CLASS zcl_bdd_example DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-    METHODS set_first_name
-      IMPORTING
-        first_name TYPE char30.
-    METHODS: set_last_name IMPORTING last_name TYPE char30,
-      set_birth_date IMPORTING birth_date TYPE dats,
-      calculate_discount
-        IMPORTING
-          product         TYPE string
-        RETURNING
-          VALUE(discount) TYPE int4.
+    METHODS set_first_name IMPORTING first_name TYPE char30.
+    METHODS: set_last_name IMPORTING last_name TYPE char30.
+    METHODS: set_birth_date IMPORTING birth_date TYPE dats.
+    METHODS: calculate_discount IMPORTING product TYPE string
+                         RETURNING VALUE(discount) TYPE int4.
   PROTECTED SECTION.
   PRIVATE SECTION.
     DATA first_name TYPE char30.
@@ -21,20 +16,15 @@ CLASS zcl_bdd_example DEFINITION
     DATA birth_date TYPE dats.
 ENDCLASS.
 
-
-
 CLASS zcl_bdd_example IMPLEMENTATION.
-
 
   METHOD set_first_name.
     me->first_name = first_name.
   ENDMETHOD.
 
-
   METHOD set_last_name.
     me->last_name = last_name.
   ENDMETHOD.
-
 
   METHOD set_birth_date.
     me->birth_date = birth_date.

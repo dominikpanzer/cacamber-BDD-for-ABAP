@@ -13,6 +13,8 @@ CLASS zcl_cacamber DEFINITION
     METHODS: or IMPORTING step TYPE string.
 
     METHODS constructor IMPORTING testclass_instance TYPE REF TO object OPTIONAL.
+    METHODS feature IMPORTING feature TYPE char255.
+    METHODS scenario IMPORTING scenario TYPE char255.
 
 
   PROTECTED SECTION.
@@ -28,11 +30,13 @@ CLASS zcl_cacamber DEFINITION
            END OF parameter_ts.
     TYPES: parameters_tt TYPE STANDARD TABLE OF parameter_ts WITH DEFAULT KEY.
 
-
     DATA: configuration TYPE configuration_tt.
+    DATA: current_feature TYPE char255.
+    DATA: current_scenario TYPE char255.
 
   PRIVATE SECTION.
     CLASS-DATA testclass_instance TYPE REF TO object.
+
     METHODS get_method_parameters IMPORTING methodname               TYPE char30
                                             local_testclass_instance TYPE REF TO object
                                   RETURNING VALUE(parameters)        TYPE parameters_tt .
@@ -146,4 +150,14 @@ CLASS zcl_cacamber IMPLEMENTATION.
     me->testclass_instance = COND #( WHEN testclass_instance IS INITIAL THEN me
                                      ELSE testclass_instance ).
   ENDMETHOD.
+
+  METHOD feature.
+    current_feature = feature.
+  ENDMETHOD.
+
+
+  METHOD scenario.
+    current_scenario = scenario.
+  ENDMETHOD.
+
 ENDCLASS.

@@ -6,9 +6,9 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
   PUBLIC SECTION.
     METHODS: whenyournameis IMPORTING first_name TYPE char30
                                       last_name  TYPE char30,
-             local_method_for_test_date IMPORTING date TYPE dats,
-             local_method_for_test IMPORTING first_name TYPE char30
-                                             last_name  TYPE char30.
+      local_method_for_test_date IMPORTING date TYPE dats,
+      local_method_for_test IMPORTING first_name TYPE char30
+                                      last_name  TYPE char30.
   PROTECTED SECTION.
 
 
@@ -27,12 +27,12 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
     METHODS: get_method_parameter_list FOR TESTING RAISING cx_static_check.
     METHODS: added_variables_to_params_ok FOR TESTING RAISING cx_static_check.
     METHODS: added_vars_to_paras_char30 FOR TESTING RAISING cx_static_check.
-
     METHODS: added_vars_to_paras_dats FOR TESTING RAISING cx_static_check.
-    METHODS: call_a_method_dynamically FOR TESTING RAISING cx_static_check,
-      added_vars_to_paras_int FOR TESTING RAISING cx_static_check,
-
-    given_calls_a_method FOR TESTING RAISING cx_static_check.
+    METHODS: call_a_method_dynamically FOR TESTING RAISING cx_static_check.
+    METHODS: added_vars_to_paras_int FOR TESTING RAISING cx_static_check.
+    METHODS: given_calls_a_method FOR TESTING RAISING cx_static_check.
+    METHODS: can_set_a_feature FOR TESTING RAISING cx_static_check,
+      can_set_a_scenario FOR TESTING RAISING cx_static_check.
 
 
 
@@ -71,7 +71,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
   METHOD ignores_empty_methodnme_config.
     cacamber->configure( pattern = 'pattern' methodname = '' ).
 
-    cl_abap_unit_assert=>assert_initial( cacamber->configuration ).
+    cl_abap_unit_assert=>assert_initial( act = cacamber->configuration ).
   ENDMETHOD.
 
   METHOD matching_step_found.
@@ -199,8 +199,6 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
   ENDMETHOD.
 
-
-
   METHOD given_calls_a_method.
 * i don't like this test case design
     cacamber->configure( pattern = '^your name is (.+) (.+)$' methodname = 'WHENYOURNAMEIS' ).
@@ -208,6 +206,22 @@ CLASS scaffolding_tests IMPLEMENTATION.
     cacamber->given('your name is Marty McFly' ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Marker not set' exp = abap_true act = method_has_been_called ).
+  ENDMETHOD.
+
+  METHOD can_set_a_feature.
+    DATA feature TYPE char255 VALUE 'Log in feature'.
+
+    cacamber->feature( feature ).
+
+    cl_abap_unit_assert=>assert_equals( msg = 'Feature hasnt been set' exp = feature act = cacamber->current_feature ).
+  ENDMETHOD.
+
+  METHOD can_set_a_scenario.
+    DATA scenario TYPE char255 VALUE 'Log in is successfull'.
+
+    cacamber->scenario( scenario ).
+
+    cl_abap_unit_assert=>assert_equals( msg = 'Scenario hasnt been set' exp = scenario act = cacamber->current_scenario ).
   ENDMETHOD.
 
   METHOD local_method_for_test.
@@ -222,6 +236,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
     " this is a dummy method for test cases of the method GET_METHOD_PARAMETER_LISt
     method_has_been_called = abap_true.
   ENDMETHOD.
+
 
 
 ENDCLASS.

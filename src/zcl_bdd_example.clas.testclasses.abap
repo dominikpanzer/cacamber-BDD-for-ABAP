@@ -1,4 +1,4 @@
-CLASS acceptance_tests DEFINITION FINAL FOR TESTING  INHERITING FROM zcl_cacamber
+CLASS acceptance_discount_calculatio DEFINITION FINAL FOR TESTING INHERITING FROM zcl_cacamber
   DURATION SHORT
   RISK LEVEL HARMLESS.
   PUBLIC SECTION.
@@ -12,14 +12,15 @@ CLASS acceptance_tests DEFINITION FINAL FOR TESTING  INHERITING FROM zcl_cacambe
     DATA discount_calculator TYPE REF TO zcl_bdd_example.
     DATA: discount TYPE int4.
     METHODS: setup.
-    METHODS: disount_on_slayer_albums FOR TESTING RAISING cx_static_check.
+    METHODS: discount_on_slayer_albums FOR TESTING RAISING cx_static_check.
 
 
 ENDCLASS.
 
 
-CLASS acceptance_tests IMPLEMENTATION.
+CLASS acceptance_discount_calculatio IMPLEMENTATION.
   METHOD setup.
+    feature('Discount Calcuation').
     configure( pattern = '^the customers first name is (.+) and his last name is (.+)$' methodname = 'set_first_and_second_name').
     configure( pattern = '^his birthdate according to our CRM system is (.+)' methodname = 'set_birthdate').
     configure( pattern = '^the sales clerk lets the system calculate the customers discount on a (.+)$' methodname = 'calculate_discount').
@@ -28,7 +29,8 @@ CLASS acceptance_tests IMPLEMENTATION.
     discount_calculator = NEW zcl_bdd_example( ).
   ENDMETHOD.
 
-  METHOD disount_on_slayer_albums.
+  METHOD discount_on_slayer_albums.
+    scenario('Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)').
     given('the customers first name is Dominik and his last name is Panzer').
     and('his birthdate according to our CRM system is 06.06.2006').
     when('the sales clerk lets the system calculate the customers discount on a Slayer Album').
@@ -50,29 +52,29 @@ CLASS acceptance_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD eval_slayer_oldschool_discount.
-    cl_abap_unit_assert=>assert_equals( msg = 'Error' exp = 66 act = discount ).
+    cl_abap_unit_assert=>assert_equals( msg = |{ current_feature }: { current_scenario }| exp = 66 act = discount ).
   ENDMETHOD.
 
 ENDCLASS.
 
 
-CLASS scuffolding_tests DEFINITION DEFERRED.
-CLASS zcl_bdd_example DEFINITION LOCAL FRIENDS scuffolding_tests.
-CLASS scuffolding_tests DEFINITION FINAL FOR TESTING
+CLASS scuffolding_discount_calculati DEFINITION DEFERRED.
+CLASS zcl_bdd_example DEFINITION LOCAL FRIENDS scuffolding_discount_calculati.
+CLASS scuffolding_discount_calculati DEFINITION FINAL FOR TESTING
   DURATION SHORT
   RISK LEVEL HARMLESS.
 
   PRIVATE SECTION.
     DATA discount_calculator TYPE REF TO zcl_bdd_example.
     METHODS: setup.
-    METHODS: can_set_first_name FOR TESTING RAISING cx_static_check,
-      can_set_last_name FOR TESTING RAISING cx_static_check,
-      can_set_birth_date FOR TESTING RAISING cx_static_check,
-      can_calculate_discount FOR TESTING RAISING cx_static_check.
+    METHODS: can_set_first_name FOR TESTING RAISING cx_static_check.
+    METHODS: can_set_last_name FOR TESTING RAISING cx_static_check.
+    METHODS: can_set_birth_date FOR TESTING RAISING cx_static_check.
+    METHODS: can_calculate_discount FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 
 
-CLASS scuffolding_tests IMPLEMENTATION.
+CLASS scuffolding_discount_calculati IMPLEMENTATION.
   METHOD setup.
     discount_calculator = NEW zcl_bdd_example( ).
   ENDMETHOD.
