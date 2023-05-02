@@ -15,8 +15,9 @@ CLASS zcl_cacamber DEFINITION
     METHODS: then IMPORTING step TYPE string.
     METHODS: and IMPORTING step TYPE string.
     METHODS: or IMPORTING step TYPE string.
+    methods: example importing step type string.
 
-    METHODS constructor IMPORTING testclass_instance TYPE REF TO object OPTIONAL.
+    METHODS constructor IMPORTING test_class_instance TYPE REF TO object OPTIONAL.
     METHODS feature IMPORTING feature TYPE feature_t.
     METHODS scenario IMPORTING scenario TYPE scenario_t.
 
@@ -39,7 +40,7 @@ CLASS zcl_cacamber DEFINITION
     DATA: current_scenario TYPE scenario_t.
 
   PRIVATE SECTION.
-    CLASS-DATA testclass_instance TYPE REF TO object.
+    CLASS-DATA test_class_instance TYPE REF TO object.
 
     METHODS get_method_parameters IMPORTING methodname               TYPE char30
                                             local_testclass_instance TYPE REF TO object
@@ -129,9 +130,9 @@ CLASS zcl_cacamber IMPLEMENTATION.
     CHECK methodname IS NOT INITIAL.
 
     DATA(variables) = extract_variables_from_step( step ).
-    DATA(parameters) = get_method_parameters( local_testclass_instance = me->testclass_instance methodname = methodname ).
+    DATA(parameters) = get_method_parameters( local_testclass_instance = me->test_class_instance methodname = methodname ).
     DATA(matched_parameters) = add_variables_to_parameters( variables = variables parameters = parameters ).
-    CALL METHOD me->testclass_instance->(methodname) PARAMETER-TABLE matched_parameters.
+    CALL METHOD me->test_class_instance->(methodname) PARAMETER-TABLE matched_parameters.
   ENDMETHOD.
 
   METHOD when.
@@ -150,9 +151,17 @@ CLASS zcl_cacamber IMPLEMENTATION.
     given( step ).
   ENDMETHOD.
 
+  METHOD example.
+    given( step ).
+  ENDMETHOD.
+
   METHOD constructor.
-    me->testclass_instance = COND #( WHEN testclass_instance IS INITIAL THEN me
-                                     ELSE testclass_instance ).
+* A test class is not allowed to have mandatory constructor parameters
+* but the parameter is needed for the test for ZCL_CACAMBE to inject
+* a self-reference of the local test class
+* it's a tradeoff
+    me->test_class_instance = COND #( WHEN test_class_instance IS INITIAL THEN me
+                                     ELSE test_class_instance ).
   ENDMETHOD.
 
   METHOD feature.
@@ -162,5 +171,6 @@ CLASS zcl_cacamber IMPLEMENTATION.
   METHOD scenario.
     current_scenario = scenario.
   ENDMETHOD.
+
 
 ENDCLASS.

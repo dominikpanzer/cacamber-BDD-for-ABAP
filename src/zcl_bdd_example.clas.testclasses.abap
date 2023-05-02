@@ -33,7 +33,7 @@ CLASS acceptance_discount_calculatio IMPLEMENTATION.
     scenario( 'Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)' ).
     given( 'the customers first name is Dominik and his last name is Panzer' ).
     and( 'his birthdate according to our CRM system is 06.06.2006' ).
-    when( 'the sales clerk lets the system calculate the customers discount on a Slayer Album' ).
+    when( 'the sales clerk lets the system calculate the customers discount on a Slayr Album' ).
     then( 'the discount is 66% \m/' ).
   ENDMETHOD.
 
