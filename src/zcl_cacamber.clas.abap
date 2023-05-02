@@ -11,14 +11,30 @@ CLASS zcl_cacamber DEFINITION
 
     METHODS: configure IMPORTING pattern    TYPE string
                                  methodname TYPE char30.
-    METHODS: when IMPORTING step TYPE string.
-    METHODS: given IMPORTING step TYPE string.
-    METHODS: then IMPORTING step TYPE string.
-    METHODS: and IMPORTING step TYPE string.
-    METHODS: or IMPORTING step TYPE string.
-    METHODS: example IMPORTING step TYPE string.
-    METHODS: but IMPORTING step TYPE string.
-    METHODS: _ IMPORTING step TYPE string.
+    METHODS: when IMPORTING step TYPE string
+                  RAISING
+                            zcx_cacamber_error.
+    METHODS: given IMPORTING step TYPE string
+                   RAISING
+                             zcx_cacamber_error.
+    METHODS: then IMPORTING step TYPE string
+                  RAISING
+                            zcx_cacamber_error.
+    METHODS: and IMPORTING step TYPE string
+                 RAISING
+                           zcx_cacamber_error.
+    METHODS: or IMPORTING step TYPE string
+                RAISING
+                          zcx_cacamber_error.
+    METHODS: example IMPORTING step TYPE string
+                     RAISING
+                               zcx_cacamber_error.
+    METHODS: but IMPORTING step TYPE string
+                 RAISING
+                           zcx_cacamber_error.
+    METHODS: _ IMPORTING step TYPE string
+               RAISING
+                         zcx_cacamber_error.
 
     METHODS constructor IMPORTING test_class_instance TYPE REF TO object OPTIONAL.
     METHODS feature IMPORTING feature TYPE feature_t.
@@ -49,14 +65,22 @@ CLASS zcl_cacamber DEFINITION
 
     METHODS get_method_parameters IMPORTING methodname               TYPE char30
                                             local_testclass_instance TYPE REF TO object
-                                  RETURNING VALUE(parameters)        TYPE parameters_tt .
+                                  RETURNING VALUE(parameters)        TYPE parameters_tt
+                                  RAISING
+                                            zcx_cacamber_error .
     METHODS: extract_variables_from_step IMPORTING step             TYPE string
                                          RETURNING VALUE(variables) TYPE string_table,
       match_step_to_methodname IMPORTING step              TYPE string
                                RETURNING VALUE(methodname) TYPE char30,
       add_variables_to_parameters IMPORTING variables                 TYPE string_table
                                             parameters                TYPE parameters_tt
-                                  RETURNING VALUE(matched_parameters) TYPE abap_parmbind_tab.
+                                  RETURNING VALUE(matched_parameters) TYPE abap_parmbind_tab,
+      paramaters_dont_match_variable
+        IMPORTING
+          parameters    TYPE zcl_cacamber=>parameters_tt
+          variables     TYPE string_table
+        RETURNING
+          VALUE(result) TYPE abap_bool.
 ENDCLASS.
 
 
@@ -102,9 +126,9 @@ CLASS zcl_cacamber IMPLEMENTATION.
     object_description ?= cl_abap_objectdescr=>describe_by_object_ref( local_testclass_instance ).
 
     READ TABLE class_description->methods REFERENCE INTO DATA(method) WITH KEY name = methodname.
-    CHECK method IS NOT INITIAL.
-
-
+    IF method IS INITIAL.
+      RAISE EXCEPTION TYPE zcx_cacamber_error.
+    ENDIF.
     LOOP AT method->parameters REFERENCE INTO DATA(method_parameter).
       DATA(parameter_description) = object_description->get_method_parameter_type( p_method_name = methodname
                                                                                   p_parameter_name = method_parameter->name ).
@@ -133,10 +157,11 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
   METHOD given.
     DATA(methodname) = match_step_to_methodname( step ).
-    CHECK methodname IS NOT INITIAL.
-
     DATA(variables) = extract_variables_from_step( step ).
     DATA(parameters) = get_method_parameters( local_testclass_instance = me->test_class_instance methodname = methodname ).
+    IF paramaters_dont_match_variable( parameters = parameters variables = variables ).
+      RAISE EXCEPTION TYPE zcx_cacamber_error.
+    ENDIF.
     DATA(matched_parameters) = add_variables_to_parameters( variables = variables parameters = parameters ).
     CALL METHOD me->test_class_instance->(methodname) PARAMETER-TABLE matched_parameters.
   ENDMETHOD.
@@ -190,5 +215,8 @@ CLASS zcl_cacamber IMPLEMENTATION.
     current_rule = rule.
   ENDMETHOD.
 
+  METHOD paramaters_dont_match_variable.
+    result = xsdbool(  lines( variables ) <> lines( parameters ) ).
+  ENDMETHOD.
 
 ENDCLASS.

@@ -34,7 +34,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
     METHODS: can_set_a_feature FOR TESTING RAISING cx_static_check.
     METHODS: can_set_a_scenario FOR TESTING RAISING cx_static_check,
       underscore_calls_a_method FOR TESTING RAISING cx_static_check,
-      can_set_a_rule FOR TESTING RAISING cx_static_check.
+      can_set_a_rule FOR TESTING RAISING cx_static_check,
+      wrong_paramter_count FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -254,6 +255,15 @@ CLASS scaffolding_tests IMPLEMENTATION.
     method_has_been_called = abap_true.
   ENDMETHOD.
 
+  METHOD wrong_paramter_count.
+    cacamber->configure( pattern = '^no parameters are here but the step-method expects some$' methodname = 'WHENYOURNAMEIS' ).
+
+    TRY.
+        cacamber->given( 'no parameters are here but the step-method expects some' ).
+        cl_abap_unit_assert=>fail( ).
+      CATCH zcx_cacamber_error INTO DATA(error).
+    ENDTRY.
+  ENDMETHOD.
 
 
 ENDCLASS.
