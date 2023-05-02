@@ -94,8 +94,8 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :white_check_mark: a user can use the gherkin keyword "*" for lists. because "*" is not allowed in ABAP an underscore should be used. it behaves like "scenario"
 :white_check_mark: a user can add a rule via the keyword "rule" and it is stored so it can be used in assertions
 :white_check_mark: error handling: method doesnt have the same number of parameters as variables exist
-:black_square_button: error handling: no regex match / no method found should throw
-:black_square_button: error handling: method does not only have importing parameters
+:white_check_mark: error handling: no regex match / no method found should throw
+:white_check_mark: error handling: dynamic method call for the step-method fails. it should throw.
 :black_square_button: a user can use a float number in the tests (1.000,25) and it is parsed into a packed datatype succcessfully
 :black_square_button: a user can use a time in the test (12:00:00 or 12:01, not 11am or 1pm) and it is parsed into TIMS datatype successfully
 :black_square_button: a user can define tables via the keyword "following" and those are parsed and successfully
