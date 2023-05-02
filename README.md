@@ -80,7 +80,7 @@ Have I sparked your interest? Great.
 There are many frameworks out there for other languages which interpret Gherkin. Usually there are textfiles which contain the test and there are test classes which have annotations to map the scenarions to different test methods. Thats great. But no fun at all to in the SAP world, because handling textfiles, parsing your own sourccode for annotations and integration this into ABAP Unit is complex. Additionally the alternative to write a own test frameswork is imho also not a good idea. 
 Also currently every step is executed is called directly when the method is bein called. Maybe it is more flexible to execute the methods of every step only when a "THEN" is triggered. This might be needed to parse complex Gherkin syntax correctly.
 
-## How to install RESULT for ABAP
+## How to install Cacamber
 You can copy and paste the source code into your system or simply clone this repository with [abapGit](https://abapgit.org/). 
 
 ## Test List
