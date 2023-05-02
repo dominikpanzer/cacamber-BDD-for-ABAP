@@ -8,7 +8,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
                                       last_name  TYPE char30,
       local_method_for_test_date IMPORTING date TYPE dats,
       local_method_for_test IMPORTING first_name TYPE char30
-                                      last_name  TYPE char30.
+                                      last_name  TYPE char30,
+      local_method_for_test_exportin EXPORTING dummy TYPE string.
   PROTECTED SECTION.
 
 
@@ -36,7 +37,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
       underscore_calls_a_method FOR TESTING RAISING cx_static_check,
       can_set_a_rule FOR TESTING RAISING cx_static_check,
       wrong_paramter_count FOR TESTING RAISING cx_static_check,
-      no_method_for_step_found FOR TESTING RAISING cx_static_check.
+      no_method_for_step_found FOR TESTING RAISING cx_static_check,
+      dynamic_method_call_failed FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -244,15 +246,19 @@ CLASS scaffolding_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD local_method_for_test.
-    " this is a dummy method for test cases of the method GET_METHOD_PARAMETER_LISt
+    " this is a dummy method for test cases of the method GET_METHOD_PARAMETER_LIST
   ENDMETHOD.
 
   METHOD local_method_for_test_date.
-    " this is a dummy method for test cases of the method GET_METHOD_PARAMETER_LISt
+    " this is a dummy method for test cases of the method GET_METHOD_PARAMETER_LIST
+  ENDMETHOD.
+
+  METHOD local_method_for_test_exportin.
+    " this is a dummy method for test cases of the method dynamic_method_call_failed.
   ENDMETHOD.
 
   METHOD whenyournameis.
-    " this is a dummy method for test cases of the method GET_METHOD_PARAMETER_LISt
+    " this is a dummy method for test cases of the method GET_METHOD_PARAMETER_LIST
     method_has_been_called = abap_true.
   ENDMETHOD.
 
@@ -276,5 +282,15 @@ CLASS scaffolding_tests IMPLEMENTATION.
     ENDTRY.
   ENDMETHOD.
 
+  METHOD dynamic_method_call_failed.
+    " we catch cx_root here, because we don't want to map the exceptions of
+    " the dynamic method call to our own exception. the native exception is okay
+    cacamber->configure( pattern = '^this is the regex for a method with no importing parameter: (.*)$' methodname = 'local_method_for_test_exportin' ).
+    TRY.
+        cacamber->given( 'this is the regex for a method with no importing parameter: BOOM' ).
+        cl_abap_unit_assert=>fail( ).
+      CATCH cx_root INTO DATA(error).
+    ENDTRY.
+  ENDMETHOD.
 
 ENDCLASS.
