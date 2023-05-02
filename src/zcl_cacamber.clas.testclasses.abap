@@ -32,7 +32,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
     METHODS: added_vars_to_paras_int FOR TESTING RAISING cx_static_check.
     METHODS: given_calls_a_method FOR TESTING RAISING cx_static_check.
     METHODS: can_set_a_feature FOR TESTING RAISING cx_static_check.
-    METHODS: can_set_a_scenario FOR TESTING RAISING cx_static_check.
+    METHODS: can_set_a_scenario FOR TESTING RAISING cx_static_check,
+      underscore_calls_a_method FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -201,6 +202,16 @@ CLASS scaffolding_tests IMPLEMENTATION.
     cacamber->configure( pattern = '^your name is (.+) (.+)$' methodname = 'WHENYOURNAMEIS' ).
 
     cacamber->given( 'your name is Marty McFly' ).
+
+    cl_abap_unit_assert=>assert_equals( msg = 'Marker not set' exp = abap_true act = method_has_been_called ).
+  ENDMETHOD.
+
+  METHOD underscore_calls_a_method.
+* i don't like this test case design
+    cacamber->configure( pattern = '^List entry (.+) (.+)$' methodname = 'WHENYOURNAMEIS' ).
+
+    cacamber->_( 'List entry Marty McFly' ).
+    cacamber->_( 'List entry Ronny-James Dio' ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Marker not set' exp = abap_true act = method_has_been_called ).
   ENDMETHOD.

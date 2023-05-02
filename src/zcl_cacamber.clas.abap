@@ -17,6 +17,7 @@ CLASS zcl_cacamber DEFINITION
     METHODS: or IMPORTING step TYPE string.
     METHODS: example IMPORTING step TYPE string.
     METHODS: but IMPORTING step TYPE string.
+    METHODS: _ IMPORTING step TYPE string.
 
     METHODS constructor IMPORTING test_class_instance TYPE REF TO object OPTIONAL.
     METHODS feature IMPORTING feature TYPE feature_t.
@@ -98,6 +99,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
     object_description ?= cl_abap_objectdescr=>describe_by_object_ref( local_testclass_instance ).
 
     READ TABLE class_description->methods REFERENCE INTO DATA(method) WITH KEY name = methodname.
+    CHECK method IS NOT INITIAL.
 
 
     LOOP AT method->parameters REFERENCE INTO DATA(method_parameter).
@@ -157,6 +159,10 @@ CLASS zcl_cacamber IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD but.
+    given( step ).
+  ENDMETHOD.
+
+  METHOD _.
     given( step ).
   ENDMETHOD.
 
