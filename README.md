@@ -4,27 +4,26 @@
 
 # Cacamber - the BDD-Framework for ABAP
 
-Hi! Cacamber makes it possible to you to run BDD-style tests in a SAP-system. Behavior driven development is an agile approach to software development. It focusses on collaboration through a common language between the customer and developers, testers etc. Its doing it by defining examples which describe the behavior of a software system in a natural language. This language has a specific format and is called Gherkin.  In English using the ubiquitous language it looks like this:
-
+Hi! Cacamber makes it possible for you to run BDD-style tests in a SAP-system. [Behavior driven development](https://en.wikipedia.org/wiki/Behavior-driven_development) is an agile approach to software development. It focusses on collaboration through a common language between the customer and developers, testers etc. Its doing it by defining examples which describe the behavior of a software system in a natural language. This language has a specific format and is called [Gherkin](https://cucumber.io/docs/gherkin/). In English when using the [ubiquitous language](https://martinfowler.com/bliki/UbiquitousLanguage.html) it looks like this:
 ```
-_Feature_: Discount calculation
+Feature_: Discount calculation
 
-_Scenario_: Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)
-_given_ the customers first name is Dominik and his last name is Panzer
-_and_ his birthdate according to our CRM system is 06.06.2006
-_when_ the sales clerk lets the system calculate the customers discount on a Slayer Album
-_then_ 'the discount is 66% \m/
+Scenario: Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)
+Given the customers first name is Dominik and his last name is Panzer
+and his birthdate according to our CRM system is 06.06.2006
+when the sales clerk lets the system calculate the customers discount on a Slayer Album
+then the discount is 66% \m/
 ```
-These examples will be delivered by the business and should be used as executionalbe specifications. You guessed it: Tests! So how can we execute those tests?
+These scenarios or examples will be delivered by the business and will be used as executable specifications. You guessed it right: Tests! So how can we execute those scenarios as automated tests?
 
-You might know the `given ... when ... then` syntax. It's quite similar to `arrange ... act ... assert`. They are both techniques to give tests a clear structure. In ABAP this usually looks like this. Why not just use the Scenario, give the test method an according name and write an acceptance test?
+You might know the `given ... when ... then` pattern. It's quite similar to `arrange ... act ... assert`. They are both techniques to give tests a clear structure. In ABAP this usually looks like this. We focus on the the feature, give the test method an according name and write an acceptance test:
 
 ```ABAP
-METHOD discount_on_slayer_albums.
+METHOD discount_calculation.
 * given
 sut->do_this( parameter ).
 sut->do_that( parameter ).
-data(product) = |Slayer Album|.
+DATA(product) = |Slayer Album|.
 "more complex stuff here
 
 * when
@@ -47,23 +46,22 @@ when_the_price_is_calculated_for( 'Slayer Album' ).
 then_the_discount_is_correct( ).
 ENDMETHOD
 ```
-Thats way better! Persoanlly I sadly only know one project with such tests. Most of the details and complexity are hidden behind well named methods. Also there is the possibility to change the test parameters. This make the test more flexible and reusable. But using parameterless methods would make the code more readable.
+Thats way better! Persoanlly I only know one project with such tests. Most of the details and complexity are hidden behind well named methods. Also there is the possibility to change the test parameters. This make the test more flexible and reusable. But using parameterless methods would make the code more readable.
+But this solution is no way near our original testcase description. It's not natural language, it is mainly code. Also this approach is limited by ABAPs maximum method length. Developers are forced to use abbreviations etc.
 
-But this solution is no way near our original testcase description. Its not natural language, it is mainly code. The approach is limited by ABAPs maximum method length. Developers are forced to use abbreviations.
-
-If you choose to use Cacamber as a bridge between the scenario written in Gherkin and ABAP Unit, your test might look like this:
+If you choose to use Cacamber as a bridge between the scenario written in Gherkin and ABAP Unit, your test might look something like this:
 ```ABAP
- METHOD discount_on_slayer_albums.
-    scenario( 'Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)' ).
+METHOD discount_on_slayer_albums.
+scenario( 'Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)' ).
     
-    given( 'the customers first name is Dominik and his last name is Panzer' ).
-    and( 'his birthdate according to our CRM system is 06.06.2006' ).
-    when( 'the sales clerk lets the system calculate the customers discount on a Slayer Album' ).
-    then( 'the discount is 66% \m/' ).
-  ENDMETHOD.
-  ```
+given( 'the customers first name is Dominik and his last name is Panzer' ).
+and( 'his birthdate according to our CRM system is 06.06.2006' ).
+when( 'the sales clerk lets the system calculate the customers discount on a Slayer Album' ).
+then( 'the discount is 66% \m/' ).
+ENDMETHOD.
+```
   
-  And if it fails ABAP Unit will tell you this way:
+  If it fails ABAP Unit will tell you this way:
   ```
   ...
 Critical Assertion Error: 'Discount Calcuation: Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)'
@@ -73,13 +71,14 @@ Critical Assertion Error: 'Discount Calcuation: Discount on Slayer Albums for VI
 Have I sparked your interest? Great.
 
 ## How to use Cacamber
+@TODO
 
-## The BDD Cycle
-  
-## Architecture: Cacamber vs. other BDD Testing Frameworks
-There are many frameworks out there for other languages which interpret Gherkin. Usually there are textfiles which contain the test and there are test classes which have annotations to map the scenarions to different test methods. Thats great. But no fun at all to in the SAP world, because handling textfiles, parsing your own sourccode for annotations and integration this into ABAP Unit is no fun at all. Writing own test framesworks is imho also not a good idea.
+## Integration into the BDD Cycle
+@TODO
 
-So I chose this alternative approach to get something up and running fast. No magic involved.
+## Architecture
+There are many frameworks out there for other languages which interpret Gherkin. Usually there are textfiles which contain the test and there are test classes which have annotations to map the scenarions to different test methods. Thats great. But no fun at all to in the SAP world, because handling textfiles, parsing your own sourccode for annotations and integration this into ABAP Unit is complex. Additionally the alternative to write a own test frameswork is imho also not a good idea. 
+Also currently every step is executed is called directly when the method is bein called. Maybe it is more flexible to execute the methods of every step only when a "THEN" is triggered. This might be needed to parse complex Gherkin syntax correctly.
 
 ## How to install RESULT for ABAP
 You can copy and paste the source code into your system or simply clone this repository with [abapGit](https://abapgit.org/). 
