@@ -33,7 +33,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
     METHODS: given_calls_a_method FOR TESTING RAISING cx_static_check.
     METHODS: can_set_a_feature FOR TESTING RAISING cx_static_check.
     METHODS: can_set_a_scenario FOR TESTING RAISING cx_static_check,
-      underscore_calls_a_method FOR TESTING RAISING cx_static_check.
+      underscore_calls_a_method FOR TESTING RAISING cx_static_check,
+      can_set_a_rule FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -230,6 +231,14 @@ CLASS scaffolding_tests IMPLEMENTATION.
     cacamber->scenario( scenario ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Scenario hasnt been set' exp = scenario act = cacamber->current_scenario ).
+  ENDMETHOD.
+
+  METHOD can_set_a_rule.
+    DATA rule TYPE zcl_cacamber=>rule_t VALUE 'firt rule of the fight club: dont talk about the fight club'.
+
+    cacamber->rule( rule ).
+
+    cl_abap_unit_assert=>assert_equals( msg = 'Rule hasnt been set' exp = rule act = cacamber->current_rule ).
   ENDMETHOD.
 
   METHOD local_method_for_test.

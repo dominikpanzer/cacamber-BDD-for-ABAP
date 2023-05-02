@@ -7,6 +7,7 @@ CLASS zcl_cacamber DEFINITION
 
     TYPES: feature_t TYPE c LENGTH 255.
     TYPES: scenario_t TYPE c LENGTH 255.
+    TYPES: rule_t TYPE c LENGTH 255.
 
     METHODS: configure IMPORTING pattern    TYPE string
                                  methodname TYPE char30.
@@ -22,6 +23,7 @@ CLASS zcl_cacamber DEFINITION
     METHODS constructor IMPORTING test_class_instance TYPE REF TO object OPTIONAL.
     METHODS feature IMPORTING feature TYPE feature_t.
     METHODS scenario IMPORTING scenario TYPE scenario_t.
+    METHODS rule IMPORTING rule TYPE rule_t.
 
 
   PROTECTED SECTION.
@@ -40,6 +42,7 @@ CLASS zcl_cacamber DEFINITION
     DATA: configuration TYPE configuration_tt.
     DATA: current_feature TYPE feature_t.
     DATA: current_scenario TYPE scenario_t.
+    DATA: current_rule TYPE rule_t.
 
   PRIVATE SECTION.
     CLASS-DATA test_class_instance TYPE REF TO object.
@@ -181,6 +184,10 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
   METHOD scenario.
     current_scenario = scenario.
+  ENDMETHOD.
+
+  METHOD rule.
+    current_rule = rule.
   ENDMETHOD.
 
 
