@@ -38,7 +38,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
       can_set_a_rule FOR TESTING RAISING cx_static_check,
       wrong_paramter_count FOR TESTING RAISING cx_static_check,
       no_method_for_step_found FOR TESTING RAISING cx_static_check,
-      dynamic_method_call_failed FOR TESTING RAISING cx_static_check.
+      dynamic_method_call_failed FOR TESTING RAISING cx_static_check,
+    given_can_parse_a_table FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -291,6 +292,16 @@ CLASS scaffolding_tests IMPLEMENTATION.
         cl_abap_unit_assert=>fail( ).
       CATCH cx_root INTO DATA(error).
     ENDTRY.
+  ENDMETHOD.
+
+  METHOD given_can_parse_a_table.
+    cacamber->configure( pattern = '^we have the following names:(.*)$' methodname = 'dummy' ).
+    cacamber->given( 'we have the following names:' &&
+                     '| Tick  | Duck       |' &&
+                     '| Trick | Duck       |' &&
+                     '| Track | Duck       |' &&
+                     '| David | Hasselhoff |' ).
+    cl_abap_unit_assert=>fail( ).
   ENDMETHOD.
 
 ENDCLASS.
