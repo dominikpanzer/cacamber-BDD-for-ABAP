@@ -8,11 +8,11 @@ Hi! Cacamber makes it possible for you to run BDD-style tests in a SAP-system. [
 ```
 Feature: Discount calculation
 
-Scenario: Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)
+Scenario: Discount on Slayer albums for VIP Slayer fans (exclusive contract with BMG)
 
 Given the customers first name is Dominik and his last name is Panzer
 and his birthdate according to our CRM system is 06.06.2006
-when the sales clerk lets the system calculate the customers discount on a Slayer Album
+when the sales clerk lets the system calculate the customers discount on a Slayer album
 then the discount is 66% \m/
 ```
 These scenarios or examples will be delivered by the business and will be used as executable specifications. You guessed it right: Tests! So how can we execute those scenarios as automated tests?
@@ -53,11 +53,11 @@ But this solution is no way near our original testcase description. It's not nat
 If you choose to use Cacamber as a bridge between the scenario written in Gherkin and ABAP Unit, your test might look something like this:
 ```ABAP
 METHOD discount_on_slayer_albums.
-scenario( 'Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)' ).
+scenario( 'Discount on Slayer albums for VIP Slayer fans (exclusive contract with BMG)' ).
     
 given( 'the customers first name is Dominik and his last name is Panzer' ).
 and( 'his birthdate according to our CRM system is 06.06.2006' ).
-when( 'the sales clerk lets the system calculate the customers discount on a Slayer Album' ).
+when( 'the sales clerk lets the system calculate the customers discount on a Slayer album' ).
 then( 'the discount is 66% \m/' ).
 ENDMETHOD.
 ```
