@@ -147,7 +147,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
       IF matches( val = variables[ sy-tabix ] regex = '^\s*(3[01]|[12][0-9]|0?[1-9])\.(1[012]|0?[1-9])\.((?:19|20)\d{2})\s*$' ).
         cl_abap_datfm=>conv_date_ext_to_int( EXPORTING im_datext = variables[ sy-tabix ]
                                                        im_datfmdes = '1'
-       IMPORTING ex_datint = parameter_value->* ).
+                                             IMPORTING ex_datint = parameter_value->* ).
       ELSE.
         parameter_value->* = |{ variables[ sy-tabix ] ALPHA = IN }|.
       ENDIF.

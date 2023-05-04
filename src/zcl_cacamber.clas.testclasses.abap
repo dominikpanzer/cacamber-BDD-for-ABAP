@@ -9,13 +9,15 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
       local_method_for_test_date IMPORTING date TYPE dats,
       local_method_for_test IMPORTING first_name TYPE char30
                                       last_name  TYPE char30,
-      local_method_for_test_exportin EXPORTING dummy TYPE string.
+      local_method_for_test_exportin EXPORTING dummy TYPE string,
+      local_method_for_test_table IMPORTING table_as_string TYPE string.
   PROTECTED SECTION.
 
 
   PRIVATE SECTION.
     DATA: cacamber TYPE REF TO zcl_cacamber.
-    DATA: method_has_been_called TYPE abap_bool.
+    DATA: method_has_been_called TYPE abap_bool,
+          datatable              TYPE REF TO zcl_datatable.
     METHODS: setup.
     METHODS: can_store_configuration FOR TESTING RAISING cx_static_check.
     METHODS: can_store_two_configurations FOR TESTING RAISING cx_static_check.
@@ -38,8 +40,7 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
       can_set_a_rule FOR TESTING RAISING cx_static_check,
       wrong_paramter_count FOR TESTING RAISING cx_static_check,
       no_method_for_step_found FOR TESTING RAISING cx_static_check,
-      dynamic_method_call_failed FOR TESTING RAISING cx_static_check,
-    given_can_parse_a_table FOR TESTING RAISING cx_static_check.
+      dynamic_method_call_failed FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -258,6 +259,10 @@ CLASS scaffolding_tests IMPLEMENTATION.
     " this is a dummy method for test cases of the method dynamic_method_call_failed.
   ENDMETHOD.
 
+  METHOD local_method_for_test_table.
+    datatable = zcl_datatable=>from_string( table_as_string ).
+  ENDMETHOD.
+
   METHOD whenyournameis.
     " this is a dummy method for test cases of the method GET_METHOD_PARAMETER_LIST
     method_has_been_called = abap_true.
@@ -293,15 +298,4 @@ CLASS scaffolding_tests IMPLEMENTATION.
       CATCH cx_root INTO DATA(error).
     ENDTRY.
   ENDMETHOD.
-
-  METHOD given_can_parse_a_table.
-    cacamber->configure( pattern = '^we have the following names:(.*)$' methodname = 'dummy' ).
-    cacamber->given( 'we have the following names:' &&
-                     '| Tick  | Duck       |' &&
-                     '| Trick | Duck       |' &&
-                     '| Track | Duck       |' &&
-                     '| David | Hasselhoff |' ).
-    cl_abap_unit_assert=>fail( ).
-  ENDMETHOD.
-
 ENDCLASS.
