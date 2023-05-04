@@ -96,10 +96,10 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :white_check_mark: error handling: method doesnt have the same number of parameters as variables exist
 :white_check_mark: error handling: no regex match / no method found should throw
 :white_check_mark: error handling: dynamic method call for the step-method fails. it should throw.
-:black_square_button: a user can define tables and those are parsed and successfully
-:black_square_button: a user can can read values from those tables
-:black_square_button: a user can transform the table into a real internal table
-:black_square_button: a user can use empty cells in a table
+:white_check_mark: a user can define tables and those are parsed and successfully
+:white_check_mark: a user can can read values from those tables
+:white_check_mark: a user can transform the table into a real internal table
+:white_check_mark: a user can use empty cells in a table
 :black_square_button: a user can use a float number in the tests (1.000,25) and it is parsed into a packed datatype succcessfully
 :black_square_button: a user can use a time in the test (12:00:00 or 12:01, not 11am or 1pm) and it is parsed into TIMS datatype successfully
 :black_square_button: a user can use the gherkin keyword "scenario outline" to shorten similar scenarios with different testdata
