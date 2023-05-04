@@ -6,9 +6,10 @@
 
 Hi! Cacamber makes it possible for you to run BDD-style tests in a SAP-system. [Behavior driven development](https://en.wikipedia.org/wiki/Behavior-driven_development) is an agile approach to software development. It focusses on collaboration through a common language between the customer and developers, testers etc. Its doing it by defining examples which describe the behavior of a software system in a natural language. This language has a specific format and is called [Gherkin](https://cucumber.io/docs/gherkin/). In English when using the [ubiquitous language](https://martinfowler.com/bliki/UbiquitousLanguage.html) it looks like this:
 ```
-Feature_: Discount calculation
+Feature: Discount calculation
 
 Scenario: Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)
+
 Given the customers first name is Dominik and his last name is Panzer
 and his birthdate according to our CRM system is 06.06.2006
 when the sales clerk lets the system calculate the customers discount on a Slayer Album
