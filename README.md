@@ -71,11 +71,40 @@ Critical Assertion Error: 'Discount Calcuation: Discount on Slayer Albums for VI
   
 Have I sparked your interest? Great.
 
-## How to use Cacamber
-@TODO
+## Example
+If you don't like to read docs, check out the example class ZCL_BDD_EXAMPLE, which shows how to use Cacamber. It's an implementation of the above scenario "Discount on Slayer albums for VIP Slayer fans (exclusive contract with BMG)".
 
-## Integration into the BDD Cycle
-@TODO
+## Cacamber API
+
+This part of the document describes the public methods of Cacamber. To get startet, your local test class needs to inherit from `ZCL_CACAMBER`.
+
+### Features
+The `feature` method can optionall be used to structure your test cases in a domain-centric way. Usually one test class will represents one feature, e.g. "discount calculation". The method has to be used in the `SETUP` of your test class.
+
+Parameters:
+* `FEATURE` - the name of your feature, max. 255 characters long
+
+Example:
+```ABAP 
+...
+feature( 'Discount Calcuation' ).
+...
+```
+
+### Configuration
+The method `configure` maps a regex-string to a method, which should be executed when the regex matches. Inside the regex you can use (.+) or other matchers to extract the variables from the string, which will be used as the parameters for the method call. The configuration is usually done in the `SETUP`-method of your testclass.
+
+Parameters
+* `PATTERN` - a REGEX-string which is used as a matcher
+* `METHODNAME` - name of a _public_ method of your _test class_ with a matching interface.
+
+Example:
+```ABAP 
+...
+configure->( pattern = '^the customers first name is (.+) and his last name is (.+)$' methodname = 'set_first_and_second_name' ).
+...
+```
+
 
 ## Architecture
 There are many frameworks out there for other languages which interpret Gherkin. Usually there are textfiles which contain the test and there are test classes which have annotations to map the scenarions to different test methods. Thats great. But no fun at all to in the SAP world, because handling textfiles, parsing your own sourccode for annotations and integration this into ABAP Unit is complex. Additionally the alternative to write a own test frameswork is imho also not a good idea. 
@@ -101,6 +130,7 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :white_check_mark: a user can can read values from those tables
 :white_check_mark: a user can transform the table into a real internal table
 :white_check_mark: a user can use empty cells in a table
+:white_check_mark: set up a class as example on how to use cacamber
 :black_square_button: fix the linter / unit tests
 :black_square_button: a user can use a float number in the tests (1.000,25) and it is parsed into a packed datatype succcessfully
 :black_square_button: a user can use a time in the test (12:00:00 or 12:01, not 11am or 1pm) and it is parsed into TIMS datatype successfully
