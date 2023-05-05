@@ -130,7 +130,7 @@ CLASS acceptance_tests IMPLEMENTATION.
     DATA(datatable) = zcl_datatable=>from_string( '| 17.07.1952 | David | Hasselhoff      |     |' &&
                                                   '| 30.07.1947 | Arnold | Schwarzenegger | 100 |' ).
 
-    datatable->as_table( EXPORTING ddic_table_type_name = 'ZTT_BDD_DEMO'
+    datatable->to_table( EXPORTING ddic_table_type_name = 'ZTT_BDD_DEMO'
                          IMPORTING table = internal_table ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Tables dont match' exp = internal_table_expected act = internal_table ).
@@ -143,7 +143,7 @@ CLASS acceptance_tests IMPLEMENTATION.
     DATA(datatable) = zcl_datatable=>from_string( '| 17.07.1952 | David | Hasselhoff      |     |' &&
                                                   '| 30.07.1947 | Arnold | Schwarzenegger | 100 |' ).
     TRY.
-        datatable->as_table( EXPORTING ddic_table_type_name = 'ZTT_DOESNT_EXIST'
+        datatable->to_table( EXPORTING ddic_table_type_name = 'ZTT_DOESNT_EXIST'
                              IMPORTING table = internal_table ).
         cl_abap_unit_assert=>fail(  ).
       CATCH cx_root INTO DATA(error).

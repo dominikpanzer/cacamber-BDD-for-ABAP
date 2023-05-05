@@ -6,7 +6,7 @@ CLASS acceptance_discount_calculatio DEFINITION FINAL FOR TESTING INHERITING FRO
                                                 last_name  TYPE char30.
     METHODS: set_birthdate IMPORTING birthdate TYPE dats.
     METHODS: calculate_discount IMPORTING product TYPE string,
-      eval_slayer_oldschool_discount.
+      eval_slayer_oldschool_discount IMPORTING expected TYPE int4.
 
   PRIVATE SECTION.
     DATA discount_calculator TYPE REF TO zcl_bdd_example.
@@ -33,7 +33,7 @@ CLASS acceptance_discount_calculatio IMPLEMENTATION.
     scenario( 'Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)' ).
     given( 'the customers first name is Dominik and his last name is Panzer' ).
     and( 'his birthdate according to our CRM system is 06.06.2006' ).
-    when( 'the sales clerk lets the system calculate the customers discount on a Slayr Album' ).
+    when( 'the sales clerk lets the system calculate the customers discount on a Slayer Album' ).
     then( 'the discount is 66% \m/' ).
   ENDMETHOD.
 
@@ -52,7 +52,7 @@ CLASS acceptance_discount_calculatio IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD eval_slayer_oldschool_discount.
-    cl_abap_unit_assert=>assert_equals( msg = |{ current_feature }: { current_scenario }| exp = 66 act = discount ).
+    cl_abap_unit_assert=>assert_equals( msg = |{ current_feature }: { current_scenario }| exp = expected act = discount ).
   ENDMETHOD.
 
 ENDCLASS.

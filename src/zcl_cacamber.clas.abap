@@ -26,9 +26,6 @@ CLASS zcl_cacamber DEFINITION
     METHODS: or IMPORTING step TYPE string
                 RAISING
                           zcx_cacamber_error.
-    METHODS: example IMPORTING step TYPE string
-                     RAISING
-                               zcx_cacamber_error.
     METHODS: but IMPORTING step TYPE string
                  RAISING
                            zcx_cacamber_error.
@@ -39,6 +36,7 @@ CLASS zcl_cacamber DEFINITION
     METHODS constructor IMPORTING test_class_instance TYPE REF TO object OPTIONAL.
     METHODS feature IMPORTING feature TYPE feature_t.
     METHODS scenario IMPORTING scenario TYPE scenario_t.
+    METHODS example IMPORTING example TYPE scenario_t.
     METHODS rule IMPORTING rule TYPE rule_t.
 
 
@@ -183,7 +181,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD example.
-    given( step ).
+    scenario( example ).
   ENDMETHOD.
 
   METHOD but.

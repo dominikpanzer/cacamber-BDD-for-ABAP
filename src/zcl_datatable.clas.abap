@@ -29,7 +29,7 @@ CLASS zcl_datatable DEFINITION
           VALUE(value) TYPE string
         RAISING
           zcx_cacamber_error,
-      as_table
+      to_table
         IMPORTING
           ddic_table_type_name TYPE tabname
         EXPORTING
@@ -95,12 +95,12 @@ CLASS zcl_datatable IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD as_table.
+  METHOD to_table.
 * transforms the line-column-value datatable into a real internal table of the
 * supplied tabletype
     DATA: table_data_reference TYPE REF TO data.
     DATA: structure_data_reference TYPE REF TO data.
-    DATA row_number TYPE int4 VALUE 1.
+    DATA: row_number TYPE int4 VALUE 1.
     FIELD-SYMBOLS: <table> TYPE STANDARD TABLE.
     FIELD-SYMBOLS: <line> TYPE any.
     FIELD-SYMBOLS: <cell> TYPE any.
