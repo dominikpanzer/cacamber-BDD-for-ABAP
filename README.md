@@ -78,8 +78,10 @@ If you don't like to read docs, check out the example class ZCL_BDD_EXAMPLE, whi
 
 This part of the document describes the public methods of Cacamber. To get startet, your local test class needs to inherit from `ZCL_CACAMBER`.
 
-### Features
-The `feature` method can optionall be used to structure your test cases in a domain-centric way. Usually one test class will represents one feature, e.g. "discount calculation". The method has to be used in the `SETUP` of your test class.
+ZCL_CACAMBER as your superclass provides the following public methods.
+
+### FEATURE
+The `FEATURE` method is optional and can be used to structure your test cases in a domain-centric way. Usually one test class will represents one feature, e.g. "discount calculation". This method has to be used in the `SETUP` of your test class.
 
 Parameters:
 * `FEATURE` - the name of your feature, max. 255 characters long
@@ -91,12 +93,12 @@ feature( 'Discount Calcuation' ).
 ...
 ```
 
-### Configuration
-The method `configure` maps a regex-string to a method, which should be executed when the regex matches. Inside the regex you can use (.+) or other matchers to extract the variables from the string, which will be used as the parameters for the method call. The configuration is usually done in the `SETUP`-method of your testclass.
+### CONFIGURE
+The method `CONFIGURE` maps a regex-string to a method, which should be executed whenever the regex matches. If you are not a regex-pro, you can use tools like [regex101](https://regex101.com/) to make thingseasier. Inside the regex you can use (.+) or other matchers to extract the variables from the string, which will be used by Cacamber as parameters for the method call. The order of the variables must match the parameters of the method which should be called when the regex matches. The configuration is usually done in the `SETUP`-method of your test class.
 
 Parameters
 * `PATTERN` - a REGEX-string which is used as a matcher
-* `METHODNAME` - name of a _public_ method of your _test class_ with a matching interface.
+* `METHODNAME` - name of a _public_ method of your _test class_ with a matching interface. can be upper or lower case.
 
 Example:
 ```ABAP 
@@ -105,6 +107,122 @@ configure->( pattern = '^the customers first name is (.+) and his last name is (
 ...
 ```
 
+### SCENARIO
+A scenario describes a variant of a feature and represents a test case. Therefore the `SCENARIO` method is usually being used as the first method call in a test method of your local test class.
+
+Parameters:
+* `SCENARIO` - the name of the scenario, max. 255 characters long
+
+Example:
+```ABAP 
+...
+scenario( 'Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)' ).
+...
+```
+
+### EXAMPLE
+The method `EXAMPLE` works the same way `SCENARIO` does.
+
+Parameters:
+* `SCENARIO` - the name of the scenario, max. 255 characters long
+
+Example:
+```ABAP 
+...
+example( 'Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)' ).
+...
+```
+
+### RULE
+With the method `RULE` you can describe a single business rule which will be implemented. It can be used in your local test methods just like `SCENARIO` or `EXAMPLE`.
+
+Parameters:
+* `rule` - description of a business rule, max. 255 characters long
+
+Example:
+```ABAP 
+...
+rule( 'only VIP customers can buy the album 7 days before the officiall realease date' ).
+...
+```
+
+### GIVEN
+The `GIVEN` method is an actual keyword of the Gherkin language. It represents a step. A BDD test case consists of steps which combined represent an expectation of the bahavior of the system. The paramter `STEP` will be matched against the regex-patterns of the configuration to find an actual method to process the data provided by the step.
+
+Parameters:
+* `STEP` - a string describing something relevant to the business using the ubiquitious language.
+
+Example:
+```ABAP 
+...
+given( 'the customers first name is Dominik and his last name is Panzer' ).
+...
+```
+
+### AND 
+Also a Gherkin keyword to write tests in a natural language. The method `AND` works like `GIVEN`.
+
+Parameters:
+* `STEP` - a string describing something relevant to the business using the ubiquitious language.
+
+Example:
+```ABAP 
+...
+and( 'his birthdate according to our CRM system is 06.06.2006' ).
+...
+```
+
+### OR
+Also a Gherkin keyword to write tests in a natural language. The method `OR` works like `GIVEN`.
+
+Parameters:
+* `STEP` - a string describing something relevant to the business using the ubiquitious language.
+
+Example:
+```ABAP 
+...
+or( 'his birthdate according to our CRM system is 01.01.2001' ).
+...
+```
+
+### BUT
+Also a Gherkin keyword to write tests in a natural language. The method `Bb` works like `GIVEN`.
+
+Parameters:
+* `STEP` - a string describing something relevant to the business using the ubiquitious language.
+
+Example:
+```ABAP 
+...
+but( 'today is not the Monday' ).
+...
+```
+
+### WHEN 
+Also a Gherkin keyword to write tests in a natural language. It usually desribes an action.  The method `WHEN` works like `GIVEN`.
+
+Parameters:
+* `STEP` - a string describing something relevant to the business using the ubiquitious language.
+
+Example:
+```ABAP 
+...
+when( 'the sales clerk lets the system calculate the customers discount on a Slayer Album' ).
+...
+```
+
+### THEN 
+Also a Gherkin keyword to write tests in a natural language. It describes an expected reaction of the system. The method `THEN` works like `GIVEN`.
+
+Parameters:
+* `STEP` - a string describing something relevant to the business using the ubiquitious language.
+
+Example:
+```ABAP 
+...
+then( 'the discount is 66% \m/' ).
+...
+```
 
 ## Architecture
 There are many frameworks out there for other languages which interpret Gherkin. Usually there are textfiles which contain the test and there are test classes which have annotations to map the scenarions to different test methods. Thats great. But no fun at all to in the SAP world, because handling textfiles, parsing your own sourccode for annotations and integration this into ABAP Unit is complex. Additionally the alternative to write a own test frameswork is imho also not a good idea. 
