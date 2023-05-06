@@ -1,6 +1,6 @@
 CLASS zcl_datatable DEFINITION
   PUBLIC
-  CREATE PUBLIC .
+  CREATE PRIVATE.
 
   PUBLIC SECTION.
     TYPES: BEGIN OF datatable_line_ts,
@@ -13,8 +13,7 @@ CLASS zcl_datatable DEFINITION
                                RETURNING VALUE(datatable) TYPE REF TO zcl_datatable
                                RAISING
                                          zcx_cacamber_error.
-    METHODS: constructor,
-      read_row
+    METHODS: read_row
         IMPORTING
           rownumber   TYPE int4
         RETURNING
@@ -52,12 +51,6 @@ CLASS zcl_datatable IMPLEMENTATION.
     datatable = NEW zcl_datatable( ).
     datatable->parse( table_as_string ).
   ENDMETHOD.
-
-
-  METHOD constructor.
-
-  ENDMETHOD.
-
 
   METHOD parse.
     DATA datatable_line TYPE datatable_line_ts.
