@@ -49,6 +49,7 @@ then_the_discount_is_correct( ).
 ENDMETHOD
 ```
 Thats way better! Persoanlly I only know one ABAP project with such kind of tests. Most of the details and complexity are hidden behind well named methods - another level of abstraction has been introduced. Also there is the possibility to change the test parameters. This make the steps of the test more flexible and reusable. But using parameterless methods would make the code more readable.
+
 But this solution is no way near our original testcase description. It's not natural language, it is mainly code. Also this approach is limited by ABAPs maximum method length. Developers are forced to use abbreviations etc.
 
 If you choose to use Cacamber as a bridge between the scenario written in plain Gherkin and ABAP Unit, your test steps will look like this:
@@ -89,6 +90,22 @@ Have I sparked your interest? Great.
 ## Example
 If you don't like to read docs, check out the example class ZCL_BDD_EXAMPLE, which shows how to use Cacamber. It's an implementation of the above scenario "Discount on Slayer albums for VIP Slayer fans (exclusive contract with BMG)".
 
+## The BDD cycle when using Cacamber
+BDDs main target is to deliver quality software by making the communication between different team members easier. But most people just think about tools like Cucumber (or Cacamber ;-)) and test automation whenever they hear about BDD.
+
+So how does BDD work and how does Cacamber fit in? Let us have a look:
+1. Identify the important business features for your software and prioritize them.
+1. Identify different scenarios of these features and prioritize them.
+1. Define acceptance test descriptions for these scenarios. Use the Gherkin language for this. Make sure the whole team understands them. Scenarios are no technical descriptions. They describe the users intention, what the user actually does and what he wants to achive.
+1. Write the first scenario with Cacamber consisting of the relevant steps and place an `ASSERT` in the `THEN` step method. A step method needs to be a public method of your test class. Make sure there is just one `THEN`. You will need to inherit your test class from `ZCL_CACAMBER` and define a `FEATURE` and the `CONFIGURATION` for the steps in the `SETUP` of your test class. You will also need a test method, add a `SCENARIO` and different steps using `GIVEN`, `WHEN`, `THEN` and the other available methods.
+1. The new test method will most likely fail with an exception, because the step methods are not implemented or the `ASSERT` failed. It might also go green, if the step methods are already implemented and the existing business logic is able to pass the criteria of the `ASSERT`. Then you are done.
+1. If the scenario fails, you will most likely need to write a new method for your business logic. Use TDD for this: Red-Green-Refactor. When your TDD tests are green, place the newly created or changed method into your step method. There might be more than one method call to your business logic in a single step method. You will also need to save results of your business logic in attributes, so other step methods can access it (one step calculates a value, the next step validates it etc.)
+1. Repeat unti your scenario is green.
+1. Refactor.
+1. Start with the next scenario and reuse your steps methods.
+
+If this is too high level for you, have a look at the example implementation `ZCL_BDD_EXAMPLE` or check out the API description.
+
 ## Cacamber API
 
 This part of the document describes the public methods of Cacamber. To get startet, your local test class needs to inherit from `ZCL_CACAMBER`.
@@ -113,17 +130,17 @@ cl_abap_unit_assert=>assert_equals( msg = current_feature exp = expected act = a
 ### CONFIGURE
 The method `CONFIGURE` maps a regex-string to a method, which should be executed whenever the regex matches. This is called a step. If you are not a regex-pro, you can use tools like [regex101](https://regex101.com/) to make things easier. Inside the regex you can use (.+) or other matchers to extract the variables from the string, which will be used by Cacamber as parameters for the method call. The order of the variables must match the order of the parameters of the step method which should be called when the regex matches. The configuration is usually done in the `SETUP`-method of your test class.
 
-Supported types and regular expressions
+Supported types and regular expressions:
 Currently Cacamber is able to handle the following basic datatypes, which you can use in your step methods parameters. You can also use DDIC types based on these.
-| datatype | example matcher | description | example |
+| datatype | example matcher | description | example value |
 |----------|-----------------|-------------|---------|
 | `STRING` | ^hello (.+)$ | a string can basically by anything, use this as a fallback, ALPHA IN will be applied | Dominik |
 | `DATE` | ^today is (.+)$ | DD.MM.YYYY a date will automatically be converted to internal format | 24.12.2023 |
-| `TIMS`| ^its (.+) o'clock$ | HH:MM:SS a time will automatically be converted to internal format | 14:01:00 |
+| `TIMS`| ^it's (.+) o'clock$ | HH:MM:SS a time will automatically be converted to internal format | 14:01:00 |
 | `CHAR`| ^add (.+) to cart$ | a character sequence | book |
 | `INTEGER`| ^I am (.+) years old$ | for positive or negative integers | -200 |
-| `PACKED' | (.+) | ^the price is (.+) | a number with decimals | 1001.50 |
-| data table | (.+) | a line or a table | \| Tom \| Araya \| |
+| `PACKED` | ^the price is (.+) | a number with decimals seperated by a _dot_ | 1001.50 |
+| datatable | ^Slayer had the following members:(.+) | a line or a table | see section about datatables |
 
 
 Importing parameters:
@@ -307,11 +324,35 @@ Returning parameters:
 
 Example:
 ```ABAP 
+CLASS testclass DEFINITION FINAL FOR TESTING INHERITING FROM zcl_cacamber DURATION SHORT RISK LEVEL HARMLESS.
+
+PUBLIC SECTION.
+METHODS: process_shopping_cart IMPORTING shopping_cart_raw TYPE string.
 ...
-TODO
-configure
-step method
-contenct of step method
+PRIVATE SECTION.
+METHODS: setup.
+METHODS: no_discount_on_shopping_cart FOR TESTING RAISING cx_static_check.
+...
+
+CLASS testclass IMPLEMENTATION.
+METHOD setup.
+...
+configure( pattern = '^in his shopping cart are the following items:(.*)$' methodname = 'process_shopping_cart' ).
+...
+ENDMETHOD.
+
+METHOD process_shopping_cart.
+shopping_cart = zcl_datatable=>from_string( shopping_cart_raw ).
+ENDMETHOD.
+
+METHOD no_discount_on_shopping_cart.
+scenario( 'Customer is not eligable for a discount on the shopping cart' ).
+given( 'in his shopping cart are the following items:' &&
+         '| 1 | Scooter - Hyper Hyper |' &&
+         '| 1 | Scooter - How Much Is The Fish |' &&
+         '| 1 | Scooter - Maria (I like it loud) |' ).
+...
+ENDMETHOD.
 ...
 ```
 
@@ -363,8 +404,6 @@ datatable->to_table( EXPORTING ddic_table_type_name = 'ZTT_BDD_DEMO'
 ...
 ```
 
-## Cacamber vs. other Gherkin frameworks / solution architecture
-There are many frameworks out there for other languages which interpret Gherkin. Usually there are textfiles which contain the test and there are test classes which have annotations to map the scenarios to the different test methods. Thats great. But seemed to me quite complicated in the SAP world (textfile handling, parsing own sourcecode for annotations, maybe generating sourcecode or even writing a test framework). So I decided to implement it the way I did now just to see, if the general concept of BDD is something the ABAP community finds valueable. The next step might be to enhance Cacamber for textfile-parsing.
 
 ## How to install Cacamber
 You can copy and paste the source code into your system or simply clone this repository with [abapGit](https://abapgit.org/). There are currently no dependencies and it should work on 7.x systems.
@@ -389,13 +428,15 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :white_check_mark: set up a class as example on how to use cacamber
 :white_check_mark: update the docs 👹
 :black_square_button: fix the linter / unit tests 
-:white_check_mark: a user can use a float number in the tests (1.000,25) and it is parsed into a packed datatype succcessfully
+:white_check_mark: a user can use a float number in the tests (1000.25) and it is parsed into a packed datatype succcessfully
 :white_check_mark: a user can use a time in the test (12:00:00 or 14:01:00) and it is parsed into TIMS datatype successfully
-:black_square_button: update the docs 👹
-:black_square_button: a user can use the gherkin keyword "scenario outline" to shorten similar scenarios with different testdata
-:black_square_button: a user can use the "background" keyword to execute steps before every scenario (like SETUP)
+:white_check_mark: update the docs 👹
+:black_square_button: find beta testers
 :black_square_button: refactor to `RESULT`
 :black_square_button: your awesome idea
+
+## Cacamber vs. other Gherkin frameworks / solution architecture
+There are many frameworks out there for other programming languages which support Gherkin. Usually there are textfiles which contain the tests and test classes, which have annotations to map the scenarios to the different step methods. Thats great. But seemed quite complicated to me in the SAP world (textfile handling, parsing own sourcecode for annotations, maybe generating sourcecode or even writing a test framework). So I decided to implement it the way I did now just to see, if the general concept of BDD is something the ABAP community finds valueable. The next step might be to enhance Cacamber for textfile-parsing or introduce a database concept.
 
 ## How to support this project
 
