@@ -5,18 +5,17 @@ CLASS acceptance_tests DEFINITION FINAL FOR TESTING
   RISK LEVEL HARMLESS.
 
   PRIVATE SECTION.
-    METHODS:
-      can_instantiate_via_factory FOR TESTING RAISING cx_static_check,
-      fails_without_string FOR TESTING RAISING cx_static_check,
-      stores_a_table_line FOR TESTING RAISING cx_static_check,
-      stores_two_table_lines FOR TESTING RAISING cx_static_check,
-      returns_a_line FOR TESTING RAISING cx_static_check,
-      throws_when_no_line_found FOR TESTING RAISING cx_static_check,
-      returns_a_cell FOR TESTING RAISING cx_static_check,
-      throw_when_no_cell_found FOR TESTING RAISING cx_static_check,
-      transforms_to_internal_table FOR TESTING RAISING cx_static_check,
-      stores_with_blank_cell FOR TESTING RAISING cx_static_check,
-      throws_when_transformat_fails FOR TESTING RAISING cx_static_check.
+    METHODS:  can_instantiate_via_factory FOR TESTING RAISING cx_static_check.
+    METHODS: fails_without_string FOR TESTING RAISING cx_static_check.
+    METHODS: stores_a_table_line FOR TESTING RAISING cx_static_check.
+    METHODS: stores_two_table_lines FOR TESTING RAISING cx_static_check.
+    METHODS: returns_a_line FOR TESTING RAISING cx_static_check.
+    METHODS: throws_when_no_line_found FOR TESTING RAISING cx_static_check.
+    METHODS: returns_a_cell FOR TESTING RAISING cx_static_check.
+    METHODS: throw_when_no_cell_found FOR TESTING RAISING cx_static_check.
+    METHODS: transforms_to_internal_table FOR TESTING RAISING cx_static_check.
+    METHODS: stores_with_blank_cell FOR TESTING RAISING cx_static_check.
+    METHODS: throws_when_transformat_fails FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 
 

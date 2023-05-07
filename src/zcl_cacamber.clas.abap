@@ -1,4 +1,3 @@
-* regex coach https://regex101.com/
 CLASS zcl_cacamber DEFINITION
   PUBLIC
   CREATE PUBLIC .
@@ -12,27 +11,19 @@ CLASS zcl_cacamber DEFINITION
     METHODS: configure IMPORTING pattern    TYPE string
                                  methodname TYPE char30.
     METHODS: when IMPORTING step TYPE string
-                  RAISING
-                            zcx_cacamber_error.
+                  RAISING   zcx_cacamber_error.
     METHODS: given IMPORTING step TYPE string
-                   RAISING
-                             zcx_cacamber_error.
+                   RAISING   zcx_cacamber_error.
     METHODS: then IMPORTING step TYPE string
-                  RAISING
-                            zcx_cacamber_error.
+                  RAISING   zcx_cacamber_error.
     METHODS: and IMPORTING step TYPE string
-                 RAISING
-                           zcx_cacamber_error.
+                 RAISING   zcx_cacamber_error.
     METHODS: or IMPORTING step TYPE string
-                RAISING
-                          zcx_cacamber_error.
+                RAISING   zcx_cacamber_error.
     METHODS: but IMPORTING step TYPE string
-                 RAISING
-                           zcx_cacamber_error.
+                 RAISING   zcx_cacamber_error.
     METHODS: _ IMPORTING step TYPE string
-               RAISING
-                         zcx_cacamber_error.
-
+               RAISING   zcx_cacamber_error.
     METHODS constructor IMPORTING test_class_instance TYPE REF TO object OPTIONAL.
     METHODS feature IMPORTING feature TYPE feature_t.
     METHODS scenario IMPORTING scenario TYPE scenario_t.
@@ -64,8 +55,7 @@ CLASS zcl_cacamber DEFINITION
     METHODS get_method_parameters IMPORTING methodname               TYPE char30
                                             local_testclass_instance TYPE REF TO object
                                   RETURNING VALUE(parameters)        TYPE parameters_tt
-                                  RAISING
-                                            zcx_cacamber_error .
+                                  RAISING   zcx_cacamber_error .
     METHODS: extract_variables_from_step IMPORTING step             TYPE string
                                          RETURNING VALUE(variables) TYPE string_table,
       match_step_to_methodname IMPORTING step              TYPE string
@@ -73,15 +63,20 @@ CLASS zcl_cacamber DEFINITION
       add_variables_to_parameters IMPORTING variables                 TYPE string_table
                                             parameters                TYPE parameters_tt
                                   RETURNING VALUE(matched_parameters) TYPE abap_parmbind_tab,
-      paramaters_dont_match_variable
-        IMPORTING
-          parameters    TYPE zcl_cacamber=>parameters_tt
-          variables     TYPE string_table
-        RETURNING
-          VALUE(result) TYPE abap_bool,
-      is_gregorian_dot_seperated
-        IMPORTING variables     TYPE string_table
-        RETURNING VALUE(result) TYPE abap_bool.
+      paramaters_dont_match_variable IMPORTING parameters    TYPE zcl_cacamber=>parameters_tt
+                                               variables     TYPE string_table
+                                     RETURNING VALUE(result) TYPE abap_bool,
+      is_gregorian_dot_seperated IMPORTING variables     TYPE string_table
+                                 RETURNING VALUE(result) TYPE abap_bool,
+      is_time_format IMPORTING variables     TYPE string_table
+                     RETURNING VALUE(result) TYPE abap_bool,
+      format_time IMPORTING variable    TYPE string
+                  RETURNING VALUE(time) TYPE string,
+      convertion_exit_inbound IMPORTING variable                 TYPE string
+                              RETURNING VALUE(variable_internal) TYPE string,
+      get_method_by_methodname IMPORTING methodname                TYPE char30
+                                         class_description         TYPE REF TO cl_abap_classdescr
+                               RETURNING VALUE(method_description) TYPE REF TO abap_methdescr.
 ENDCLASS.
 
 
@@ -108,7 +103,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
       IF NOT matches( val = step regex = configuration_entry->pattern ).
         CONTINUE.
       ENDIF.
-      FIND ALL OCCURRENCES OF REGEX configuration_entry->pattern  IN step  RESULTS DATA(findings).
+      FIND ALL OCCURRENCES OF REGEX configuration_entry->pattern IN step RESULTS DATA(findings).
       LOOP AT findings  REFERENCE INTO DATA(finding).
         LOOP AT finding->submatches REFERENCE INTO DATA(submatch).
           DATA(variable) = substring( val = step off = submatch->offset len = submatch->length ).
@@ -122,21 +117,25 @@ CLASS zcl_cacamber IMPLEMENTATION.
     DATA: class_description TYPE REF TO cl_abap_classdescr.
     DATA: object_description TYPE REF TO cl_abap_objectdescr.
 
-
     class_description ?= cl_abap_classdescr=>describe_by_object_ref( local_testclass_instance ).
     object_description ?= cl_abap_objectdescr=>describe_by_object_ref( local_testclass_instance ).
-
-    READ TABLE class_description->methods REFERENCE INTO DATA(method) WITH KEY name = methodname.
+    DATA(method) = get_method_by_methodname( EXPORTING methodname = methodname
+                                                       class_description = class_description ).
     IF method IS INITIAL.
       RAISE EXCEPTION TYPE zcx_cacamber_error.
     ENDIF.
     LOOP AT method->parameters REFERENCE INTO DATA(method_parameter).
       DATA(parameter_description) = object_description->get_method_parameter_type( p_method_name = methodname
                                                                                   p_parameter_name = method_parameter->name ).
-
       parameters = VALUE #( BASE parameters ( name = method_parameter->name data_type = parameter_description->absolute_name+6(194) ) ).
     ENDLOOP.
   ENDMETHOD.
+
+  METHOD get_method_by_methodname.
+    READ TABLE class_description->methods REFERENCE INTO method_description  WITH KEY name = methodname.
+  ENDMETHOD.
+
+
 
   METHOD add_variables_to_parameters.
     CONSTANTS exporting TYPE string VALUE 'E' ##NO_TEXT.
@@ -145,17 +144,30 @@ CLASS zcl_cacamber IMPLEMENTATION.
     LOOP AT parameters ASSIGNING FIELD-SYMBOL(<parameter>).
       CREATE DATA parameter_value TYPE (<parameter>-data_type).
 
-      IF is_gregorian_dot_seperated( variables ) = abap_true.
+      IF is_gregorian_dot_seperated( variables ).
         cl_abap_datfm=>conv_date_ext_to_int( EXPORTING im_datext = variables[ sy-tabix ]
                                                        im_datfmdes = '1'
                                              IMPORTING ex_datint = parameter_value->* ).
-      ELSEIF matches( val = variables[ sy-tabix ] regex = '^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$' ).
-        parameter_value->* = translate( val = variables[ sy-tabix ]  from = `:`  to = `` ).
+      ELSEIF is_time_format( variables ).
+        parameter_value->* = format_time( variables[ sy-tabix ] ).
       ELSE.
-        parameter_value->* = |{ variables[ sy-tabix ] ALPHA = IN }|.
+        parameter_value->* = convertion_exit_inbound( variables[ sy-tabix ] ).
       ENDIF.
       matched_parameters = VALUE #( BASE matched_parameters ( name = <parameter>-name kind = exporting value = parameter_value ) ).
     ENDLOOP.
+  ENDMETHOD.
+
+  METHOD convertion_exit_inbound .
+    variable_internal = |{ variable ALPHA = IN }|.
+  ENDMETHOD.
+
+  METHOD format_time .
+    time = translate( val = variable  from = `:`  to = `` ).
+  ENDMETHOD.
+
+  METHOD is_time_format.
+    CONSTANTS time_format_hhmmss_with_colon TYPE string VALUE '^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$'.
+    result = xsdbool( matches( val = variables[ sy-tabix ] regex = time_format_hhmmss_with_colon ) ).
   ENDMETHOD.
 
   METHOD is_gregorian_dot_seperated.

@@ -5,8 +5,8 @@ CLASS acceptance_discount_calculatio DEFINITION FINAL FOR TESTING INHERITING FRO
     METHODS set_first_and_second_name IMPORTING first_name TYPE char30
                                                 last_name  TYPE char30.
     METHODS: set_birthdate IMPORTING birthdate TYPE dats.
-    METHODS: calculate_discount IMPORTING product TYPE string,
-      eval_slayer_oldschool_discount IMPORTING expected TYPE int4.
+    METHODS: calculate_discount IMPORTING product TYPE string.
+    METHODS: eval_slayer_oldschool_discount IMPORTING expected TYPE int4.
 
   PRIVATE SECTION.
     DATA discount_calculator TYPE REF TO zcl_bdd_example.
@@ -93,7 +93,6 @@ CLASS scuffolding_discount_calculati IMPLEMENTATION.
     discount_calculator->set_birth_date( '20000101' ).
     cl_abap_unit_assert=>assert_equals( msg = 'Error' exp = '20000101' act = discount_calculator->birth_date ).
   ENDMETHOD.
-
 
   METHOD can_calculate_discount.
     DATA(discount) = discount_calculator->calculate_discount( 'Slayer Album' ).

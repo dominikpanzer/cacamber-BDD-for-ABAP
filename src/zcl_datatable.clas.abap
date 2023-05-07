@@ -11,29 +11,17 @@ CLASS zcl_datatable DEFINITION
     TYPES: datatable_tt TYPE SORTED TABLE OF datatable_line_ts WITH UNIQUE KEY row column.
     CLASS-METHODS: from_string IMPORTING table_as_string  TYPE string
                                RETURNING VALUE(datatable) TYPE REF TO zcl_datatable
-                               RAISING
-                                         zcx_cacamber_error.
-    METHODS: read_row
-        IMPORTING
-          rownumber   TYPE int4
-        RETURNING
-          VALUE(line) TYPE string_table
-        RAISING
-          zcx_cacamber_error,
-      read_cell
-        IMPORTING
-          rownumber    TYPE int4
-          columnnumber TYPE int4
-        RETURNING
-          VALUE(value) TYPE string
-        RAISING
-          zcx_cacamber_error,
-      to_table
-        IMPORTING
-          ddic_table_type_name TYPE tabname
-        EXPORTING
-          VALUE(table)         TYPE any.
-  PROTECTED SECTION.
+                               RAISING   zcx_cacamber_error.
+    METHODS: read_row IMPORTING rownumber   TYPE int4
+                      RETURNING VALUE(line) TYPE string_table
+                      RAISING   zcx_cacamber_error.
+    METHODS: read_cell IMPORTING rownumber    TYPE int4
+                                 columnnumber TYPE int4
+                       RETURNING VALUE(value) TYPE string
+                       RAISING   zcx_cacamber_error.
+    METHODS: to_table IMPORTING ddic_table_type_name TYPE tabname
+                      EXPORTING VALUE(table)         TYPE any.
+
   PRIVATE SECTION.
     DATA datatable TYPE datatable_tt.
     METHODS parse IMPORTING table_as_string TYPE string.
@@ -42,8 +30,6 @@ ENDCLASS.
 
 
 CLASS zcl_datatable IMPLEMENTATION.
-
-
   METHOD from_string.
     IF table_as_string IS INITIAL.
       RAISE EXCEPTION TYPE zcx_cacamber_error.
