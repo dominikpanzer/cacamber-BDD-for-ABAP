@@ -113,6 +113,19 @@ cl_abap_unit_assert=>assert_equals( msg = current_feature exp = expected act = a
 ### CONFIGURE
 The method `CONFIGURE` maps a regex-string to a method, which should be executed whenever the regex matches. This is called a step. If you are not a regex-pro, you can use tools like [regex101](https://regex101.com/) to make things easier. Inside the regex you can use (.+) or other matchers to extract the variables from the string, which will be used by Cacamber as parameters for the method call. The order of the variables must match the order of the parameters of the step method which should be called when the regex matches. The configuration is usually done in the `SETUP`-method of your test class.
 
+Supported types and regular expressions
+Currently Cacamber is able to handle the following basic datatypes, which you can use in your step methods parameters. You can also use DDIC types based on these.
+| datatype | example matcher | description | example |
+|----------|-----------------|-------------|---------|
+| `STRING` | ^hello (.+)$ | a string can basically by anything, use this as a fallback, ALPHA IN will be applied | Dominik |
+| `DATE` | ^today is (.+)$ | DD.MM.YYYY a date will automatically be converted to internal format | 24.12.2023 |
+| `TIMS`| ^its (.+) o'clock$ | HH:MM:SS a time will automatically be converted to internal format | 14:01:00 |
+| `CHAR`| ^add (.+) to cart$ | a character sequence | book |
+| `INTEGER`| ^I am (.+) years old$ | for positive or negative integers | -200 |
+| `PACKED' | (.+) | ^the price is (.+) | a number with decimals | 1001.50 |
+| data table | (.+) | a line or a table | \| Tom \| Araya \| |
+
+
 Importing parameters:
 * `PATTERN` - a REGEX-string which is used as a matcher
 * `METHODNAME` - name of a _public_ method of your _test class_ with a matching interface. Can be upper or lower case.
@@ -183,8 +196,7 @@ cl_abap_unit_assert=>assert_equals( msg = current_rule exp = expected act = actu
 
 ### GIVEN
 The `GIVEN` method is an actual keyword of the Gherkin language. It represents a step. A BDD test case consists of steps which combined represent an expectation of the bahavior of the system. The paramter `STEP` will be matched against the regex-patterns of the configuration to find an actual method to process the data provided by the step.
-A step can use `STRING`, `DATE` in the format DD.MMM.YYYY, positive and negative `INTEGER` and `CHAR` as variables. If this doesnt suit your usecase, import the variable as a `STRING` into your step method and convert it there. 
-Additionally your can also use datatables. A datatable starts and ends with an |. Columns of a datatable are sperated by a |. Therefor | can`t be used as a value of a cell. Cells can be empty. Every row has to have the same number of columns. Datatables can also have just one row. They are parsed as a string and can then be accessed via the class `ZCL_DATATABLE`.
+A step can use any supported data type. If this doesnt suit your usecase, import the variable as a `STRING` into your step method and convert it there. 
 
 Importing parameters:
 * `STEP` - a string describing something relevant to the business using the ubiquitious language.
@@ -362,7 +374,7 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :white_check_mark: update the docs 👹
 :black_square_button: fix the linter / unit tests 
 :white_check_mark: a user can use a float number in the tests (1.000,25) and it is parsed into a packed datatype succcessfully
-:black_square_button: a user can use a time in the test (12:00:00 or 12:01, not 11am or 1pm) and it is parsed into TIMS datatype successfully
+:white_check_mark: a user can use a time in the test (12:00:00 or 14:01:00) and it is parsed into TIMS datatype successfully
 :black_square_button: update the docs 👹
 :black_square_button: a user can use the gherkin keyword "scenario outline" to shorten similar scenarios with different testdata
 :black_square_button: a user can use the "background" keyword to execute steps before every scenario (like SETUP)
