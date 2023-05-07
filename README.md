@@ -252,6 +252,23 @@ but( 'today is not the Monday' ).
 ...
 ```
 
+### _ (underscore)
+The underscore method `_` can be used to define a list, because `-` is not an allowed name for a method in ABAP.
+
+Importing parameters:
+* `STEP` - a string describing something relevant to the business using the ubiquitious language.
+
+Example:
+``ABAP 
+...
+given( 'in the shopping cart there are: ).
+_( '3 laptops' ).
+_( '5 ipads' ).
+_( '1 Slayer album' ).
+-( '1 David Hassehoff album' ).
+...
+```
+
 ### WHEN 
 Also a Gherkin keyword to write tests in a natural language. It usually desribes an action.  The method `WHEN` works like `GIVEN`.
 
@@ -277,7 +294,6 @@ Example:
 then( 'the discount is 66% \m/' ).
 ...
 ```
-
 ## Datatable API
 If you want to use datatables in your steps, you can use the class `ZCL_DATATABLE` to work with them in your test methods.
 
