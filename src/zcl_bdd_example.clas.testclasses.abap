@@ -5,12 +5,14 @@ CLASS acceptance_discount_calculatio DEFINITION FINAL FOR TESTING INHERITING FRO
     METHODS set_first_and_second_name IMPORTING first_name TYPE char30
                                                 last_name  TYPE char30.
     METHODS: set_birthdate IMPORTING birthdate TYPE dats.
+    METHODS: process_shopping_cart IMPORTING shopping_cart_raw TYPE string.
     METHODS: calculate_discount IMPORTING product TYPE string.
-    METHODS: eval_slayer_oldschool_discount IMPORTING expected TYPE int4.
+    METHODS: evaluate_applied_discount IMPORTING expected TYPE int4.
 
   PRIVATE SECTION.
     DATA discount_calculator TYPE REF TO zcl_bdd_example.
     DATA: discount TYPE int4.
+    DATA: shopping_cart TYPE REF TO zcl_datatable.
     METHODS: setup.
     METHODS: discount_on_slayer_albums FOR TESTING RAISING cx_static_check.
     METHODS: no_discount_on_shopping_cart FOR TESTING RAISING cx_static_check.
@@ -23,7 +25,8 @@ CLASS acceptance_discount_calculatio IMPLEMENTATION.
     configure( pattern = '^the customers first name is (.+) and his last name is (.+)$' methodname = 'set_first_and_second_name' ).
     configure( pattern = '^his birthdate according to our CRM system is (.+)' methodname = 'set_birthdate' ).
     configure( pattern = '^the sales clerk lets the system calculate the customers discount on the (.+)$' methodname = 'calculate_discount' ).
-    configure( pattern = '^the discount is (.+)% \\m\/$' methodname = 'eval_slayer_oldschool_discount' ).
+    configure( pattern = '^the discount is (.+)% \\m\/$' methodname = 'evaluate_applied_discount' ).
+    configure( pattern = '^in his shopping cart are the following items:(.*)$' methodname = 'process_shopping_cart' ).
 
     discount_calculator = NEW zcl_bdd_example( ).
   ENDMETHOD.
@@ -41,9 +44,9 @@ CLASS acceptance_discount_calculatio IMPLEMENTATION.
     given( 'the customers first name is Dominik and his last name is Panzer' ).
     and( 'his birthdate according to our CRM system is 06.06.2006' ).
     and( 'in his shopping cart are the following items:' &&
-         '| 1 | Scooter | Hyper Hyper | 10€' &&
-         '| 1 | Scooter | How Much Is The Fish | 10€' &&
-         '| 1 | Scooter | Maria (I like it loud | 10€' ).
+         '| 1 | Scooter - Hyper Hyper |' &&
+         '| 1 | Scooter - How Much Is The Fish |' &&
+         '| 1 | Scooter - Maria (I like it loud) |' ).
     when( 'the sales clerk lets the system calculate the customers discount on the shopping cart' ).
     then( 'the discount is 0% \m/' ).
   ENDMETHOD.
@@ -59,11 +62,21 @@ CLASS acceptance_discount_calculatio IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD calculate_discount.
-    discount = discount_calculator->calculate_discount( product ).
+    IF product = 'Slayer Album'.
+      discount = discount_calculator->calculate_discount( product ).
+    ELSEIF product = 'shopping cart'.
+      discount = REDUCE #( INIT discount_sum = 0
+                           FOR n = 1 UNTIL n = 3
+                           NEXT discount_sum = discount + discount_calculator->calculate_discount( shopping_cart->read_cell( rownumber = n columnnumber = 2  ) ) ).
+    ENDIF.
   ENDMETHOD.
 
-  METHOD eval_slayer_oldschool_discount.
+  METHOD evaluate_applied_discount.
     cl_abap_unit_assert=>assert_equals( msg = |{ current_feature }: { current_scenario }| exp = expected act = discount ).
+  ENDMETHOD.
+
+  METHOD process_shopping_cart.
+    shopping_cart = zcl_datatable=>from_string( shopping_cart_raw ).
   ENDMETHOD.
 
 ENDCLASS.
