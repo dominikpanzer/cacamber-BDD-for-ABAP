@@ -134,11 +134,11 @@ CLASS scaffolding_tests IMPLEMENTATION.
     DATA(first_name) = |Dominik|.
     DATA(last_name) = |Panzer|.
     DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'STRING' name = 'FIRST_NAME' )
-                                                 ( data_type = 'STRING' name = 'LAST_NAME' ) ).
+                                                          ( data_type = 'STRING' name = 'LAST_NAME' ) ).
     DATA(variables) = VALUE string_table( ( first_name ) ( last_name ) ).
 
     DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'FIRST_NAME' value = REF #( first_name ) )
-                                                 ( kind = 'E' name = 'LAST_NAME' value = REF #( last_name ) ) ).
+                                                                 ( kind = 'E' name = 'LAST_NAME' value = REF #( last_name ) ) ).
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
@@ -150,16 +150,15 @@ CLASS scaffolding_tests IMPLEMENTATION.
     DATA last_name TYPE char30 VALUE 'Panzer'.
 
     DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'CHAR30' name = 'FIRST_NAME' )
-                                                ( data_type = 'CHAR30' name = 'LAST_NAME' ) ).
+                                                          ( data_type = 'CHAR30' name = 'LAST_NAME' ) ).
     DATA(variables) = VALUE string_table( ( CONV #( first_name ) ) ( CONV #( last_name ) ) ).
 
     DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'FIRST_NAME' value = REF #( first_name ) )
-                                                 ( kind = 'E' name = 'LAST_NAME' value = REF #( last_name ) ) ).
+                                                                 ( kind = 'E' name = 'LAST_NAME' value = REF #( last_name ) ) ).
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'FIRST_NAME' ]-value->* act = matched_parameters[ name = 'FIRST_NAME' ]-value->* ).
-
   ENDMETHOD.
 
 
@@ -169,13 +168,11 @@ CLASS scaffolding_tests IMPLEMENTATION.
     DATA packed TYPE zde_bdd_packed VALUE '1.1'.
     DATA(methodname) = 'LOCAL_METHOD_FOR_TEST'.
 
-    DATA(variables) = VALUE string_table( ( CONV #( char30 ) ) ( CONV #( integer ) ) ( CONV #( packed ) )
-                                           ).
-
+    DATA(variables) = VALUE string_table( ( CONV #( char30 ) ) ( CONV #( integer ) ) ( CONV #( packed ) ) ).
     DATA(parameters) = cacamber->get_method_parameters( methodname = 'LOCAL_METHOD_FOR_TEST'
                                                               local_testclass_instance = me ).
-
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
+
     TRY.
         CALL METHOD me->(methodname)
           PARAMETER-TABLE matched_parameters.
@@ -189,13 +186,11 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'DATS' name = 'DATE' ) ).
     DATA(variables) = VALUE string_table( ( |30.04.2023| ) ).
-
     DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'DATE' value = REF #( date ) ) ).
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'DATE' ]-value->* act = matched_parameters[ name = 'DATE' ]-value->* ).
-
   ENDMETHOD.
 
   METHOD added_vars_to_paras_tims.
@@ -203,13 +198,11 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'TIMN' name = 'TIME' ) ).
     DATA(variables) = VALUE string_table( ( |13:00:01| ) ).
-
     DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'TIME' value = REF #( time ) ) ).
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'TIME' ]-value->* act = matched_parameters[ name = 'TIME' ]-value->* ).
-
   ENDMETHOD.
 
   METHOD added_vars_to_paras_int.
@@ -217,13 +210,11 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'INT4' name = 'INTEGER' ) ).
     DATA(variables) = VALUE string_table( ( |666| ) ).
-
     DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'INTEGER' value = REF #( integer ) ) ).
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'INTEGER' ]-value->* act = matched_parameters[ name = 'INTEGER' ]-value->* ).
-
   ENDMETHOD.
 
   METHOD added_vars_to_paras_neg_int.
@@ -231,13 +222,11 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'INT4' name = 'INTEGER' ) ).
     DATA(variables) = VALUE string_table( ( |-666| ) ).
-
     DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'INTEGER' value = REF #( integer ) ) ).
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'INTEGER' ]-value->* act = matched_parameters[ name = 'INTEGER' ]-value->* ).
-
   ENDMETHOD.
 
   METHOD given_calls_a_method.
