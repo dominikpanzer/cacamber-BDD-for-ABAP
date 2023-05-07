@@ -4,12 +4,13 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
   DURATION SHORT
   RISK LEVEL HARMLESS.
   PUBLIC SECTION.
+    TYPES: packed_t TYPE p LENGTH 16 DECIMALS 2.
     METHODS: whenyournameis IMPORTING first_name TYPE char30
                                       last_name  TYPE char30,
       local_method_for_test_date IMPORTING date TYPE dats,
-      local_method_for_test IMPORTING first_name TYPE char30
-                                      last_name  TYPE char30
-                                      balance    TYPE int4,
+      local_method_for_test IMPORTING char30  TYPE char30
+                                      integer TYPE int4
+                                      packed  TYPE zde_bdd_packed,
       local_method_for_test_exportin EXPORTING dummy TYPE string,
       local_method_for_test_table IMPORTING table_as_string TYPE string.
   PROTECTED SECTION.
@@ -161,12 +162,13 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
 
   METHOD call_a_method_dynamically.
-    DATA first_name TYPE char30 VALUE 'Dominik'.
-    DATA last_name TYPE char30 VALUE 'Panzer'.
-    DATA balance TYPE int4 VALUE -100.
+    DATA char30 TYPE char30 VALUE 'Dominik'.
+    DATA integer TYPE int4 VALUE -100.
+    DATA packed TYPE zde_bdd_packed value '1.1'.
     DATA(methodname) = 'LOCAL_METHOD_FOR_TEST'.
 
-    DATA(variables) = VALUE string_table( ( CONV #( first_name ) ) ( CONV #( last_name ) ) ( CONV #( balance ) ) ).
+    DATA(variables) = VALUE string_table( ( CONV #( char30 ) ) ( CONV #( integer ) ) ( CONV #( packed ) )
+                                           ).
 
     DATA(parameters) = cacamber->get_method_parameters( methodname = 'LOCAL_METHOD_FOR_TEST'
                                                               local_testclass_instance = me ).
