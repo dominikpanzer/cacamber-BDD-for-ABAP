@@ -40,7 +40,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
       can_set_a_rule FOR TESTING RAISING cx_static_check,
       wrong_paramter_count FOR TESTING RAISING cx_static_check,
       no_method_for_step_found FOR TESTING RAISING cx_static_check,
-      dynamic_method_call_failed FOR TESTING RAISING cx_static_check.
+      dynamic_method_call_failed FOR TESTING RAISING cx_static_check,
+      added_vars_to_paras_neg_int FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -157,6 +158,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
   ENDMETHOD.
 
+
   METHOD call_a_method_dynamically.
     DATA first_name TYPE char30 VALUE 'Dominik'.
     DATA last_name TYPE char30 VALUE 'Panzer'.
@@ -195,6 +197,20 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'INT4' name = 'INTEGER' ) ).
     DATA(variables) = VALUE string_table( ( |666| ) ).
+
+    DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'INTEGER' value = REF #( integer ) ) ).
+
+    DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
+
+    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'INTEGER' ]-value->* act = matched_parameters[ name = 'INTEGER' ]-value->* ).
+
+  ENDMETHOD.
+
+  METHOD added_vars_to_paras_neg_int.
+    DATA integer TYPE int4 VALUE '-666'.
+
+    DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'INT4' name = 'INTEGER' ) ).
+    DATA(variables) = VALUE string_table( ( |-666| ) ).
 
     DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'INTEGER' value = REF #( integer ) ) ).
 
