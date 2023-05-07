@@ -43,7 +43,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
       wrong_paramter_count FOR TESTING RAISING cx_static_check,
       no_method_for_step_found FOR TESTING RAISING cx_static_check,
       dynamic_method_call_failed FOR TESTING RAISING cx_static_check,
-      added_vars_to_paras_neg_int FOR TESTING RAISING cx_static_check.
+      added_vars_to_paras_neg_int FOR TESTING RAISING cx_static_check,
+      added_vars_to_paras_tims FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -120,10 +121,11 @@ CLASS scaffolding_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_method_parameter_list.
-    DATA(expected_parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'CHAR30' name = 'FIRST_NAME' )
-                                                 ( data_type = 'CHAR30' name = 'LAST_NAME' ) ).
+    DATA(expected_parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'CHAR30' name = 'CHAR30' )
+                                                                   ( data_type = 'INT4' name = 'INTEGER' )
+                                                                   ( data_type = 'ZDE_BDD_PACKED' name = 'PACKED' ) ).
     DATA(parameters) = cacamber->get_method_parameters( methodname = 'LOCAL_METHOD_FOR_TEST'
-                                                            local_testclass_instance = me ).
+                                                        local_testclass_instance = me ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Parameters are wrong' exp = expected_parameters act = parameters ).
   ENDMETHOD.
@@ -164,7 +166,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
   METHOD call_a_method_dynamically.
     DATA char30 TYPE char30 VALUE 'Dominik'.
     DATA integer TYPE int4 VALUE -100.
-    DATA packed TYPE zde_bdd_packed value '1.1'.
+    DATA packed TYPE zde_bdd_packed VALUE '1.1'.
     DATA(methodname) = 'LOCAL_METHOD_FOR_TEST'.
 
     DATA(variables) = VALUE string_table( ( CONV #( char30 ) ) ( CONV #( integer ) ) ( CONV #( packed ) )
@@ -193,6 +195,20 @@ CLASS scaffolding_tests IMPLEMENTATION.
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'DATE' ]-value->* act = matched_parameters[ name = 'DATE' ]-value->* ).
+
+  ENDMETHOD.
+
+  METHOD added_vars_to_paras_tims.
+    DATA time TYPE timn VALUE '130001'.
+
+    DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'TIMN' name = 'TIME' ) ).
+    DATA(variables) = VALUE string_table( ( |13:00:01| ) ).
+
+    DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'TIME' value = REF #( time ) ) ).
+
+    DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
+
+    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = expected_matched_parameters[ name = 'TIME' ]-value->* act = matched_parameters[ name = 'TIME' ]-value->* ).
 
   ENDMETHOD.
 
