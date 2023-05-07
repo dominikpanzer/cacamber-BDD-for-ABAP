@@ -111,7 +111,7 @@ cl_abap_unit_assert=>assert_equals( msg = current_feature exp = expected act = a
 ```
 
 ### CONFIGURE
-The method `CONFIGURE` maps a regex-string to a method, which should be executed whenever the regex matches. This is called a step. If you are not a regex-pro, you can use tools like [regex101](https://regex101.com/) to make things easier. Inside the regex you can use (.+) or other matchers to extract the variables from the string, which will be used by Cacamber as parameters for the method call. Currently supported data types are `STRING`, `DATE`, `INTEGER` and datatables. The order of the variables must match the order of the parameters of the method which should be called when the regex matches. The configuration is usually done in the `SETUP`-method of your test class.
+The method `CONFIGURE` maps a regex-string to a method, which should be executed whenever the regex matches. This is called a step. If you are not a regex-pro, you can use tools like [regex101](https://regex101.com/) to make things easier. Inside the regex you can use (.+) or other matchers to extract the variables from the string, which will be used by Cacamber as parameters for the method call. The order of the variables must match the order of the parameters of the step method which should be called when the regex matches. The configuration is usually done in the `SETUP`-method of your test class.
 
 Importing parameters:
 * `PATTERN` - a REGEX-string which is used as a matcher
@@ -183,7 +183,8 @@ cl_abap_unit_assert=>assert_equals( msg = current_rule exp = expected act = actu
 
 ### GIVEN
 The `GIVEN` method is an actual keyword of the Gherkin language. It represents a step. A BDD test case consists of steps which combined represent an expectation of the bahavior of the system. The paramter `STEP` will be matched against the regex-patterns of the configuration to find an actual method to process the data provided by the step.
-A step can use `STRING`, `DATE`, `INTEGER` and datatable as variables. A datatable starts and ends with an |. Columns of a datatable are sperated by a |. Therefor | can`t be used as a value of a cell. Cells can be empty. Every row has to have the same number of columns. Datatables can also have just one row. They are parsed as a string and can then be accessed via the class `ZCL_DATATABLE`.
+A step can use `STRING`, `DATE` in the format DD.MMM.YYYY, positive and negative `INTEGER` and `CHAR` as variables. If this doesnt suit your usecase, import the variable as a `STRING` into your step method and convert it there. 
+Additionally your can also use datatables. A datatable starts and ends with an |. Columns of a datatable are sperated by a |. Therefor | can`t be used as a value of a cell. Cells can be empty. Every row has to have the same number of columns. Datatables can also have just one row. They are parsed as a string and can then be accessed via the class `ZCL_DATATABLE`.
 
 Importing parameters:
 * `STEP` - a string describing something relevant to the business using the ubiquitious language.
@@ -359,8 +360,8 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :white_check_mark: a user can use empty cells in a table
 :white_check_mark: set up a class as example on how to use cacamber
 :white_check_mark: update the docs 👹
-:black_square_button: fix the linter / unit tests
-:black_square_button: a user can use a float number in the tests (1.000,25) and it is parsed into a packed datatype succcessfully
+:black_square_button: fix the linter / unit tests 
+:white_check_mark: a user can use a float number in the tests (1.000,25) and it is parsed into a packed datatype succcessfully
 :black_square_button: a user can use a time in the test (12:00:00 or 12:01, not 11am or 1pm) and it is parsed into TIMS datatype successfully
 :black_square_button: update the docs 👹
 :black_square_button: a user can use the gherkin keyword "scenario outline" to shorten similar scenarios with different testdata
