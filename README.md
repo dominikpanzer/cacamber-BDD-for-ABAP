@@ -432,7 +432,8 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :white_check_mark: a user can use a time in the test (12:00:00 or 14:01:00) and it is parsed into TIMS datatype successfully
 :white_check_mark: update the docs 👹
 :black_square_button: find beta testers
-:black_square_button: refactor to `RESULT`
+:black_square_button: get rid of ddic objects
+:black_square_button: refactor to `RESULT` and improve error handling
 :black_square_button: your awesome idea
 
 ## Cacamber vs. other Gherkin frameworks / solution architecture
