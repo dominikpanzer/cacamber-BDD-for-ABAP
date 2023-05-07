@@ -22,7 +22,7 @@ CLASS acceptance_discount_calculatio IMPLEMENTATION.
     feature( 'Discount Calcuation' ).
     configure( pattern = '^the customers first name is (.+) and his last name is (.+)$' methodname = 'set_first_and_second_name' ).
     configure( pattern = '^his birthdate according to our CRM system is (.+)' methodname = 'set_birthdate' ).
-    configure( pattern = '^the sales clerk lets the system calculate the customers discount on a (.+)$' methodname = 'calculate_discount' ).
+    configure( pattern = '^the sales clerk lets the system calculate the customers discount on the (.+)$' methodname = 'calculate_discount' ).
     configure( pattern = '^the discount is (.+)% \\m\/$' methodname = 'eval_slayer_oldschool_discount' ).
 
     discount_calculator = NEW zcl_bdd_example( ).
@@ -32,19 +32,20 @@ CLASS acceptance_discount_calculatio IMPLEMENTATION.
     scenario( 'Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)' ).
     given( 'the customers first name is Dominik and his last name is Panzer' ).
     and( 'his birthdate according to our CRM system is 06.06.2006' ).
-    when( 'the sales clerk lets the system calculate the customers discount on a Slayer Album' ).
+    when( 'the sales clerk lets the system calculate the customers discount on the Slayer Album' ).
     then( 'the discount is 66% \m/' ).
   ENDMETHOD.
 
   METHOD no_discount_on_shopping_cart.
     scenario( 'Customer is not eligable for a discount on the shopping cart' ).
-    given( 'the customer is not a VIP customer' ).
+    given( 'the customers first name is Dominik and his last name is Panzer' ).
+    and( 'his birthdate according to our CRM system is 06.06.2006' ).
     and( 'in his shopping cart are the following items:' &&
          '| 1 | Scooter | Hyper Hyper | 10€' &&
          '| 1 | Scooter | How Much Is The Fish | 10€' &&
          '| 1 | Scooter | Maria (I like it loud | 10€' ).
-    when( 'the customer checks out' ).
-    then( 'the total price of his shopping cart is 30€' ).
+    when( 'the sales clerk lets the system calculate the customers discount on the shopping cart' ).
+    then( 'the discount is 0% \m/' ).
   ENDMETHOD.
 
 
