@@ -110,6 +110,28 @@ If this is too high level for you, have a look at the example implementation `ZC
 
 This part of the document describes the public methods of Cacamber. To get startet, your local test class needs to inherit from `ZCL_CACAMBER`.
 
+```mermaid
+classDiagram
+  class ZCL_CACAMBER{ 
+    #configuration
+    #current_feature
+    #current_scenarion
+    #current_rule
+    +constructor()
+    +and()
+    +but()
+    +configure()
+    +example()
+    +feature()
+    +given()
+    +rule()
+    +scenario()
+    +then()
+    +or()
+    +when()
+    +_()
+    }
+```
 `ZCL_CACAMBER` as your superclass provides the following public methods:
 
 ### FEATURE
