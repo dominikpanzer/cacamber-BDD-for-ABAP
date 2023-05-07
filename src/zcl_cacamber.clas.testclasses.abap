@@ -4,7 +4,6 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
   DURATION SHORT
   RISK LEVEL HARMLESS.
   PUBLIC SECTION.
-    TYPES: packed_t TYPE p LENGTH 16 DECIMALS 2.
     METHODS: whenyournameis IMPORTING first_name TYPE char30
                                       last_name  TYPE char30,
       local_method_for_test_date IMPORTING date TYPE dats,
@@ -37,14 +36,14 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
     METHODS: added_vars_to_paras_int FOR TESTING RAISING cx_static_check.
     METHODS: given_calls_a_method FOR TESTING RAISING cx_static_check.
     METHODS: can_set_a_feature FOR TESTING RAISING cx_static_check.
-    METHODS: can_set_a_scenario FOR TESTING RAISING cx_static_check,
-      underscore_calls_a_method FOR TESTING RAISING cx_static_check,
-      can_set_a_rule FOR TESTING RAISING cx_static_check,
-      wrong_paramter_count FOR TESTING RAISING cx_static_check,
-      no_method_for_step_found FOR TESTING RAISING cx_static_check,
-      dynamic_method_call_failed FOR TESTING RAISING cx_static_check,
-      added_vars_to_paras_neg_int FOR TESTING RAISING cx_static_check,
-      added_vars_to_paras_tims FOR TESTING RAISING cx_static_check.
+    METHODS: can_set_a_scenario FOR TESTING RAISING cx_static_check.
+    METHODS: underscore_calls_a_method FOR TESTING RAISING cx_static_check.
+    METHODS: can_set_a_rule FOR TESTING RAISING cx_static_check.
+    METHODS: wrong_paramter_count FOR TESTING RAISING cx_static_check.
+    METHODS: no_method_for_step_found FOR TESTING RAISING cx_static_check.
+    METHODS: dynamic_method_call_failed FOR TESTING RAISING cx_static_check.
+    METHODS: added_vars_to_paras_neg_int FOR TESTING RAISING cx_static_check.
+    METHODS: added_vars_to_paras_tims FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
