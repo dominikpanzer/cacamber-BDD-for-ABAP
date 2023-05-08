@@ -161,8 +161,8 @@ Currently Cacamber is able to handle the following basic datatypes, which you ca
 | `TIMS`| ^it's (.+) o'clock$ | HH:MM:SS a time will automatically be converted to internal format | 14:01:00 |
 | `CHAR`| ^add (.+) to cart$ | a character sequence | book |
 | `INTEGER`| ^I am (.+) years old$ | for positive or negative integers | -200 |
-| `PACKED` | ^the price is (.+) | a number with decimals seperated by a _dot_ | 1001.50 |
-| datatable | ^Slayer had the following members:(.+) | a line or a table | see section about datatables |
+| `PACKED` | ^the price is (.+)$ | a number with decimals seperated by a _dot_ | 1001.50 |
+| datatable | ^Slayer had the following members:(.+)$ | a line or a table | see section about datatables |
 
 
 Importing parameters:
@@ -453,9 +453,10 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :white_check_mark: a user can use a float number in the tests (1000.25) and it is parsed into a packed datatype succcessfully
 :white_check_mark: a user can use a time in the test (12:00:00 or 14:01:00) and it is parsed into TIMS datatype successfully
 :white_check_mark: update the docs 👹
+:black_square_button: add a method verify(string) which can parse a whole scenario in a string forma and no single given() when() then() etc methods need to be called
 :black_square_button: find beta testers
-:black_square_button: get rid of ddic objects
 :black_square_button: refactor to `RESULT` and improve error handling
+:black_square_button: get rid of ddic objects
 :black_square_button: your awesome idea
 
 ## Cacamber vs. other Gherkin frameworks / solution architecture
