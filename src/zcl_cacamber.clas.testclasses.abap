@@ -194,9 +194,10 @@ CLASS scaffolding_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD added_vars_to_paras_tims.
-" USE TIMN HERE
+    " USE TIMN HERE insted of CHAR6
     DATA time TYPE char6 VALUE '130001'.
 
+    " USE TIMN HERE insted of CHAR6
     DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'CHAR6' name = 'TIME' ) ).
     DATA(variables) = VALUE string_table( ( |13:00:01| ) ).
     DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'TIME' value = REF #( time ) ) ).
