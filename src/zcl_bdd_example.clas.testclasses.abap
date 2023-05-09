@@ -19,6 +19,7 @@ CLASS acceptance_discount_calculatio DEFINITION FINAL FOR TESTING INHERITING FRO
 ENDCLASS.
 
 
+
 CLASS acceptance_discount_calculatio IMPLEMENTATION.
   METHOD setup.
     feature( 'Discount Calcuation' ).
