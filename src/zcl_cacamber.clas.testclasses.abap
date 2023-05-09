@@ -10,7 +10,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
       local_method_for_test IMPORTING char30  TYPE char30
                                       integer TYPE int4
                                       packed  TYPE zde_bdd_packed ##NEEDED,
-      local_method_for_test_exportin EXPORTING dummy TYPE string ##NEEDED,
+      local_method_for_test_exportin EXPORTING dummy         TYPE string
+                                               another_dummy TYPE string ##NEEDED,
       local_method_for_test_table IMPORTING table_as_string TYPE string ##NEEDED.
   PROTECTED SECTION.
 
@@ -310,7 +311,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
         cacamber->given( 'but this text wont match. so no step-method will be found :-(' ).
         cl_abap_unit_assert=>fail( ).
       CATCH zcx_cacamber_error INTO DATA(error).
-      cl_abap_unit_assert=>assert_bound( error ).
+        cl_abap_unit_assert=>assert_bound( error ).
     ENDTRY.
   ENDMETHOD.
 
@@ -322,6 +323,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
         cacamber->given( 'this is the regex for a method with no importing parameter: BOOM' ).
         cl_abap_unit_assert=>fail( ).
       CATCH cx_root INTO DATA(error).
+        cl_abap_unit_assert=>assert_bound( error ).
     ENDTRY.
   ENDMETHOD.
 ENDCLASS.
