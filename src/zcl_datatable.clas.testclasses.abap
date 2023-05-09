@@ -22,7 +22,7 @@ ENDCLASS.
 CLASS acceptance_tests IMPLEMENTATION.
   METHOD fails_without_string.
     TRY.
-        DATA(datatable) = zcl_datatable=>from_string( '' ).
+        zcl_datatable=>from_string( '' ).
         cl_abap_unit_assert=>fail( ).
       CATCH zcx_cacamber_error INTO DATA(error).
         cl_abap_unit_assert=>assert_bound( error ).
@@ -91,7 +91,7 @@ CLASS acceptance_tests IMPLEMENTATION.
     DATA(datatable) = zcl_datatable=>from_string( '| test  | all        | the   | cases |' &&
                                                   '| until | everything | works | fine |' ).
     TRY.
-        DATA(line) = datatable->read_row( 666 ).
+        datatable->read_row( 666 ).
         cl_abap_unit_assert=>fail( ).
       CATCH zcx_cacamber_error INTO DATA(error).
         cl_abap_unit_assert=>assert_bound( error ).
@@ -113,7 +113,7 @@ CLASS acceptance_tests IMPLEMENTATION.
                                                   '| until | everything | works | fine |' ).
 
     TRY.
-        DATA(cell) = datatable->read_cell( rownumber = 666 columnnumber = 666 ) ##NEEDED.
+        datatable->read_cell( rownumber = 666 columnnumber = 666 ).
         cl_abap_unit_assert=>fail( ).
       CATCH zcx_cacamber_error INTO DATA(error).
         cl_abap_unit_assert=>assert_bound( error ).
@@ -138,7 +138,6 @@ CLASS acceptance_tests IMPLEMENTATION.
   METHOD throws_when_transformat_fails.
 * DDIC Type doesnt exist.
     DATA internal_table  TYPE ztt_bdd_demo.
-    DATA: root_exception TYPE REF TO cx_root ##NEEDED.
 
     DATA(datatable) = zcl_datatable=>from_string( '| 17.07.1952 | David | Hasselhoff      |     |' &&
                                                   '| 30.07.1947 | Arnold | Schwarzenegger | 100 |' ).
@@ -146,7 +145,8 @@ CLASS acceptance_tests IMPLEMENTATION.
         datatable->to_table( EXPORTING ddic_table_type_name = 'ZTT_DOESNT_EXIST'
                              IMPORTING table = internal_table ).
         cl_abap_unit_assert=>fail( ).
-      CATCH cx_root INTO root_exception.
+      CATCH cx_root INTO DATA(error).
+        cl_abap_unit_assert=>assert_bound( error ).
     ENDTRY.
   ENDMETHOD.
 

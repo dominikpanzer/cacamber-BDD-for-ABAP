@@ -4,8 +4,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
   DURATION SHORT
   RISK LEVEL HARMLESS.
   PUBLIC SECTION.
-    METHODS: whenyournameis IMPORTING first_name TYPE char30
-                                      last_name  TYPE char30,
+    METHODS: whenyournameis IMPORTING first_name TYPE char30 ##NEEDED
+                                      last_name  TYPE char30 ##NEEDED,
       local_method_for_test_date IMPORTING date TYPE dats,
       local_method_for_test IMPORTING char30  TYPE char30
                                       integer TYPE int4

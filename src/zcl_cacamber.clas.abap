@@ -119,8 +119,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
     class_description ?= cl_abap_classdescr=>describe_by_object_ref( local_testclass_instance ).
     object_description ?= cl_abap_objectdescr=>describe_by_object_ref( local_testclass_instance ).
-    DATA(method) = get_method_by_methodname( EXPORTING methodname = methodname
-                                                       class_description = class_description ).
+    DATA(method) = get_method_by_methodname( methodname = methodname class_description = class_description ).
     IF method IS INITIAL.
       RAISE EXCEPTION TYPE zcx_cacamber_error.
     ENDIF.
@@ -157,11 +156,11 @@ CLASS zcl_cacamber IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
-  METHOD convertion_exit_inbound .
+  METHOD convertion_exit_inbound.
     variable_internal = |{ variable ALPHA = IN }|.
   ENDMETHOD.
 
-  METHOD format_time .
+  METHOD format_time.
     time = translate( val = variable  from = `:`  to = `` ).
   ENDMETHOD.
 
@@ -236,7 +235,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD paramaters_dont_match_variable.
-    result = xsdbool(  lines( variables ) <> lines( parameters ) ).
+    result = xsdbool( lines( variables ) <> lines( parameters ) ).
   ENDMETHOD.
 
 ENDCLASS.
