@@ -138,7 +138,7 @@ CLASS acceptance_tests IMPLEMENTATION.
   METHOD throws_when_transformat_fails.
 * DDIC Type doesnt exist.
     DATA internal_table  TYPE ztt_bdd_demo.
-    DATA: root_exception TYPE REF TO cx_root. ##NEEDED
+    DATA: root_exception TYPE REF TO cx_root ##NEEDED.
 
     DATA(datatable) = zcl_datatable=>from_string( '| 17.07.1952 | David | Hasselhoff      |     |' &&
                                                   '| 30.07.1947 | Arnold | Schwarzenegger | 100 |' ).
