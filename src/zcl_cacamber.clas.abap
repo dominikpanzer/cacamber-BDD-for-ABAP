@@ -29,6 +29,9 @@ CLASS zcl_cacamber DEFINITION
     METHODS scenario IMPORTING scenario TYPE scenario_t.
     METHODS example IMPORTING example TYPE scenario_t.
     METHODS rule IMPORTING rule TYPE rule_t.
+    METHODS get_matches_for
+      IMPORTING
+        scenario TYPE string.
 
 
   PROTECTED SECTION.
@@ -44,10 +47,18 @@ CLASS zcl_cacamber DEFINITION
            END OF parameter_ts.
     TYPES: parameters_tt TYPE STANDARD TABLE OF parameter_ts WITH DEFAULT KEY.
 
+
+    TYPES: BEGIN OF match_ts,
+             offset      TYPE int4,
+             method_name TYPE char30,
+           END OF match_ts.
+    TYPES: matches_tt TYPE STANDARD TABLE OF match_ts WITH DEFAULT KEY.
+
     DATA: configuration TYPE configuration_tt.
     DATA: current_feature TYPE feature_t.
     DATA: current_scenario TYPE scenario_t.
     DATA: current_rule TYPE rule_t.
+    DATA: matches TYPE matches_tt.
 
   PRIVATE SECTION.
     CLASS-DATA test_class_instance TYPE REF TO object.
@@ -236,6 +247,18 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
   METHOD paramaters_dont_match_variable.
     result = xsdbool( lines( variables ) <> lines( parameters ) ).
+  ENDMETHOD.
+
+
+  METHOD get_matches_for.
+
+    LOOP AT configuration REFERENCE INTO DATA(configuration_entry).
+      DATA(offset) = find( val = scenario regex = configuration_entry->pattern ).
+      IF sy-subrc = 0.
+        matches = VALUE #( BASE matches ( offset = offset method_name = configuration_entry->methodname ) ).
+      ENDIF.
+    ENDLOOP.
+    SORT matches BY offset ASCENDING.
   ENDMETHOD.
 
 ENDCLASS.

@@ -44,7 +44,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
     METHODS: no_method_for_step_found FOR TESTING RAISING cx_static_check.
     METHODS: dynamic_method_call_failed FOR TESTING RAISING cx_static_check.
     METHODS: added_vars_to_paras_neg_int FOR TESTING RAISING cx_static_check.
-    METHODS: added_vars_to_paras_tims FOR TESTING RAISING cx_static_check.
+    METHODS: added_vars_to_paras_tims FOR TESTING RAISING cx_static_check,
+    can_build_matches_given FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -328,4 +329,18 @@ CLASS scaffolding_tests IMPLEMENTATION.
         cl_abap_unit_assert=>assert_bound( error ).
     ENDTRY.
   ENDMETHOD.
+
+  method can_build_matches_given.
+  data(matches_expexted) = value zcl_cacamber=>matches_tt( ( offset = 6 method_name = 'LOCAL_METHOD_FOR_TEST_DATE' )
+                                                           ( offset = 38  method_name = 'LOCAL_METHOD_FOR_TEST_DATE' ) ).
+
+  cacamber->configure( pattern = 'and that your wedding day is (.+)' methodname = 'local_method_for_test_date' ).
+  cacamber->configure( pattern = 'this is your birthday (.*)(?=given|then|when|or|and|but)' methodname = 'local_method_for_test_date' ).
+
+  cacamber->get_matches_for( 'given this is your birthday 17.07.1952' &&
+                             'and that your wedding day is 31.07.2018' ).
+
+  cl_abap_unit_assert=>assert_equals( msg = 'Matches... dont match.' exp = matches_expexted act = cacamber->matches ).
+
+  endmethod.
 ENDCLASS.
