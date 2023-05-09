@@ -67,7 +67,7 @@ CLASS acceptance_discount_calculatio IMPLEMENTATION.
     ELSEIF product = 'shopping cart'.
       discount = REDUCE #( INIT discount_sum = 0
                            FOR n = 1 UNTIL n = 3
-                           NEXT discount_sum = discount + discount_calculator->calculate_discount( shopping_cart->read_cell( rownumber = n columnnumber = 2  ) ) ).
+                           NEXT discount_sum = discount + discount_calculator->calculate_discount( shopping_cart->read_cell( rownumber = n columnnumber = 2 ) ) ).
     ENDIF.
   ENDMETHOD.
 

@@ -1,4 +1,4 @@
-!CLASS zcx_cacamber_error DEFINITION
+CLASS zcx_cacamber_error DEFINITION
   PUBLIC
   INHERITING FROM cx_static_check
   FINAL
