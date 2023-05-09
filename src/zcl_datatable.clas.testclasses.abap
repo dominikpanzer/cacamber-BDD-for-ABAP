@@ -5,7 +5,7 @@ CLASS acceptance_tests DEFINITION FINAL FOR TESTING
   RISK LEVEL HARMLESS.
 
   PRIVATE SECTION.
-    METHODS:  can_instantiate_via_factory FOR TESTING RAISING cx_static_check.
+    METHODS: can_instantiate_via_factory FOR TESTING RAISING cx_static_check.
     METHODS: fails_without_string FOR TESTING RAISING cx_static_check.
     METHODS: stores_a_table_line FOR TESTING RAISING cx_static_check.
     METHODS: stores_two_table_lines FOR TESTING RAISING cx_static_check.
@@ -144,8 +144,8 @@ CLASS acceptance_tests IMPLEMENTATION.
     TRY.
         datatable->to_table( EXPORTING ddic_table_type_name = 'ZTT_DOESNT_EXIST'
                              IMPORTING table = internal_table ).
-        cl_abap_unit_assert=>fail(  ).
-      CATCH cx_root INTO DATA(error).
+        cl_abap_unit_assert=>fail( ).
+      CATCH cx_root INTO DATA(error). ##NEEDED
     ENDTRY.
   ENDMETHOD.
 
