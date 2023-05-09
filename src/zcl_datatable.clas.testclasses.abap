@@ -138,6 +138,7 @@ CLASS acceptance_tests IMPLEMENTATION.
   METHOD throws_when_transformat_fails.
 * DDIC Type doesnt exist.
     DATA internal_table  TYPE ztt_bdd_demo.
+    DATA: root_exception TYPE REF TO cx_root.
 
     DATA(datatable) = zcl_datatable=>from_string( '| 17.07.1952 | David | Hasselhoff      |     |' &&
                                                   '| 30.07.1947 | Arnold | Schwarzenegger | 100 |' ).
@@ -145,7 +146,7 @@ CLASS acceptance_tests IMPLEMENTATION.
         datatable->to_table( EXPORTING ddic_table_type_name = 'ZTT_DOESNT_EXIST'
                              IMPORTING table = internal_table ).
         cl_abap_unit_assert=>fail( ).
-      CATCH cx_root INTO DATA(error). ##NEEDED
+      CATCH cx_root INTO root_exception. ##NEEDED
     ENDTRY.
   ENDMETHOD.
 
