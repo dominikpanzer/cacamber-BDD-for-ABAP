@@ -14,7 +14,7 @@ CLASS zcl_datatable DEFINITION
                                RAISING   zcx_cacamber_error.
     METHODS: read_row IMPORTING rownumber   TYPE int4
                       RETURNING VALUE(line) TYPE string_table
-                      RAISING   zcx_cacamber_error.
+                      RAISING   zcx_cacamber_error ##NEEDED.
     METHODS: read_cell IMPORTING rownumber    TYPE int4
                                  columnnumber TYPE int4
                        RETURNING VALUE(value) TYPE string

@@ -175,7 +175,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
     TRY.
         CALL METHOD me->(methodname)
           PARAMETER-TABLE matched_parameters.
-      CATCH cx_root INTO DATA(root_exception).
+      CATCH cx_root INTO DATA(root_exception) ##NEEDED.
         cl_abap_unit_assert=>fail( ).
     ENDTRY.
   ENDMETHOD.
@@ -299,6 +299,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
         cacamber->given( 'no parameters are here but the step-method expects some' ).
         cl_abap_unit_assert=>fail( ).
       CATCH zcx_cacamber_error INTO DATA(error).
+        cl_abap_unit_assert=>assert_bound( error ).
     ENDTRY.
   ENDMETHOD.
 
@@ -309,6 +310,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
         cacamber->given( 'but this text wont match. so no step-method will be found :-(' ).
         cl_abap_unit_assert=>fail( ).
       CATCH zcx_cacamber_error INTO DATA(error).
+      cl_abap_unit_assert=>assert_bound( error ).
     ENDTRY.
   ENDMETHOD.
 
