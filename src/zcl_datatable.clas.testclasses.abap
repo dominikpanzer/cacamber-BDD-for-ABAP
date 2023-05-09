@@ -113,7 +113,7 @@ CLASS acceptance_tests IMPLEMENTATION.
                                                   '| until | everything | works | fine |' ).
 
     TRY.
-        DATA(cell) = datatable->read_cell( rownumber = 666 columnnumber = 666 ).
+        DATA(cell) = datatable->read_cell( rownumber = 666 columnnumber = 666 ) ##NEEDED.
         cl_abap_unit_assert=>fail( ).
       CATCH zcx_cacamber_error INTO DATA(error).
         cl_abap_unit_assert=>assert_bound( error ).
