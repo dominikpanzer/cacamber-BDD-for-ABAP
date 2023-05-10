@@ -51,6 +51,7 @@ CLASS zcl_cacamber DEFINITION
     TYPES: BEGIN OF match_ts,
              offset      TYPE int4,
              method_name TYPE char30,
+             variables   TYPE string_table,
            END OF match_ts.
     TYPES: matches_tt TYPE STANDARD TABLE OF match_ts WITH DEFAULT KEY.
 
@@ -115,7 +116,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
         CONTINUE.
       ENDIF.
       FIND ALL OCCURRENCES OF REGEX configuration_entry->pattern IN step RESULTS DATA(findings).
-      LOOP AT findings  REFERENCE INTO DATA(finding).
+      LOOP AT findings REFERENCE INTO DATA(finding).
         LOOP AT finding->submatches REFERENCE INTO DATA(submatch).
           DATA(variable) = substring( val = step off = submatch->offset len = submatch->length ).
           APPEND variable TO variables.
@@ -251,14 +252,21 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
 
   METHOD get_matches_for.
+    DATA: variables TYPE string_table.
 
     LOOP AT configuration REFERENCE INTO DATA(configuration_entry).
       DATA(offset) = find( val = scenario regex = configuration_entry->pattern ).
-      IF sy-subrc = 0.
-        matches = VALUE #( BASE matches ( offset = offset method_name = configuration_entry->methodname ) ).
-      ENDIF.
+      CHECK sy-subrc = 0.
+      FIND ALL OCCURRENCES OF REGEX configuration_entry->pattern IN scenario RESULTS DATA(findings).
+      LOOP AT findings REFERENCE INTO DATA(finding).
+        CLEAR variables.
+        LOOP AT finding->submatches REFERENCE INTO DATA(submatch).
+          DATA(variable) = substring( val = scenario off = submatch->offset len = submatch->length ).
+          APPEND variable TO variables.
+        ENDLOOP.
+      ENDLOOP.
+      matches = VALUE #( BASE matches ( offset = offset method_name = configuration_entry->methodname variables = variables ) ).
     ENDLOOP.
     SORT matches BY offset ASCENDING.
   ENDMETHOD.
-
 ENDCLASS.
