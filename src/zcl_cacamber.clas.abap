@@ -103,18 +103,18 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
   METHOD match_step_to_methodname.
     LOOP AT configuration REFERENCE INTO DATA(configuration_entry).
-      IF matches( val = step regex = configuration_entry->pattern ).
-        methodname = configuration_entry->methodname.
-        EXIT.
-      ENDIF.
+*      IF matches( val = step regex = configuration_entry->pattern ).
+*        methodname = configuration_entry->methodname.
+*        EXIT.
+*      ENDIF.
     ENDLOOP.
   ENDMETHOD.
 
   METHOD extract_variables_from_step.
     LOOP AT configuration REFERENCE INTO DATA(configuration_entry).
-      IF NOT matches( val = step regex = configuration_entry->pattern ).
-        CONTINUE.
-      ENDIF.
+*      IF NOT matches( val = step regex = configuration_entry->pattern ).
+*        CONTINUE.
+*      ENDIF.
       FIND ALL OCCURRENCES OF REGEX configuration_entry->pattern IN step RESULTS DATA(findings).
       LOOP AT findings REFERENCE INTO DATA(finding).
         LOOP AT finding->submatches REFERENCE INTO DATA(submatch).
@@ -178,12 +178,12 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
   METHOD is_time_format.
     CONSTANTS time_format_hhmmss_with_colon TYPE string VALUE '^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$'.
-    result = xsdbool( matches( val = variables[ sy-tabix ] regex = time_format_hhmmss_with_colon ) ).
+"    result = xsdbool( matches( val = variables[ sy-tabix ] regex = time_format_hhmmss_with_colon ) ).
   ENDMETHOD.
 
   METHOD is_gregorian_dot_seperated.
     CONSTANTS ddmmyyyy_dot_seperated TYPE string VALUE '^(0[0-9]|[12][0-9]|3[01])[- \..](0[0-9]|1[012])[- \..]\d\d\d\d$'.
-    result = xsdbool( matches( val = variables[ sy-tabix ] regex = ddmmyyyy_dot_seperated ) ).
+ "   result = xsdbool( matches( val = variables[ sy-tabix ] regex = ddmmyyyy_dot_seperated ) ).
   ENDMETHOD.
 
   METHOD given.
@@ -255,17 +255,17 @@ CLASS zcl_cacamber IMPLEMENTATION.
     DATA: variables TYPE string_table.
 
     LOOP AT configuration REFERENCE INTO DATA(configuration_entry).
-      DATA(offset) = find( val = scenario regex = configuration_entry->pattern ).
-      CHECK sy-subrc = 0.
-      FIND ALL OCCURRENCES OF REGEX configuration_entry->pattern IN scenario RESULTS DATA(findings).
-      LOOP AT findings REFERENCE INTO DATA(finding).
-        CLEAR variables.
-        LOOP AT finding->submatches REFERENCE INTO DATA(submatch).
-          DATA(variable) = substring( val = scenario off = submatch->offset len = submatch->length ).
-          APPEND variable TO variables.
-        ENDLOOP.
-      ENDLOOP.
-      matches = VALUE #( BASE matches ( offset = offset method_name = configuration_entry->methodname variables = variables ) ).
+*      DATA(offset) = find( val = scenario regex = configuration_entry->pattern ).
+*      CHECK sy-subrc = 0.
+*      FIND ALL OCCURRENCES OF REGEX configuration_entry->pattern IN scenario RESULTS DATA(findings).
+*      LOOP AT findings REFERENCE INTO DATA(finding).
+*        CLEAR variables.
+*        LOOP AT finding->submatches REFERENCE INTO DATA(submatch).
+*          DATA(variable) = substring( val = scenario off = submatch->offset len = submatch->length ).
+*          APPEND variable TO variables.
+*        ENDLOOP.
+*      ENDLOOP.
+*      matches = VALUE #( BASE matches ( offset = offset method_name = configuration_entry->methodname variables = variables ) ).
     ENDLOOP.
     SORT matches BY offset ASCENDING.
   ENDMETHOD.
