@@ -78,7 +78,7 @@ CLASS zcl_cacamber DEFINITION
       paramaters_dont_match_variable IMPORTING parameters    TYPE zcl_cacamber=>parameters_tt
                                                variables     TYPE string_table
                                      RETURNING VALUE(result) TYPE abap_bool,
-      is_gregorian_dot_seperated IMPORTING variables     TYPE string_table
+      is_gregorian_dot_seperated IMPORTING variable      TYPE string
                                  RETURNING VALUE(result) TYPE abap_bool,
       is_time_format IMPORTING variables     TYPE string_table
                      RETURNING VALUE(result) TYPE abap_bool,
@@ -155,7 +155,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
     LOOP AT parameters ASSIGNING FIELD-SYMBOL(<parameter>).
       CREATE DATA parameter_value TYPE (<parameter>-data_type).
 
-      IF is_gregorian_dot_seperated( variables ).
+      IF is_gregorian_dot_seperated( variables[ sy-tabix ]  ).
         cl_abap_datfm=>conv_date_ext_to_int( EXPORTING im_datext = variables[ sy-tabix ]
                                                        im_datfmdes = '1'
                                              IMPORTING ex_datint = parameter_value->* ).
@@ -184,8 +184,8 @@ CLASS zcl_cacamber IMPLEMENTATION.
   METHOD is_gregorian_dot_seperated.
 * ENDLOSS LOOP
     CONSTANTS ddmmyyyy_dot_seperated TYPE string VALUE '^(0[0-9]|[12][0-9]|3[01])[- \..](0[0-9]|1[012])[- \..]\d\d\d\d$'.
-"    FIND ALL OCCURRENCES OF REGEX ddmmyyyy_dot_seperated IN variables[ sy-tabix ] RESULTS DATA(findings).
-"    result = xsdbool(  matches( val = variables[ sy-tabix ] regex = ddmmyyyy_dot_seperated ) ).
+    "    FIND ALL OCCURRENCES OF REGEX ddmmyyyy_dot_seperated IN variables[ sy-tabix ] RESULTS DATA(findings).
+    result = xsdbool(  matches( val = variable regex = ddmmyyyy_dot_seperated ) ).
   ENDMETHOD.
 
   METHOD given.
