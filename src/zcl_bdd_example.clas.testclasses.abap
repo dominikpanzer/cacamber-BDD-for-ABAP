@@ -23,11 +23,11 @@ ENDCLASS.
 CLASS acceptance_discount_calculatio IMPLEMENTATION.
   METHOD setup.
     feature( 'Discount Calcuation' ).
-    configure( pattern = '^the customers first name is (.+) and his last name is (.+)$' methodname = 'set_first_and_second_name' ).
-    configure( pattern = '^his birthdate according to our CRM system is (.+)' methodname = 'set_birthdate' ).
-    configure( pattern = '^the sales clerk lets the system calculate the customers discount on the (.+)$' methodname = 'calculate_discount' ).
-    configure( pattern = '^the discount is (.+)% \\m\/$' methodname = 'evaluate_applied_discount' ).
-    configure( pattern = '^in his shopping cart are the following items:(.*)$' methodname = 'process_shopping_cart' ).
+    configure( pattern = '^the customers first name is (.+) and his last name is (.+)$' method_name = 'set_first_and_second_name' ).
+    configure( pattern = '^his birthdate according to our CRM system is (.+)' method_name = 'set_birthdate' ).
+    configure( pattern = '^the sales clerk lets the system calculate the customers discount on the (.+)$' method_name = 'calculate_discount' ).
+    configure( pattern = '^the discount is (.+)% \\m\/$' method_name = 'evaluate_applied_discount' ).
+    configure( pattern = '^in his shopping cart are the following items:(.*)$' method_name = 'process_shopping_cart' ).
 
     discount_calculator = NEW zcl_bdd_example( ).
   ENDMETHOD.

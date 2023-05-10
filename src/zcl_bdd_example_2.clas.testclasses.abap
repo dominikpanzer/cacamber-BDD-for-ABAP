@@ -37,7 +37,7 @@ CLASS acceptance_discount_calculatio IMPLEMENTATION.
     run( 'given the customers first name is Dominik and his last name is Panzer' &&
          ' and his birthdate according to our CRM system is 06.06.2006' &&
          ' when the sales clerk lets the system calculate the customers discount on the Slayer Album' &&
-         ' then the discount is 65% \m/' ).
+         ' then the discount is 66% \m/' ).
   ENDMETHOD.
 
   METHOD no_discount_on_shopping_cart.
