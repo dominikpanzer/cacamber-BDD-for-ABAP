@@ -80,7 +80,7 @@ CLASS zcl_cacamber DEFINITION
                                      RETURNING VALUE(result) TYPE abap_bool,
       is_gregorian_dot_seperated IMPORTING variable      TYPE string
                                  RETURNING VALUE(result) TYPE abap_bool,
-      is_time_format IMPORTING variables     TYPE string_table
+      is_time_format IMPORTING variable      TYPE string
                      RETURNING VALUE(result) TYPE abap_bool,
       format_time IMPORTING variable    TYPE string
                   RETURNING VALUE(time) TYPE string,
@@ -159,7 +159,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
         cl_abap_datfm=>conv_date_ext_to_int( EXPORTING im_datext = variables[ sy-tabix ]
                                                        im_datfmdes = '1'
                                              IMPORTING ex_datint = parameter_value->* ).
-      ELSEIF is_time_format( variables ).
+      ELSEIF is_time_format( variables[ sy-tabix ] ).
         parameter_value->* = format_time( variables[ sy-tabix ] ).
       ELSE.
         parameter_value->* = convertion_exit_inbound( variables[ sy-tabix ] ).
@@ -178,13 +178,12 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
   METHOD is_time_format.
     CONSTANTS time_format_hhmmss_with_colon TYPE string VALUE '^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$'.
-    "    result = xsdbool( matches( val = variables[ sy-tabix ] regex = time_format_hhmmss_with_colon ) ).
+    result = xsdbool( matches( val = variable regex = time_format_hhmmss_with_colon ) ).
   ENDMETHOD.
 
   METHOD is_gregorian_dot_seperated.
 * ENDLOSS LOOP
     CONSTANTS ddmmyyyy_dot_seperated TYPE string VALUE '^(0[0-9]|[12][0-9]|3[01])[- \..](0[0-9]|1[012])[- \..]\d\d\d\d$'.
-    "    FIND ALL OCCURRENCES OF REGEX ddmmyyyy_dot_seperated IN variables[ sy-tabix ] RESULTS DATA(findings).
     result = xsdbool(  matches( val = variable regex = ddmmyyyy_dot_seperated ) ).
   ENDMETHOD.
 
