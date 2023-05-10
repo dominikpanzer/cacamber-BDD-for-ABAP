@@ -103,18 +103,18 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
   METHOD match_step_to_methodname.
     LOOP AT configuration REFERENCE INTO DATA(configuration_entry).
-*      IF matches( val = step regex = configuration_entry->pattern ).
-*        methodname = configuration_entry->methodname.
-*        EXIT.
-*      ENDIF.
+      IF matches( val = step regex = configuration_entry->pattern ).
+        methodname = configuration_entry->methodname.
+        EXIT.
+      ENDIF.
     ENDLOOP.
   ENDMETHOD.
 
   METHOD extract_variables_from_step.
     LOOP AT configuration REFERENCE INTO DATA(configuration_entry).
-*      IF NOT matches( val = step regex = configuration_entry->pattern ).
-*        CONTINUE.
-*      ENDIF.
+      IF NOT matches( val = step regex = configuration_entry->pattern ).
+        CONTINUE.
+      ENDIF.
       FIND ALL OCCURRENCES OF REGEX configuration_entry->pattern IN step RESULTS DATA(findings).
       LOOP AT findings REFERENCE INTO DATA(finding).
         LOOP AT finding->submatches REFERENCE INTO DATA(submatch).
