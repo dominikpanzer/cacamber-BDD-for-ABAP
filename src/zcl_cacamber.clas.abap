@@ -154,8 +154,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
     LOOP AT parameters ASSIGNING FIELD-SYMBOL(<parameter>).
       CREATE DATA parameter_value TYPE (<parameter>-data_type).
-
-      IF is_gregorian_dot_seperated( variables[ sy-tabix ]  ).
+      IF is_gregorian_dot_seperated( variables[ sy-tabix ] ).
         cl_abap_datfm=>conv_date_ext_to_int( EXPORTING im_datext = variables[ sy-tabix ]
                                                        im_datfmdes = '1'
                                              IMPORTING ex_datint = parameter_value->* ).
@@ -182,9 +181,8 @@ CLASS zcl_cacamber IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD is_gregorian_dot_seperated.
-* ENDLOSS LOOP
     CONSTANTS ddmmyyyy_dot_seperated TYPE string VALUE '^(0[0-9]|[12][0-9]|3[01])[- \..](0[0-9]|1[012])[- \..]\d\d\d\d$'.
-    result = xsdbool(  matches( val = variable regex = ddmmyyyy_dot_seperated ) ).
+    result = xsdbool( matches( val = variable regex = ddmmyyyy_dot_seperated ) ).
   ENDMETHOD.
 
   METHOD given.
