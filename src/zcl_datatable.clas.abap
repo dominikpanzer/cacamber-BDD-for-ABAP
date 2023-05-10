@@ -56,12 +56,12 @@ CLASS zcl_datatable IMPLEMENTATION.
 
 
   METHOD read_row.
-    DATA(reduced_datatable) = FILTER #( datatable WHERE row = rownumber ).
-    line = VALUE #( FOR datatable_line IN reduced_datatable ( datatable_line-value ) ).
-
-    IF line IS INITIAL.
-      RAISE EXCEPTION TYPE zcx_cacamber_error.
-    ENDIF.
+*    DATA(reduced_datatable) = FILTER #( datatable WHERE row = rownumber ).
+*    line = VALUE #( FOR datatable_line IN reduced_datatable ( datatable_line-value ) ).
+*
+*    IF line IS INITIAL.
+*      RAISE EXCEPTION TYPE zcx_cacamber_error.
+*    ENDIF.
   ENDMETHOD.
 
 
