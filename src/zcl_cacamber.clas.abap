@@ -184,14 +184,8 @@ CLASS zcl_cacamber IMPLEMENTATION.
   METHOD is_gregorian_dot_seperated.
 * ENDLOSS LOOP
     CONSTANTS ddmmyyyy_dot_seperated TYPE string VALUE '^(0[0-9]|[12][0-9]|3[01])[- \..](0[0-9]|1[012])[- \..]\d\d\d\d$'.
-    FIND ALL OCCURRENCES OF REGEX ddmmyyyy_dot_seperated IN variables[ sy-tabix ] RESULTS DATA(findings).
-    "    IF matches( val = variables[ sy-tabix ] regex = ddmmyyyy_dot_seperated ).
-    IF sy-subrc = 0.
-      result = abap_true.
-    ELSE.
-      result = abap_false.
-    ENDIF.
-    "    ENDIF.
+"    FIND ALL OCCURRENCES OF REGEX ddmmyyyy_dot_seperated IN variables[ sy-tabix ] RESULTS DATA(findings).
+"    result = xsdbool(  matches( val = variables[ sy-tabix ] regex = ddmmyyyy_dot_seperated ) ).
   ENDMETHOD.
 
   METHOD given.
