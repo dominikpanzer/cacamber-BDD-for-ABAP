@@ -183,7 +183,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
   METHOD is_gregorian_dot_seperated.
     CONSTANTS ddmmyyyy_dot_seperated TYPE string VALUE '^(0[0-9]|[12][0-9]|3[01])[- \..](0[0-9]|1[012])[- \..]\d\d\d\d$'.
- "   result = xsdbool( matches( val = variables[ sy-tabix ] regex = ddmmyyyy_dot_seperated ) ).
+    result = xsdbool( matches( val = variables[ sy-tabix ] regex = ddmmyyyy_dot_seperated ) ).
   ENDMETHOD.
 
   METHOD given.
