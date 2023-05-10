@@ -178,13 +178,15 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
   METHOD is_time_format.
     CONSTANTS time_format_hhmmss_with_colon TYPE string VALUE '^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$'.
-    result = xsdbool( matches( val = variables[ sy-tabix ] regex = time_format_hhmmss_with_colon ) ).
+    "    result = xsdbool( matches( val = variables[ sy-tabix ] regex = time_format_hhmmss_with_colon ) ).
   ENDMETHOD.
 
   METHOD is_gregorian_dot_seperated.
 * ENDLOSS LOOP
     CONSTANTS ddmmyyyy_dot_seperated TYPE string VALUE '^(0[0-9]|[12][0-9]|3[01])[- \..](0[0-9]|1[012])[- \..]\d\d\d\d$'.
-"    result = xsdbool( matches( val = variables[ sy-tabix ] regex = ddmmyyyy_dot_seperated ) ).
+    IF matches( val = variables[ sy-tabix ] regex = ddmmyyyy_dot_seperated ).
+      result = abap_true.
+    ENDIF.
   ENDMETHOD.
 
   METHOD given.
