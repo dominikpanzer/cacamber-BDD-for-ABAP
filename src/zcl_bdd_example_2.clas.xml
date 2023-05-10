@@ -3,9 +3,9 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>ZCL_BDD_EXAMPLE</CLSNAME>
+    <CLSNAME>ZCL_BDD_EXAMPLE_2</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>Cacamber Example Usage - Run Step Methods</DESCRIPT>
+    <DESCRIPT>Cacamber Example Usage - Run Whole Scenario</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

@@ -45,7 +45,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
     METHODS: dynamic_method_call_failed FOR TESTING RAISING cx_static_check.
     METHODS: added_vars_to_paras_neg_int FOR TESTING RAISING cx_static_check.
     METHODS: added_vars_to_paras_tims FOR TESTING RAISING cx_static_check,
-      can_build_matches_given FOR TESTING RAISING cx_static_check.
+      can_build_matches_given FOR TESTING RAISING cx_static_check,
+      can_run_a_one_step_scenario FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -57,43 +58,43 @@ CLASS scaffolding_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD can_store_configuration.
-    cacamber->configure( pattern = 'pattern' methodname = 'methodname' ).
-    DATA(expected_configuration) = VALUE zcl_cacamber=>configuration_tt( ( pattern = 'pattern' methodname = 'METHODNAME' ) ).
+    cacamber->configure( pattern = 'pattern' method_name = 'methodname' ).
+    DATA(expected_configuration) = VALUE zcl_cacamber=>configuration_tt( ( pattern = 'pattern' method_name = 'METHODNAME' ) ).
     cl_abap_unit_assert=>assert_equals( msg = 'Configuration is wrong' exp = expected_configuration act = cacamber->configuration ).
   ENDMETHOD.
 
   METHOD can_store_two_configurations.
-    cacamber->configure( pattern = 'pattern' methodname = 'methodname' ).
-    cacamber->configure( pattern = 'pattern2' methodname = 'methodname2' ).
+    cacamber->configure( pattern = 'pattern' method_name = 'methodname' ).
+    cacamber->configure( pattern = 'pattern2' method_name = 'methodname2' ).
 
-    DATA(expected_configuration) = VALUE zcl_cacamber=>configuration_tt( ( pattern = 'pattern' methodname = 'METHODNAME' )
-                                                                          ( pattern = 'pattern2' methodname = 'METHODNAME2' ) ).
+    DATA(expected_configuration) = VALUE zcl_cacamber=>configuration_tt( ( pattern = 'pattern' method_name = 'METHODNAME' )
+                                                                          ( pattern = 'pattern2' method_name = 'METHODNAME2' ) ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Configuration is wrong' exp = expected_configuration act = cacamber->configuration ).
   ENDMETHOD.
 
   METHOD ignores_empty_pattern_config.
-    cacamber->configure( pattern = '' methodname = 'methodname' ).
+    cacamber->configure( pattern = '' method_name = 'methodname' ).
 
     cl_abap_unit_assert=>assert_initial( cacamber->configuration ).
   ENDMETHOD.
 
   METHOD ignores_empty_methodnme_config.
-    cacamber->configure( pattern = 'pattern' methodname = '' ).
+    cacamber->configure( pattern = 'pattern' method_name = '' ).
 
     cl_abap_unit_assert=>assert_initial( act = cacamber->configuration ).
   ENDMETHOD.
 
   METHOD matching_step_found.
-    cacamber->configure( pattern = '^(.+) is not Cucumber$' methodname = 'isnotcucumber' ).
+    cacamber->configure( pattern = '^(.+) is not Cucumber$' method_name = 'isnotcucumber' ).
 
-    DATA(methodname) = cacamber->match_step_to_methodname( 'Cacamber is not Cucumber' ).
+    DATA(methodname) = cacamber->match_step_to_method_name( 'Cacamber is not Cucumber' ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Should find a method' exp = 'ISNOTCUCUMBER' act = methodname ).
   ENDMETHOD.
 
   METHOD extract_first_string.
-    cacamber->configure( pattern = '^(.+) is not Cucumber$' methodname = 'notrelevant' ).
+    cacamber->configure( pattern = '^(.+) is not Cucumber$' method_name = 'notrelevant' ).
     DATA(expected_variables) = VALUE string_table( ( |Cacamber| ) ).
 
     DATA(variables) = cacamber->extract_variables_from_step( 'Cacamber is not Cucumber' ).
@@ -103,7 +104,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD extract_two_middle_strings.
-    cacamber->configure( pattern = '^They say (.+) is not (.+) - and they are right!$' methodname = 'notrelevant' ).
+    cacamber->configure( pattern = '^They say (.+) is not (.+) - and they are right!$' method_name = 'notrelevant' ).
     DATA(expected_variables) = VALUE string_table( ( |Cacamber| ) ( |Cucumber| ) ).
 
     DATA(variables) = cacamber->extract_variables_from_step( 'They say Cacamber is not Cucumber - and they are right!' ).
@@ -113,7 +114,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD extract_string_at_end.
-    cacamber->configure( pattern = '^Whats your name\? (.+)$' methodname = 'notrelevant' ).
+    cacamber->configure( pattern = '^Whats your name\? (.+)$' method_name = 'notrelevant' ).
     DATA(expected_variables) = VALUE string_table( ( |Cacamber| ) ).
 
     DATA(variables) = cacamber->extract_variables_from_step( 'Whats your name? Cacamber' ).
@@ -125,7 +126,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
     DATA(expected_parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'CHAR30' name = 'CHAR30' )
                                                                    ( data_type = 'INT4' name = 'INTEGER' )
                                                                    ( data_type = 'ZDE_BDD_PACKED' name = 'PACKED' ) ).
-    DATA(parameters) = cacamber->get_method_parameters( methodname = 'LOCAL_METHOD_FOR_TEST'
+    DATA(parameters) = cacamber->get_method_parameters( method_name = 'LOCAL_METHOD_FOR_TEST'
                                                         local_testclass_instance = me ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Parameters are wrong' exp = expected_parameters act = parameters ).
@@ -170,7 +171,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
     DATA(methodname) = 'LOCAL_METHOD_FOR_TEST'.
 
     DATA(variables) = VALUE string_table( ( CONV #( char30 ) ) ( CONV #( integer ) ) ( CONV #( packed ) ) ).
-    DATA(parameters) = cacamber->get_method_parameters( methodname = 'LOCAL_METHOD_FOR_TEST'
+    DATA(parameters) = cacamber->get_method_parameters( method_name = 'LOCAL_METHOD_FOR_TEST'
                                                               local_testclass_instance = me ).
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
@@ -234,7 +235,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
   METHOD given_calls_a_method.
 * i don't like this test case design
-    cacamber->configure( pattern = '^your name is (.+) (.+)$' methodname = 'WHENYOURNAMEIS' ).
+    cacamber->configure( pattern = '^your name is (.+) (.+)$' method_name = 'WHENYOURNAMEIS' ).
 
     cacamber->given( 'your name is Marty McFly' ).
 
@@ -243,7 +244,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
   METHOD underscore_calls_a_method.
 * i don't like this test case design
-    cacamber->configure( pattern = '^List entry (.+) (.+)$' methodname = 'WHENYOURNAMEIS' ).
+    cacamber->configure( pattern = '^List entry (.+) (.+)$' method_name = 'WHENYOURNAMEIS' ).
 
     cacamber->_( 'List entry Marty McFly' ).
     cacamber->_( 'List entry Ronny-James Dio' ).
@@ -297,7 +298,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD wrong_paramter_count.
-    cacamber->configure( pattern = '^no parameters are here but the step-method expects some$' methodname = 'WHENYOURNAMEIS' ).
+    cacamber->configure( pattern = '^no parameters are here but the step-method expects some$' method_name = 'WHENYOURNAMEIS' ).
 
     TRY.
         cacamber->given( 'no parameters are here but the step-method expects some' ).
@@ -308,7 +309,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD no_method_for_step_found.
-    cacamber->configure( pattern = '^this is the regex$' methodname = 'WHENYOURNAMEIS' ).
+    cacamber->configure( pattern = '^this is the regex$' method_name = 'WHENYOURNAMEIS' ).
 
     TRY.
         cacamber->given( 'but this text wont match. so no step-method will be found :-(' ).
@@ -321,7 +322,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
   METHOD dynamic_method_call_failed.
     " we catch cx_root here, because we don't want to map the exceptions of
     " the dynamic method call to our own exception. the native exception is okay
-    cacamber->configure( pattern = '^this is the regex for a method with no importing parameter: (.*)$' methodname = 'local_method_for_test_exportin' ).
+    cacamber->configure( pattern = '^this is the regex for a method with no importing parameter: (.*)$' method_name = 'local_method_for_test_exportin' ).
     TRY.
         cacamber->given( 'this is the regex for a method with no importing parameter: BOOM' ).
         cl_abap_unit_assert=>fail( ).
@@ -334,13 +335,23 @@ CLASS scaffolding_tests IMPLEMENTATION.
     DATA(matches_expexted) = VALUE zcl_cacamber=>matches_tt( ( offset = 6 method_name = 'LOCAL_METHOD_FOR_TEST_DATE' variables = VALUE #( ( |17.07.1952| ) ) )
                                                              ( offset = 38  method_name = 'LOCAL_METHOD_FOR_TEST_DATE' variables = VALUE #( ( |31.07.2018| ) ) ) ).
 
-    cacamber->configure( pattern = 'and that your wedding day is (.+)' methodname = 'local_method_for_test_date' ).
-    cacamber->configure( pattern = 'this is your birthday (.*)(?=given|then|when|or|and|but)' methodname = 'local_method_for_test_date' ).
+    cacamber->configure( pattern = 'and that your wedding day is (.+)' method_name = 'local_method_for_test_date' ).
+    cacamber->configure( pattern = 'this is your birthday (.*)(?=given|then|when|or|and|but)' method_name = 'local_method_for_test_date' ).
 
-    cacamber->get_matches_for( 'given this is your birthday 17.07.1952' &&
+    DATA(matches) = cacamber->get_matches_for( 'given this is your birthday 17.07.1952' &&
                                'and that your wedding day is 31.07.2018' ).
 
-    cl_abap_unit_assert=>assert_equals( msg = 'Matches... dont match.' exp = matches_expexted act = cacamber->matches ).
+    cl_abap_unit_assert=>assert_equals( msg = 'Matches... dont match.' exp = matches_expexted act = matches ).
 
   ENDMETHOD.
+
+  METHOD can_run_a_one_step_scenario.
+    cacamber->configure( pattern = 'your name is (.+) (.+)' method_name = 'WHENYOURNAMEIS' ).
+
+    cacamber->run( 'given your name is Marty McFly' ).
+
+    cl_abap_unit_assert=>assert_equals( msg = 'Marker not set' exp = abap_true act = method_has_been_called ).
+
+  ENDMETHOD.
+
 ENDCLASS.
