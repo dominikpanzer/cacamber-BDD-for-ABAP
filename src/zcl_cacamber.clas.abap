@@ -182,7 +182,6 @@ CLASS zcl_cacamber IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD is_gregorian_dot_seperated.
-
 * ENDLOSS LOOP
     CONSTANTS ddmmyyyy_dot_seperated TYPE string VALUE '^(0[0-9]|[12][0-9]|3[01])[- \..](0[0-9]|1[012])[- \..]\d\d\d\d$'.
     IF matches( val = variables[ sy-tabix ] regex = ddmmyyyy_dot_seperated ).
