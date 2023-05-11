@@ -15,7 +15,7 @@ and his birthdate according to our CRM system is 06.06.2006
 when the sales clerk lets the system calculate the customers discount on a Slayer album
 then the discount is 66% \m/
 ```
-These scenarios or examples will be delivered by the business or ideally by the (3 amigos)[https://automationpanda.com/2017/02/20/the-behavior-driven-three-amigos/] and will be used as executable specifications. You guessed it right: automated Tests! So how can we execute those scenarios as automated tests?
+These scenarios or examples will be delivered by the business or ideally by the [3 amigos](https://automationpanda.com/2017/02/20/the-behavior-driven-three-amigos/) and will be used as executable specifications. You guessed it right: automated tests! So how can we execute these scenarios as automated tests?
 
 You might already know the `Given ... When ... Then` pattern. It's quite similar to `arrange ... act ... assert`. They are both techniques to give tests a clear structure. In ABAP this usually looks like this. We focus on the the feature, give the test method an according name and write an acceptance test:
 
