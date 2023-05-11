@@ -17,25 +17,25 @@ then the discount is 66% \m/
 ```
 These scenarios or examples will be delivered by the business or ideally by the (3 amigos)[https://automationpanda.com/2017/02/20/the-behavior-driven-three-amigos/] and will be used as executable specifications. You guessed it right: automated Tests! So how can we execute those scenarios as automated tests?
 
-You might already know the `given ... when ... then` pattern. It's quite similar to `arrange ... act ... assert`. They are both techniques to give tests a clear structure. In ABAP this usually looks like this. We focus on the the feature, give the test method an according name and write an acceptance test:
+You might already know the `Given ... When ... Then` pattern. It's quite similar to `arrange ... act ... assert`. They are both techniques to give tests a clear structure. In ABAP this usually looks like this. We focus on the the feature, give the test method an according name and write an acceptance test:
 
 ```ABAP
 METHOD discount_calculation.
-* given
+* Given
 sut->do_this( parameter ).
 sut->do_that( parameter ).
 "more complex stuff here
 DATA(product) = |Slayer Album|.
 
 
-* when
+* When
 DATA(discount) = sut->calculate( product ).
 
-* then
+* Then
 cl_abap_unit_assert=>assert_equals(  exp = 66 act = discount ).
 ENDMETHOD
 ```
-The `given ... when ... then` comments are not very helpful. Also the individual parts of the test are not reusable. And the whole test is not very domain-centric compared to the scenario the business actually defined.
+The `Given ... When ... Then` comments are not very helpful. Also the individual parts of the test are not reusable. And the whole test is not very domain-centric compared to the scenario the business actually defined.
 
 So some people wanted to do better and started writing their tests like this:
 
@@ -63,7 +63,7 @@ when( 'the sales clerk lets the system calculate the customers discount on a Sla
 then( 'the discount is 66% \m/' ).
 ENDMETHOD.
 ```
-  
+ 
 If it fails ABAP Unit can tell you this way:
 ```
 ...
@@ -83,6 +83,21 @@ and( 'he adds a valid 10% voucher' ).
 when( 'the customer checks out' ).
 then( 'the discount is 4€.' ).
 ENDMETHOD.
+```
+
+Or like that:
+```ABAP
+METHOD no_discount_on_shopping_cart.
+verify( 'Scenario: Customer is not eligable for a discount on the shopping cart' &&
+        'Given the customers first name is Dominik and his last name is Panzer' &&
+        'And his birthdate according to our CRM system is 06.06.2006' &&
+        'And in his shopping cart are the following items:' &&
+        '| 1 | Scooter - Hyper Hyper |' &&
+        '| 1 | Scooter - How Much Is The Fish |' &&
+        '| 1 | Scooter - Maria (I like it loud) |' &&
+        'When the sales clerk lets the system calculate the customers discount on the shopping cart'  &&
+        'Then the discount is 0% \m/' ).
+ ENDMETHOD.
 ```
   
 Have I sparked your interest? Great.
@@ -104,34 +119,12 @@ So how does BDD work and how does Cacamber fit in? Let us have a look:
 1. Refactor.
 1. Start with the next scenario and reuse your steps methods.
 
-If this is too high level for you, have a look at the example implementation `ZCL_BDD_EXAMPLE` or check out the API description.
+If this is too high level for you, have a look at the example implementation `ZCL_BDD_EXAMPLE` and `ZCL_BDD_EXAMPLE_2`  or check out the API description.
 
 ## Cacamber API
 
 This part of the document describes the public methods of Cacamber. To get startet, your local test class needs to inherit from `ZCL_CACAMBER`.
 
-```mermaid
-classDiagram
-  class ZCL_CACAMBER{ 
-    #configuration
-    #current_feature
-    #current_scenarion
-    #current_rule
-    +constructor()
-    +and()
-    +but()
-    +configure()
-    +example()
-    +feature()
-    +given()
-    +rule()
-    +scenario()
-    +then()
-    +or()
-    +when()
-    +_()
-    }
-```
 `ZCL_CACAMBER` as your superclass provides the following public methods:
 
 ### FEATURE
