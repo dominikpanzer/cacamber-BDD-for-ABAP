@@ -34,7 +34,7 @@ CLASS acceptance_discount_calculatio IMPLEMENTATION.
 
   METHOD discount_on_slayer_albums.
     scenario( 'Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)' ).
-    run( 'Given the customers first name is Dominik and his last name is Panzer' &&
+    verify( 'Given the customers first name is Dominik and his last name is Panzer' &&
          'And his birthdate according to our CRM system is 06.06.2006' &&
          'When the sales clerk lets the system calculate the customers discount on the Slayer Album' &&
          'Then the discount is 66% \m/' ).
@@ -42,7 +42,7 @@ CLASS acceptance_discount_calculatio IMPLEMENTATION.
 
   METHOD no_discount_on_shopping_cart.
     scenario( 'Customer is not eligable for a discount on the shopping cart' ).
-    run( 'Given the customers first name is Dominik and his last name is Panzer' &&
+    verify( 'Given the customers first name is Dominik and his last name is Panzer' &&
          'And his birthdate according to our CRM system is 06.06.2006' &&
          'And in his shopping cart are the following items:' &&
          '| 1 | Scooter - Hyper Hyper |' &&

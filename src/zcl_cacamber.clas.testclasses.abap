@@ -46,7 +46,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
     METHODS: added_vars_to_paras_neg_int FOR TESTING RAISING cx_static_check.
     METHODS: added_vars_to_paras_tims FOR TESTING RAISING cx_static_check,
       can_run_a_one_step_scenario FOR TESTING RAISING cx_static_check,
-      can_split_a_string_into_steps FOR TESTING RAISING cx_static_check.
+      can_split_a_string_into_steps FOR TESTING RAISING cx_static_check,
+      can_extract_current_scenario FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -342,10 +343,18 @@ CLASS scaffolding_tests IMPLEMENTATION.
   METHOD can_run_a_one_step_scenario.
     cacamber->configure( pattern = 'your name is (.+) (.+)' method_name = 'WHENYOURNAMEIS' ).
 
-    cacamber->run( 'Given your name is Marty McFly' ).
+    cacamber->verify( 'Given your name is Marty McFly' ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Marker not set' exp = abap_true act = method_has_been_called ).
+  ENDMETHOD.
 
+  METHOD can_extract_current_scenario.
+    DATA(steps) =  VALUE string_table( ( |Scenario: The One Where I Met David Hasselhoff| ) ( |non relevant stuff| ) ).
+    DATA(scenario_expected) = |The One Where I Met David Hasselhoff|.
+
+    cacamber->extract_scenario_from_text( steps ).
+
+    cl_abap_unit_assert=>assert_equals( msg = 'Scenario hasnt been extracted' exp = scenario_expected act = cacamber->current_scenario ).
   ENDMETHOD.
 
 ENDCLASS.

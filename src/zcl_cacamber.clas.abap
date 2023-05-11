@@ -30,9 +30,12 @@ CLASS zcl_cacamber DEFINITION
     METHODS example IMPORTING example TYPE scenario_t.
     METHODS rule IMPORTING rule TYPE rule_t.
 
-    METHODS run
+    METHODS verify
       IMPORTING
         scenario TYPE string.
+    METHODS extract_scenario_from_text
+      IMPORTING
+        steps TYPE string_table.
 
 
   PROTECTED SECTION.
@@ -47,14 +50,6 @@ CLASS zcl_cacamber DEFINITION
              data_type TYPE char30,
            END OF parameter_ts.
     TYPES: parameters_tt TYPE STANDARD TABLE OF parameter_ts WITH DEFAULT KEY.
-
-
-    TYPES: BEGIN OF match_ts,
-             offset      TYPE int4,
-             method_name TYPE char30,
-             variables   TYPE string_table,
-           END OF match_ts.
-    TYPES: matches_tt TYPE STANDARD TABLE OF match_ts WITH DEFAULT KEY.
 
     DATA: configuration TYPE configuration_tt.
     DATA: current_feature TYPE feature_t.
@@ -252,7 +247,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
     result = xsdbool( lines( variables ) <> lines( parameters ) ).
   ENDMETHOD.
 
-  METHOD run.
+  METHOD verify.
     DATA(strings) = VALUE string_table( ( scenario ) ).
 
     strings = split( strings = strings keyword = |Given | ).
@@ -273,6 +268,11 @@ CLASS zcl_cacamber IMPLEMENTATION.
       APPEND LINES OF splitted TO new_strings.
     ENDLOOP.
     DELETE new_strings WHERE table_line IS INITIAL.
+  ENDMETHOD.
+
+
+  METHOD extract_scenario_from_text.
+
   ENDMETHOD.
 
 ENDCLASS.
