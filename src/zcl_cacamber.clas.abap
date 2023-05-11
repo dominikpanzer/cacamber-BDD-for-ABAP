@@ -96,6 +96,11 @@ CLASS zcl_cacamber DEFINITION
       IMPORTING steps                  TYPE string_table
       EXPORTING scenario               TYPE scenario_t
                 steps_without_scenario TYPE string_table.
+    METHODS map_scenario_to_string_table
+      IMPORTING
+        scenario       TYPE string
+      RETURNING
+        VALUE(strings) TYPE string_table.
 ENDCLASS.
 
 
@@ -257,21 +262,26 @@ CLASS zcl_cacamber IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD verify.
-    DATA(strings) = VALUE string_table( ( scenario ) ).
-
+    DATA(strings) = map_scenario_to_string_table( scenario ).
     strings = split( strings = strings keyword = |Given | ).
     strings = split( strings = strings keyword = |When | ).
     strings = split( strings = strings keyword = |Then | ).
     strings = split( strings = strings keyword = |Or | ).
     strings = split( strings = strings keyword = |And | ).
     strings = split( strings = strings keyword = |But | ).
-
     extract_scenario_from_steps( EXPORTING steps = strings
                                  IMPORTING scenario = current_scenario
                                            steps_without_scenario = strings ).
+    extract_rule_from_steps( EXPORTING steps = strings
+                                     IMPORTING rule = current_rule
+                                               steps_without_rule = strings ).
     LOOP AT strings REFERENCE INTO DATA(step).
       given( step->* ).
     ENDLOOP.
+  ENDMETHOD.
+
+  METHOD map_scenario_to_string_table.
+    strings  = VALUE string_table( ( scenario ) ).
   ENDMETHOD.
 
   METHOD split.

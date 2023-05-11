@@ -48,7 +48,7 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
       can_run_a_one_step_scenario FOR TESTING RAISING cx_static_check,
       can_split_a_string_into_steps FOR TESTING RAISING cx_static_check,
       can_extract_current_scenario FOR TESTING RAISING cx_static_check,
-    can_extract_current_rule FOR TESTING RAISING cx_static_check.
+      can_extract_current_rule FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -352,7 +352,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
   METHOD can_extract_current_scenario.
     DATA(steps) =  VALUE string_table( ( |Scenario: The One Where I Met David Hasselhoff| ) ( |non relevant stuff| ) ).
     DATA(scenario_expected) = |The One Where I Met David Hasselhoff|.
-    DATA(steps_without_scenario_exp) =  VALUE string_table( ( |non relevant stuff| ) ).
+    DATA(steps_without_scenario_exp) = VALUE string_table( ( |non relevant stuff| ) ).
 
     cacamber->extract_scenario_from_steps( EXPORTING steps = steps
                                                              IMPORTING scenario = DATA(scenario)
@@ -362,10 +362,10 @@ CLASS scaffolding_tests IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals( msg = 'Scenario still in step list' exp = steps_without_scenario_exp act = steps_without_scenario ).
   ENDMETHOD.
 
-    METHOD can_extract_current_rule.
+  METHOD can_extract_current_rule.
     DATA(steps) =  VALUE string_table( ( |Rule: Slow-Motion Running Only!| ) ( |non relevant stuff| ) ).
     DATA(rule_expected) = |Slow-Motion Running Only!|.
-    DATA(steps_without_rule_exp) =  VALUE string_table( ( |non relevant stuff| ) ).
+    DATA(steps_without_rule_exp) = VALUE string_table( ( |non relevant stuff| ) ).
 
     cacamber->extract_rule_from_steps( EXPORTING steps = steps
                                                              IMPORTING rule = DATA(rule)
