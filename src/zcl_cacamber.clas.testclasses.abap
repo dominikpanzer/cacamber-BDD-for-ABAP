@@ -45,8 +45,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
     METHODS: dynamic_method_call_failed FOR TESTING RAISING cx_static_check.
     METHODS: added_vars_to_paras_neg_int FOR TESTING RAISING cx_static_check.
     METHODS: added_vars_to_paras_tims FOR TESTING RAISING cx_static_check,
-      can_build_matches_given FOR TESTING RAISING cx_static_check,
-      can_run_a_one_step_scenario FOR TESTING RAISING cx_static_check.
+      can_run_a_one_step_scenario FOR TESTING RAISING cx_static_check,
+      can_split_a_string_into_steps FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -196,11 +196,9 @@ CLASS scaffolding_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD added_vars_to_paras_tims.
-    " USE TIMN HERE insted of CHAR6
-    DATA time TYPE char6 VALUE '130001'.
+    DATA time TYPE t VALUE '130001'.
 
-    " USE TIMN HERE insted of CHAR6
-    DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'CHAR6' name = 'TIME' ) ).
+    DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'T' name = 'TIME' ) ).
     DATA(variables) = VALUE string_table( ( |13:00:01| ) ).
     DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'TIME' value = REF #( time ) ) ).
 
@@ -331,24 +329,20 @@ CLASS scaffolding_tests IMPLEMENTATION.
     ENDTRY.
   ENDMETHOD.
 
-  METHOD can_build_matches_given.
-    DATA(matches_expexted) = VALUE zcl_cacamber=>matches_tt( ( offset = 6 method_name = 'LOCAL_METHOD_FOR_TEST_DATE' variables = VALUE #( ( |17.07.1952| ) ) )
-                                                             ( offset = 38  method_name = 'LOCAL_METHOD_FOR_TEST_DATE' variables = VALUE #( ( |31.07.2018| ) ) ) ).
+  METHOD can_split_a_string_into_steps.
+    DATA(scenario) = VALUE string_table( ( |Given thisThen that| ) ).
+    DATA(steps_expected) = VALUE string_table( ( |this| ) ( |that| ) ).
 
-    cacamber->configure( pattern = 'and that your wedding day is (.+)' method_name = 'local_method_for_test_date' ).
-    cacamber->configure( pattern = 'this is your birthday (.*)(?=given|then|when|or|and|but)' method_name = 'local_method_for_test_date' ).
+    DATA(steps) = cacamber->split( strings = scenario keyword = |Given | ).
+    steps = cacamber->split( strings = steps keyword = |Then | ).
 
-    DATA(matches) = cacamber->get_matches_for( 'given this is your birthday 17.07.1952' &&
-                               'and that your wedding day is 31.07.2018' ).
-
-    cl_abap_unit_assert=>assert_equals( msg = 'Matches... dont match.' exp = matches_expexted act = matches ).
-
+    cl_abap_unit_assert=>assert_equals( msg = 'Steps do not match' exp = steps_expected act = steps ).
   ENDMETHOD.
 
   METHOD can_run_a_one_step_scenario.
     cacamber->configure( pattern = 'your name is (.+) (.+)' method_name = 'WHENYOURNAMEIS' ).
 
-    cacamber->run( 'given your name is Marty McFly' ).
+    cacamber->run( 'Given your name is Marty McFly' ).
 
     cl_abap_unit_assert=>assert_equals( msg = 'Marker not set' exp = abap_true act = method_has_been_called ).
 

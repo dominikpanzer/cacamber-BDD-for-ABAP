@@ -88,10 +88,10 @@ CLASS zcl_cacamber DEFINITION
                               RETURNING VALUE(variable_internal) TYPE string,
       get_method_by_method_name IMPORTING method_name               TYPE char30
                                           class_description         TYPE REF TO cl_abap_classdescr
-                                RETURNING VALUE(method_description) TYPE REF TO abap_methdescr,
-      get_matches_for
-        IMPORTING scenario       TYPE string
-        RETURNING VALUE(matches) TYPE matches_tt.
+                                RETURNING VALUE(method_description) TYPE REF TO abap_methdescr.
+    METHODS split IMPORTING strings            TYPE string_table
+                            keyword            TYPE string
+                  RETURNING VALUE(new_strings) TYPE string_table.
 ENDCLASS.
 
 
@@ -252,36 +252,27 @@ CLASS zcl_cacamber IMPLEMENTATION.
     result = xsdbool( lines( variables ) <> lines( parameters ) ).
   ENDMETHOD.
 
+  METHOD run.
+    DATA(strings) = VALUE string_table( ( scenario ) ).
 
-  METHOD get_matches_for.
-    DATA: variables TYPE string_table.
+    strings = split( strings = strings keyword = |Given | ).
+    strings = split( strings = strings keyword = |When | ).
+    strings = split( strings = strings keyword = |Then | ).
+    strings = split( strings = strings keyword = |Or | ).
+    strings = split( strings = strings keyword = |And | ).
+    strings = split( strings = strings keyword = |But | ).
 
-    LOOP AT configuration REFERENCE INTO DATA(configuration_entry).
-      DATA(offset) = find( val = scenario regex = configuration_entry->pattern ).
-      CHECK sy-subrc = 0.
-      FIND ALL OCCURRENCES OF REGEX configuration_entry->pattern IN scenario RESULTS DATA(findings).
-      LOOP AT findings REFERENCE INTO DATA(finding).
-        CLEAR variables.
-        LOOP AT finding->submatches REFERENCE INTO DATA(submatch).
-          DATA(variable) = substring( val = scenario off = submatch->offset len = submatch->length ).
-          APPEND variable TO variables.
-        ENDLOOP.
-      ENDLOOP.
-      matches = VALUE #( BASE matches ( offset = offset method_name = configuration_entry->method_name variables = variables ) ).
+    LOOP AT strings REFERENCE INTO DATA(step).
+      given( step->* ).
     ENDLOOP.
-    SORT matches BY offset ASCENDING.
   ENDMETHOD.
 
-  METHOD run.
-    DATA(matches) = get_matches_for( scenario ).
-    LOOP AT matches REFERENCE INTO DATA(match).
-      DATA(parameters) = get_method_parameters( local_testclass_instance = me->test_class_instance method_name = match->method_name ).
-      IF paramaters_dont_match_variable( parameters = parameters variables = match->variables ).
-        RAISE EXCEPTION TYPE zcx_cacamber_error.
-      ENDIF.
-      DATA(matched_parameters) = add_variables_to_parameters( variables = match->variables parameters = parameters ).
-      CALL METHOD me->test_class_instance->(match->method_name) PARAMETER-TABLE matched_parameters.
+  METHOD split.
+    LOOP AT strings REFERENCE INTO DATA(string).
+      SPLIT string->* AT keyword INTO TABLE DATA(splitted).
+      APPEND LINES OF splitted TO new_strings.
     ENDLOOP.
+    DELETE new_strings WHERE table_line IS INITIAL.
   ENDMETHOD.
 
 ENDCLASS.

@@ -23,33 +23,33 @@ ENDCLASS.
 CLASS acceptance_discount_calculatio IMPLEMENTATION.
   METHOD setup.
     feature( 'Discount Calcuation' ).
-    configure( pattern = 'the customers first name is (.+) and his last name is ([\w\s]+)(?= (?:and|or|given|then|when|but))' method_name = 'set_first_and_second_name' ).
-    configure( pattern = 'his birthdate according to our CRM system is (\d{2}\.\d{2}\.\d{4})' method_name = 'set_birthdate' ).
-    configure( pattern = 'the sales clerk lets the system calculate the customers discount on the (.+)(?= (?:and|or|given|then|when|but))' method_name = 'calculate_discount' ).
-    configure( pattern = 'the discount is (.+)% \\m\/' method_name = 'evaluate_applied_discount' ).
-    "  configure( pattern = 'in his shopping cart are the following items:(.*)' method_name = 'process_shopping_cart' ).
+    configure( pattern = '^the customers first name is (.+) and his last name is (.+)$' method_name = 'set_first_and_second_name' ).
+    configure( pattern = '^his birthdate according to our CRM system is (.+)' method_name = 'set_birthdate' ).
+    configure( pattern = '^the sales clerk lets the system calculate the customers discount on the (.+)$' method_name = 'calculate_discount' ).
+    configure( pattern = '^the discount is (.+)% \\m\/$' method_name = 'evaluate_applied_discount' ).
+    configure( pattern = '^in his shopping cart are the following items:(.*)$' method_name = 'process_shopping_cart' ).
 
     discount_calculator = NEW zcl_bdd_example_2( ).
   ENDMETHOD.
 
   METHOD discount_on_slayer_albums.
     scenario( 'Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)' ).
-    run( 'given the customers first name is Dominik and his last name is Panzer' &&
-         ' and his birthdate according to our CRM system is 06.06.2006' &&
-         ' when the sales clerk lets the system calculate the customers discount on the Slayer Album' &&
-         ' then the discount is 66% \m/' ).
+    run( 'Given the customers first name is Dominik and his last name is Panzer' &&
+         'And his birthdate according to our CRM system is 06.06.2006' &&
+         'When the sales clerk lets the system calculate the customers discount on the Slayer Album' &&
+         'Then the discount is 66% \m/' ).
   ENDMETHOD.
 
   METHOD no_discount_on_shopping_cart.
-*    scenario( 'Customer is not eligable for a discount on the shopping cart' ).
-*    given( 'the customers first name is Dominik and his last name is Panzer' ).
-*    and( 'his birthdate according to our CRM system is 06.06.2006' ).
-*    and( 'in his shopping cart are the following items:' &&
-*         '| 1 | Scooter - Hyper Hyper |' &&
-*         '| 1 | Scooter - How Much Is The Fish |' &&
-*         '| 1 | Scooter - Maria (I like it loud) |' ).
-*    when( 'the sales clerk lets the system calculate the customers discount on the shopping cart' ).
-*    then( 'the discount is 0% \m/' ).
+    scenario( 'Customer is not eligable for a discount on the shopping cart' ).
+    run( 'Given the customers first name is Dominik and his last name is Panzer' &&
+         'And his birthdate according to our CRM system is 06.06.2006' &&
+         'And in his shopping cart are the following items:' &&
+         '| 1 | Scooter - Hyper Hyper |' &&
+         '| 1 | Scooter - How Much Is The Fish |' &&
+         '| 1 | Scooter - Maria (I like it loud) |' &&
+         'When the sales clerk lets the system calculate the customers discount on the shopping cart'  &&
+         'Then the discount is 0% \m/' ).
   ENDMETHOD.
 
 
