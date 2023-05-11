@@ -446,9 +446,10 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :white_check_mark: a user can use a float number in the tests (1000.25) and it is parsed into a packed datatype succcessfully
 :white_check_mark: a user can use a time in the test (12:00:00 or 14:01:00) and it is parsed into TIMS datatype successfully
 :white_check_mark: update the docs 👹
-:black_square_button: add a method verify(string) which can parse a whole scenario in a string format and no single given() when() then() etc methods need to be called
-:black_square_button: support german Gherkin keywords
+:white_check_mark: add a method verify(string) which can parse a whole scenario in a string format and no single given() when() then() etc methods need to be called
+:black_square_button: check compatibility to 7.5x-systems
 :black_square_button: find beta testers
+:black_square_button: enable some kind of i18n and support german Gherkin keywords
 :black_square_button: refactor to `RESULT` and improve error handling
 :black_square_button: get rid of ddic objects
 :black_square_button: your awesome idea
