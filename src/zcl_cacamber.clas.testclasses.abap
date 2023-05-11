@@ -352,9 +352,9 @@ CLASS scaffolding_tests IMPLEMENTATION.
     DATA(steps) =  VALUE string_table( ( |Scenario: The One Where I Met David Hasselhoff| ) ( |non relevant stuff| ) ).
     DATA(scenario_expected) = |The One Where I Met David Hasselhoff|.
 
-    cacamber->extract_scenario_from_text( steps ).
+    DATA(scenario) =  cacamber->extract_scenario_from_text( steps ).
 
-    cl_abap_unit_assert=>assert_equals( msg = 'Scenario hasnt been extracted' exp = scenario_expected act = cacamber->current_scenario ).
+    cl_abap_unit_assert=>assert_equals( msg = 'Scenario hasnt been extracted' exp = scenario_expected act = scenario ).
   ENDMETHOD.
 
 ENDCLASS.

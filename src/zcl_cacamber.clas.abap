@@ -34,8 +34,8 @@ CLASS zcl_cacamber DEFINITION
       IMPORTING
         scenario TYPE string.
     METHODS extract_scenario_from_text
-      IMPORTING
-        steps TYPE string_table.
+      IMPORTING steps           TYPE string_table
+      RETURNING VALUE(scenario) TYPE scenario_t.
 
 
   PROTECTED SECTION.
@@ -272,6 +272,17 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
 
   METHOD extract_scenario_from_text.
+    LOOP AT steps REFERENCE INTO DATA(step).
+
+      FIND ALL OCCURRENCES OF REGEX 'Scenario: (.*)' IN step->* RESULTS DATA(findings).
+      LOOP AT findings REFERENCE INTO DATA(finding).
+        LOOP AT finding->submatches REFERENCE INTO DATA(submatch).
+          DATA(variable) = substring( val = step->* off = submatch->offset len = submatch->length ).
+          scenario = variable.
+          RETURN.
+        ENDLOOP.
+      ENDLOOP.
+    ENDLOOP.
 
   ENDMETHOD.
 
