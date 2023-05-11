@@ -33,23 +33,23 @@ CLASS acceptance_discount_calculatio IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD discount_on_slayer_albums.
-    scenario( 'Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)' ).
-    verify( 'Given the customers first name is Dominik and his last name is Panzer' &&
-         'And his birthdate according to our CRM system is 06.06.2006' &&
-         'When the sales clerk lets the system calculate the customers discount on the Slayer Album' &&
-         'Then the discount is 66% \m/' ).
+    verify( 'Scenario: Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)' &&
+            'Given the customers first name is Dominik and his last name is Panzer' &&
+            'And his birthdate according to our CRM system is 06.06.2006' &&
+            'When the sales clerk lets the system calculate the customers discount on the Slayer Album' &&
+            'Then the discount is 66% \m/' ).
   ENDMETHOD.
 
   METHOD no_discount_on_shopping_cart.
-    scenario( 'Customer is not eligable for a discount on the shopping cart' ).
-    verify( 'Given the customers first name is Dominik and his last name is Panzer' &&
-         'And his birthdate according to our CRM system is 06.06.2006' &&
-         'And in his shopping cart are the following items:' &&
-         '| 1 | Scooter - Hyper Hyper |' &&
-         '| 1 | Scooter - How Much Is The Fish |' &&
-         '| 1 | Scooter - Maria (I like it loud) |' &&
-         'When the sales clerk lets the system calculate the customers discount on the shopping cart'  &&
-         'Then the discount is 0% \m/' ).
+    verify( 'Scenario: Customer is not eligable for a discount on the shopping cart' &&
+            'Given the customers first name is Dominik and his last name is Panzer' &&
+            'And his birthdate according to our CRM system is 06.06.2006' &&
+            'And in his shopping cart are the following items:' &&
+            '| 1 | Scooter - Hyper Hyper |' &&
+            '| 1 | Scooter - How Much Is The Fish |' &&
+            '| 1 | Scooter - Maria (I like it loud) |' &&
+            'When the sales clerk lets the system calculate the customers discount on the shopping cart'  &&
+            'Then the discount is 0% \m/' ).
   ENDMETHOD.
 
 

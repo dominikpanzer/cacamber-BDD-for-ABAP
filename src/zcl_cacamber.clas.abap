@@ -33,9 +33,10 @@ CLASS zcl_cacamber DEFINITION
     METHODS verify
       IMPORTING
         scenario TYPE string.
-    METHODS extract_scenario_from_text
-      IMPORTING steps           TYPE string_table
-      RETURNING VALUE(scenario) TYPE scenario_t.
+    METHODS extract_scenario_from_steps
+      IMPORTING steps                  TYPE string_table
+      EXPORTING scenario               TYPE scenario_t
+                steps_without_scenario TYPE string_table.
 
 
   PROTECTED SECTION.
@@ -257,6 +258,9 @@ CLASS zcl_cacamber IMPLEMENTATION.
     strings = split( strings = strings keyword = |And | ).
     strings = split( strings = strings keyword = |But | ).
 
+    extract_scenario_from_steps( EXPORTING steps = strings
+                                 IMPORTING scenario = current_scenario
+                                           steps_without_scenario = strings ).
     LOOP AT strings REFERENCE INTO DATA(step).
       given( step->* ).
     ENDLOOP.
@@ -271,17 +275,14 @@ CLASS zcl_cacamber IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD extract_scenario_from_text.
+  METHOD extract_scenario_from_steps.
+    steps_without_scenario = steps.
     LOOP AT steps REFERENCE INTO DATA(step).
-
       FIND ALL OCCURRENCES OF REGEX 'Scenario: (.*)' IN step->* RESULTS DATA(findings).
-      LOOP AT findings REFERENCE INTO DATA(finding).
-        LOOP AT finding->submatches REFERENCE INTO DATA(submatch).
-          DATA(variable) = substring( val = step->* off = submatch->offset len = submatch->length ).
-          scenario = variable.
-          RETURN.
-        ENDLOOP.
-      ENDLOOP.
+      CHECK findings IS NOT INITIAL.
+      scenario = substring( val = step->* off = findings[ 1 ]-submatches[ 1 ]-offset len = findings[ 1 ]-submatches[ 1 ]-length ).
+      DELETE steps_without_scenario INDEX sy-tabix.
+      RETURN.
     ENDLOOP.
 
   ENDMETHOD.
