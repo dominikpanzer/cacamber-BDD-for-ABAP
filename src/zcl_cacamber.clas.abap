@@ -33,13 +33,13 @@ CLASS zcl_cacamber DEFINITION
     METHODS verify
       IMPORTING
         scenario TYPE string.
-    METHODS extract_scenario_from_steps
-      IMPORTING steps                  TYPE string_table
-      EXPORTING scenario               TYPE scenario_t
-                steps_without_scenario TYPE string_table.
+
 
 
   PROTECTED SECTION.
+
+
+  PRIVATE SECTION.
     TYPES: BEGIN OF configuration_ts,
              pattern     TYPE string,
              method_name TYPE char30,
@@ -56,8 +56,6 @@ CLASS zcl_cacamber DEFINITION
     DATA: current_feature TYPE feature_t.
     DATA: current_scenario TYPE scenario_t.
     DATA: current_rule TYPE rule_t.
-
-  PRIVATE SECTION.
     CLASS-DATA test_class_instance TYPE REF TO object.
 
     METHODS get_method_parameters IMPORTING method_name              TYPE char30
@@ -88,6 +86,16 @@ CLASS zcl_cacamber DEFINITION
     METHODS split IMPORTING strings            TYPE string_table
                             keyword            TYPE string
                   RETURNING VALUE(new_strings) TYPE string_table.
+    METHODS extract_rule_from_steps
+      IMPORTING
+        steps              TYPE string_table
+      EXPORTING
+        rule               TYPE rule_t
+        steps_without_rule TYPE string_table.
+    METHODS extract_scenario_from_steps
+      IMPORTING steps                  TYPE string_table
+      EXPORTING scenario               TYPE scenario_t
+                steps_without_scenario TYPE string_table.
 ENDCLASS.
 
 
@@ -284,7 +292,18 @@ CLASS zcl_cacamber IMPLEMENTATION.
       DELETE steps_without_scenario INDEX sy-tabix.
       RETURN.
     ENDLOOP.
+  ENDMETHOD.
 
+
+  METHOD extract_rule_from_steps.
+    steps_without_rule = steps.
+    LOOP AT steps REFERENCE INTO DATA(step).
+      FIND ALL OCCURRENCES OF REGEX 'Rule: (.*)' IN step->* RESULTS DATA(findings).
+      CHECK findings IS NOT INITIAL.
+      rule = substring( val = step->* off = findings[ 1 ]-submatches[ 1 ]-offset len = findings[ 1 ]-submatches[ 1 ]-length ).
+      DELETE steps_without_rule INDEX sy-tabix.
+      RETURN.
+    ENDLOOP.
   ENDMETHOD.
 
 ENDCLASS.
