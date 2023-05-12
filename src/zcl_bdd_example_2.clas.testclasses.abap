@@ -18,8 +18,6 @@ CLASS acceptance_discount_calculatio DEFINITION FINAL FOR TESTING INHERITING FRO
     METHODS: no_discount_on_shopping_cart FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 
-
-
 CLASS acceptance_discount_calculatio IMPLEMENTATION.
   METHOD setup.
     feature( 'Discount Calcuation' ).

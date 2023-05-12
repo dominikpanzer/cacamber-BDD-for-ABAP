@@ -37,9 +37,6 @@ CLASS zcl_cacamber DEFINITION
 
 
   PROTECTED SECTION.
-
-
-  PRIVATE SECTION.
     TYPES: BEGIN OF configuration_ts,
              pattern     TYPE string,
              method_name TYPE char30,
@@ -56,6 +53,8 @@ CLASS zcl_cacamber DEFINITION
     DATA: current_feature TYPE feature_t.
     DATA: current_scenario TYPE scenario_t.
     DATA: current_rule TYPE rule_t.
+
+  PRIVATE SECTION.
     CLASS-DATA test_class_instance TYPE REF TO object.
 
     METHODS get_method_parameters IMPORTING method_name              TYPE char30
