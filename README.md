@@ -483,22 +483,24 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :white_check_mark: a user can use empty cells in a table
 :white_check_mark: set up a class as example on how to use cacamber
 :white_check_mark: update the docs 👹
-:black_square_button: fix the linter / unit tests 
+:white_check_mark: fix the linter 
 :white_check_mark: a user can use a float number in the tests (1000.25) and it is parsed into a packed datatype succcessfully
 :white_check_mark: a user can use a time in the test (12:00:00 or 14:01:00) and it is parsed into TIMS datatype successfully
 :white_check_mark: update the docs 👹
 :white_check_mark: add a method verify(string) which can parse a whole scenario in a string format and no single given() when() then() etc methods need to be called
 :white_check_mark: find beta testers
 :black_square_button: check compatibility to 7.5x-systems
+:black_square_button: add ADRs
 :black_square_button: :boom: FIRST PUBLIC RELEASE :boom: Twitter + Blog
+:black_square_button: fix the unit tests runner 
 :black_square_button: enable some kind of i18n to support german Gherkin keywords
 :black_square_button: refactor to `RESULT` and improve error handling
 :black_square_button: get rid of ddic objects
+:black_square_button: maybe text file parsing is a good idea? maybe not?
 :black_square_button: your awesome idea
-:black_square_button: think about text file parsing
 
 ## Solution Architecture
-There are many frameworks out there for other programming languages which support Gherkin. Usually there are textfiles which contain the tests and test classes, which have annotations to map the scenarios to the different step methods. Thats great. But seemed quite complicated to me in the SAP world (textfile handling, parsing own sourcecode for annotations, maybe generating sourcecode or even writing a test framework). So I decided to implement it the way I did now just to see, if the general concept of BDD is something the ABAP community finds valueable. The next step might be to enhance Cacamber for textfile-parsing or introduce a database concept.
+There are many frameworks out there for other programming languages which support Gherkin. Usually there are textfiles which contain the tests and test classes, which have annotations to map the scenarios to the different step methods. Thats great. But seemed quite complicated to me in the SAP world (textfile handling, parsing own sourcecode for annotations, maybe generating sourcecode or even writing a test framework). So I decided to implement it the way I did now just to see, if the general concept of BDD is something the ABAP community finds valueable. 
 
 You will find all architectural decisions for Cacamber documented as Architecture Decision Records [in this folder](https://github.com/dominikpanzer/cacamber-BDD-for-ABAP/tree/main/architecture) of the repository.
 
