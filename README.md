@@ -497,11 +497,14 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :black_square_button: your awesome idea
 :black_square_button: think about text file parsing
 
-## Cacamber vs. other Gherkin frameworks / solution architecture
+## Solution Architecture
 There are many frameworks out there for other programming languages which support Gherkin. Usually there are textfiles which contain the tests and test classes, which have annotations to map the scenarios to the different step methods. Thats great. But seemed quite complicated to me in the SAP world (textfile handling, parsing own sourcecode for annotations, maybe generating sourcecode or even writing a test framework). So I decided to implement it the way I did now just to see, if the general concept of BDD is something the ABAP community finds valueable. The next step might be to enhance Cacamber for textfile-parsing or introduce a database concept.
+
+You will find all architectural decisions for Cacamber documented as Architecture Decision Records [in this folder](https://github.com/dominikpanzer/cacamber-BDD-for-ABAP/tree/main/architecture) of the repository.
 
 ## How to support this project
 PRs are welcome! You can also just pick one of the test list entries from above and implement the solution or implement your own idea. Fix a bug. Improve the docs... whatever suits you.
+Please keep the current [ADRs](https://github.com/dominikpanzer/cacamber-BDD-for-ABAP/tree/main/architecture) in mind.
 
 Greetings, 
 Dominik
