@@ -490,10 +490,12 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :white_check_mark: add a method verify(string) which can parse a whole scenario in a string format and no single given() when() then() etc methods need to be called
 :white_check_mark: find beta testers
 :black_square_button: check compatibility to 7.5x-systems
+:black_square_button: :boom: FIRST PUBLIC RELEASE :boom: Twitter + Blog
 :black_square_button: enable some kind of i18n to support german Gherkin keywords
 :black_square_button: refactor to `RESULT` and improve error handling
 :black_square_button: get rid of ddic objects
 :black_square_button: your awesome idea
+:black_square_button: think about text file parsing
 
 ## Cacamber vs. other Gherkin frameworks / solution architecture
 There are many frameworks out there for other programming languages which support Gherkin. Usually there are textfiles which contain the tests and test classes, which have annotations to map the scenarios to the different step methods. Thats great. But seemed quite complicated to me in the SAP world (textfile handling, parsing own sourcecode for annotations, maybe generating sourcecode or even writing a test framework). So I decided to implement it the way I did now just to see, if the general concept of BDD is something the ABAP community finds valueable. The next step might be to enhance Cacamber for textfile-parsing or introduce a database concept.
