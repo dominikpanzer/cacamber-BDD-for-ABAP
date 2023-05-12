@@ -27,7 +27,6 @@ sut->do_that( parameter ).
 "more complex stuff here
 DATA(product) = |Slayer Album|.
 
-
 * When
 DATA(discount) = sut->calculate( product ).
 
@@ -92,9 +91,9 @@ verify( 'Scenario: Customer is not eligable for a discount on the shopping cart'
         'Given the customers first name is Dominik and his last name is Panzer' &&
         'And his birthdate according to our CRM system is 06.06.2006' &&
         'And in his shopping cart are the following items:' &&
-        '| 1 | Scooter - Hyper Hyper |' &&
-        '| 1 | Scooter - How Much Is The Fish |' &&
-        '| 1 | Scooter - Maria (I like it loud) |' &&
+          '| 1 | Scooter - Hyper Hyper |' &&
+          '| 1 | Scooter - How Much Is The Fish |' &&
+          '| 1 | Scooter - Maria (I like it loud) |' &&
         'When the sales clerk lets the system calculate the customers discount on the shopping cart'  &&
         'Then the discount is 0% \m/' ).
  ENDMETHOD.
@@ -102,8 +101,8 @@ verify( 'Scenario: Customer is not eligable for a discount on the shopping cart'
   
 Have I sparked your interest? Great.
 
-## Example
-If you don't like to read docs, check out the example class ZCL_BDD_EXAMPLE, which shows how to use Cacamber. It's an implementation of the above scenario "Discount on Slayer albums for VIP Slayer fans (exclusive contract with BMG)".
+## Examples
+If you don't like to read docs, check out the example class ´ZCL_BDD_EXAMPLE` and `ZCL_BDD_EXAMPLE_2`, which show how to use Cacamber. The provide implementation of the above scenario "Discount on Slayer albums for VIP Slayer fans (exclusive contract with BMG)".
 
 ## The BDD cycle when using Cacamber
 BDDs main target is to deliver quality software by making the communication between different team members easier. But most people just think about tools like Cucumber (or Cacamber ;-)) and test automation whenever they hear about BDD.
@@ -119,7 +118,23 @@ So how does BDD work and how does Cacamber fit in? Let us have a look:
 1. Refactor.
 1. Start with the next scenario and reuse your steps methods.
 
-If this is too high level for you, have a look at the example implementation `ZCL_BDD_EXAMPLE` and `ZCL_BDD_EXAMPLE_2`  or check out the API description.
+If this is too high level for you, have a look at the example implementation `ZCL_BDD_EXAMPLE` and `ZCL_BDD_EXAMPLE_2` or check out the API description.
+
+## Advantages of BDD
+* Increases / improves collaboration between business, dev and QA
+* Makes communication in the team easier by using natural domain centric language
+* The team can talk about the system behavior instead of technical implementation details
+* Devs know when they are "done", because the clearly defined scenarios can be used as are acceptance criteria
+* Test scenarios are easily readable for new devs because they are written in a natural language
+* Test steps can be reused
+* Tests can be easily parameterized
+* Tests are a living and up to date documentation
+* Testing is shifted to the left of the dev process
+* Automated BDD tests give the devs the security the code still works
+* Fosters unit testing to implement the scenarios
+* Hides compexity of implementations behind a abstraction layer
+* etc.
+
 
 ## Cacamber API
 
@@ -143,7 +158,7 @@ cl_abap_unit_assert=>assert_equals( msg = current_feature exp = expected act = a
 ```
 
 ### CONFIGURE
-The method `CONFIGURE` maps a regex-string to a method, which should be executed whenever the regex matches. This is called a step. If you are not a regex-pro, you can use tools like [regex101](https://regex101.com/) to make things easier. Inside the regex you can use (.+) or other matchers to extract the variables from the string, which will be used by Cacamber as parameters for the method call. The order of the variables must match the order of the parameters of the step method which should be called when the regex matches. The configuration is usually done in the `SETUP`-method of your test class.
+The method `CONFIGURE` maps a regex-string to a method, which should be executed whenever the regex matches. This is called a step. If you are not a regex-pro, you can use tools like [regex101](https://regex101.com/) to make things easier. Inside the regex you can use (.+) or other matchers to extract the variables from the string, which will be used by Cacamber as parameters for the method call. The order of the variables must match the order of the parameters of the step method which should be called when the regex matches. Your method is only allowed to have `IMPORTING`parameters. The configuration is usually done in the `SETUP`-method of your test class.
 
 Supported types and regular expressions:
 Currently Cacamber is able to handle the following basic datatypes, which you can use in your step methods parameters. You can also use DDIC types based on these.
@@ -326,6 +341,32 @@ Example:
 then( 'the discount is 66% \m/' ).
 ...
 ```
+
+### VERIFY
+Verify makes it possible to parse a whole scenario at once. So you don't need to call the methods `GIVEN` `THEN` `WHEN` etc. Just one method call is enought. Instead you just use the Gherkin keywords you need in your description. Currently supported are:
+* `Scenario:` (optional)
+* `Rule:` (optional)
+* `Given`, `When`, `Then`, `And`, `Or`, `But`
+* 
+Important: All Keywords start with a capital letter.
+The scenario will be split at these keywords into singular steps. The steps will be parsed by the configuration. Sadly ABAP doesn't allow multiline strings without connecting them via `&&`. `ZCL_BDD_EXAMPLE_2` shows how to use `VERIFY`.
+
+Importing parameters:
+* `SCENARIO` - a string containing the whole scenario
+
+Example:
+```ABAP 
+...
+METHOD discount_on_slayer_albums.
+verify( 'Scenario: Discount on Slayer Albums for VIP Slayer fans (exclusive contract with BMG)' &&
+        'Given the customers first name is Dominik and his last name is Panzer' &&
+        'And his birthdate according to our CRM system is 06.06.2006' &&
+        'When the sales clerk lets the system calculate the customers discount on the Slayer Album' &&
+        'Then the discount is 66% \m/' ).
+ENDMETHOD.
+...
+```
+
 ## Datatable API
 If you want to use datatables in your steps, you can use the class `ZCL_DATATABLE` to work with them in your test methods.
 
@@ -447,9 +488,9 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :white_check_mark: a user can use a time in the test (12:00:00 or 14:01:00) and it is parsed into TIMS datatype successfully
 :white_check_mark: update the docs 👹
 :white_check_mark: add a method verify(string) which can parse a whole scenario in a string format and no single given() when() then() etc methods need to be called
+:white_check_mark: find beta testers
 :black_square_button: check compatibility to 7.5x-systems
-:black_square_button: find beta testers
-:black_square_button: enable some kind of i18n and support german Gherkin keywords
+:black_square_button: enable some kind of i18n to support german Gherkin keywords
 :black_square_button: refactor to `RESULT` and improve error handling
 :black_square_button: get rid of ddic objects
 :black_square_button: your awesome idea
@@ -458,7 +499,6 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 There are many frameworks out there for other programming languages which support Gherkin. Usually there are textfiles which contain the tests and test classes, which have annotations to map the scenarios to the different step methods. Thats great. But seemed quite complicated to me in the SAP world (textfile handling, parsing own sourcecode for annotations, maybe generating sourcecode or even writing a test framework). So I decided to implement it the way I did now just to see, if the general concept of BDD is something the ABAP community finds valueable. The next step might be to enhance Cacamber for textfile-parsing or introduce a database concept.
 
 ## How to support this project
-
 PRs are welcome! You can also just pick one of the test list entries from above and implement the solution or implement your own idea. Fix a bug. Improve the docs... whatever suits you.
 
 Greetings, 
