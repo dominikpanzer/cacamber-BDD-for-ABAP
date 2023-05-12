@@ -1,0 +1,22 @@
+# Architecture Decision Record: Cacamber Should Be Compatible With Netweaber 7.5x
+
+## Status
+accepted
+
+## Context
+Many companies running SAP don't update their systems regularly. Not everybody is using
+the newest stack or is already running S/4HANA. The migration from the old Netweaver 
+platform to S/4HANA will take years. ECC currently will ne supported by SAP until 2027.
+Many developers can't use Cacamber if it is not compatible to older systems.
+
+## Decision
+Cacamber should be able to run on Netweaver 7.5x, but should also follow the ABAP Cloud
+programming model to be future proof.
+
+## Consequences
+1. only ABAP language features compatible with 7.5x systems can be used
+1. main development system needs to be ABAP Cloud ready
+1. ABAP language version of the development objects needs to be "ABAP for Cloud Development"
+1. PRs have to be checked regarding the ABAP Cloud readiness
+1. PRs have to be checked regarding 7.5x compatibility 
+
