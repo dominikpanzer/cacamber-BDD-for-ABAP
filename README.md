@@ -493,7 +493,8 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :black_square_button: check compatibility to 7.5x-systems
 :black_square_button: add ADRs
 :black_square_button: introduce versioning (maybe currently not working because repo is private?)
-:black_square_button: :boom: FIRST PUBLIC RELEASE :boom: Twitter + Blog
+:black_square_button: :boom: FIRST PUBLIC RELEASE :boom: Twitter + Blog 
+:black_square_button: write blog about ADRs
 :black_square_button: fix the unit tests runner (ticket pending)
 :black_square_button: enable some kind of i18n to support german Gherkin keywords
 :black_square_button: refactor to `RESULT` and improve error handling
