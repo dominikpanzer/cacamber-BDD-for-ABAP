@@ -103,7 +103,7 @@ verify( 'Scenario: Customer is not eligable for a discount on the shopping cart'
 Have I sparked your interest? Great.
 
 ## Examples
-If you don't like to read docs, check out the example class ´ZCL_BDD_EXAMPLE` and `ZCL_BDD_EXAMPLE_2`, which show how to use Cacamber. The provide implementation of the above scenario "Discount on Slayer albums for VIP Slayer fans (exclusive contract with BMG)".
+If you don't like to read docs, check out the example class `ZCL_BDD_EXAMPLE` and `ZCL_BDD_EXAMPLE_2`, which show how to use Cacamber. The provide implementation of the above scenario "Discount on Slayer albums for VIP Slayer fans (exclusive contract with BMG)".
 
 ## The BDD cycle when using Cacamber
 BDDs main target is to deliver quality software by making the communication between different team members easier. But most people just think about tools like Cucumber (or Cacamber ;-)) and test automation whenever they hear about BDD.
