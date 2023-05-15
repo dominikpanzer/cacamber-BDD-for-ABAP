@@ -103,7 +103,7 @@ verify( 'Scenario: Customer is not eligable for a discount on the shopping cart'
 Have I sparked your interest? Great.
 
 ## Examples
-If you don't like to read docs, check out the example class `ZCL_BDD_EXAMPLE` and `ZCL_BDD_EXAMPLE_2`, which show how to use Cacamber. The provide implementation of the above scenario "Discount on Slayer albums for VIP Slayer fans (exclusive contract with BMG)".
+If you don't like to read docs, check out the example class `ZCL_BDD_EXAMPLE` and `ZCL_BDD_EXAMPLE_2`, which show how to use Cacamber. They provide implementations of the above scenario "Discount on Slayer albums for VIP Slayer fans (exclusive contract with BMG)".
 
 ## The BDD cycle when using Cacamber
 BDDs main target is to deliver quality software by making the communication between different team members easier. But most people just think about tools like Cucumber (or Cacamber ;-)) and test automation whenever they hear about BDD.
@@ -111,18 +111,18 @@ BDDs main target is to deliver quality software by making the communication betw
 So how does BDD work and how does Cacamber fit in? Let us have a look:
 1. Identify the important business features for your software and prioritize them.
 1. Identify different scenarios of these features and prioritize them.
-1. Define acceptance test descriptions for these scenarios. Use the Gherkin language for this. Make sure the whole team understands them. Scenarios are no technical descriptions. They describe the users intention, what the user actually does and what he wants to achive.
-1. Write the first scenario with Cacamber consisting of the relevant steps and place an `ASSERT` in the `THEN` step method. A step method needs to be a public method of your test class. Make sure there is just one `THEN`. You will need to inherit your test class from `ZCL_CACAMBER` and define a `FEATURE` and the `CONFIGURATION` for the steps in the `SETUP` of your test class. You will also need a test method, add a `SCENARIO` and different steps using `GIVEN`, `WHEN`, `THEN` and the other available methods.
+1. Define acceptance test descriptions for these scenarios. Use the Gherkin language for this. Make sure the whole team understands them. Scenarios are no technical descriptions. They describe the users intention, what the user actually does and what he wants to achieve.
+1. Write the first scenario with Cacamber consisting of the relevant steps and place an `ASSERT` in the `THEN` step method. A step method needs to be a public method of your test class. Make sure there is just one `THEN`. You will need to inherit your test class from `ZCL_CACAMBER` and define a `FEATURE` and the `CONFIGURATION` for the steps in the `SETUP` of your test class. You will also need a test method `FOR TESTING`, put a `SCENARIO` and different steps using `GIVEN`, `WHEN`, `THEN` and the other available methods into the test method.
 1. The new test method will most likely fail with an exception, because the step methods are not implemented or the `ASSERT` failed. It might also go green, if the step methods are already implemented and the existing business logic is able to pass the criteria of the `ASSERT`. Then you are done.
 1. If the scenario fails, you will most likely need to write a new method for your business logic. Use TDD for this: Red-Green-Refactor. When your TDD tests are green, place the newly created or changed method into your step method. There might be more than one method call to your business logic in a single step method. You will also need to save results of your business logic in attributes, so other step methods can access it (one step calculates a value, the next step validates it etc.)
 1. Repeat unti your scenario is green.
 1. Refactor.
 1. Start with the next scenario and reuse your steps methods.
 
-If this is too high level for you, have a look at the example implementation `ZCL_BDD_EXAMPLE` and `ZCL_BDD_EXAMPLE_2` or check out the API description.
+If this is too abstract or too high level for you, have a look at the example implementation `ZCL_BDD_EXAMPLE` and `ZCL_BDD_EXAMPLE_2` or check out the Cacamber API documentation.
 
 ## Advantages of BDD
-* Increases / improves collaboration between business, dev and QA
+* Increases / improves collaboration between business, development and QA
 * Makes communication in the team easier by using natural domain centric language
 * The team can talk about the system behavior instead of technical implementation details
 * Devs know when they are "done", because the clearly defined scenarios can be used as are acceptance criteria
@@ -131,17 +131,19 @@ If this is too high level for you, have a look at the example implementation `ZC
 * Tests can be easily parameterized
 * Tests are a living and up to date documentation
 * Testing is shifted to the left of the dev process
-* Automated BDD tests give the devs the security the code still works
+* Automated BDD tests give the devs the security that the code still works and nothing breaks
 * Fosters unit testing to implement the scenarios
-* Hides compexity of implementations behind a abstraction layer
+* Hides compexity of implementations behind an abstraction layer
 * etc.
 
 ## How does Cacamber technically work?
 Cacamber basically works like this:
-* When you call one of Cacambers methods like `GIVEN`, `WHEN`, `THEN` etc or `VERIFIY`, you provide a string as a parameter of these methods. This string is a single step in your test (when using `GIVEN` etc.) or a complete scenario (when using `VERIFY`) written in natural language.
+* When you call one of Cacambers methods like `GIVEN`, `WHEN`, `THEN` etc or `VERIFIY`, you provide a string as a parameter of these methods. This string is a single step in your test (when using `GIVEN` etc.) or also a complete scenario (when using `VERIFY`) written in natural language.
 * Cacamber will take this string and check it against the configuration that was provided via the `CONFIGURE` method in the `SETUP` of your test class.
-* The configuration consists of regular expressions ("patterns"). If the string matches one of the regular expressions , Cacamber will extract the variables from the string.
+* The configuration consists of different entries. The first entry will be used to check if the regular expression ("pattern") and the provides string macht. If it does Cacamber will extract the variables from the string.
 * It then will call the method thats was provided via the configuration and use the variables as parameters.
+* If no regular expression matches, the next configuration entry will be used etc.
+* If no configuration entry can be found, Cacamber throws and exception.
 
 ## Cacamber API
 
