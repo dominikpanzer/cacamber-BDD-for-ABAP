@@ -136,6 +136,12 @@ If this is too high level for you, have a look at the example implementation `ZC
 * Hides compexity of implementations behind a abstraction layer
 * etc.
 
+## How does Cacamber technically work?
+Cacamber basically works like this:
+* When you call one of Cacambers methods like `GIVEN`, `WHEN`, `THEN` etc or `VERIFIY`, you provide a string as a parameter of these methods. This string is a single step in your test (when using `GIVEN` etc.) or a complete scenario (when using `VERIFY`) written in natural language.
+* Cacamber will take this string and check it against the configuration that was provided via the `CONFIGURE` method in the `SETUP` of your test class.
+* The configuration consists of regular expressions ("patterns"). If the string matches one of the regular expressions , Cacamber will extract the variables from the string.
+* It then will call the method thats was provided via the configuration and use the variables as parameters.
 
 ## Cacamber API
 
@@ -196,6 +202,13 @@ discount_calculator->set_first_name( first_name ).
 discount_calculator->set_last_name( last_name ).
 ENDMETHOD.
 ```
+Your test method looks like this:
+```ABAP
+METHOD discount_on_slayer_albums.
+...
+given( 'the customers first name is Dominik and his last name is Panzer' ).
+...
+ENDMETHOD.
 
 ### SCENARIO
 A scenario describes a variant of a feature and represents a test case. Therefore the `SCENARIO` method is usually used as the first method call in a test method of your local test class. A `SCENARIO` can be used to enhance the `MSG` parameter of your asserts.
