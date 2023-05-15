@@ -209,6 +209,7 @@ METHOD discount_on_slayer_albums.
 given( 'the customers first name is Dominik and his last name is Panzer' ).
 ...
 ENDMETHOD.
+```
 
 ### SCENARIO
 A scenario describes a variant of a feature and represents a test case. Therefore the `SCENARIO` method is usually used as the first method call in a test method of your local test class. A `SCENARIO` can be used to enhance the `MSG` parameter of your asserts.
@@ -476,7 +477,7 @@ datatable->to_table( EXPORTING ddic_table_type_name = 'ZTT_BDD_DEMO'
 
 
 ## How to install Cacamber
-You can copy and paste the source code into your system or simply clone this repository with [abapGit](https://abapgit.org/). There are currently no dependencies and it should work on 7.x systems.
+You can copy and paste the source code into your system or simply clone this repository with [abapGit](https://abapgit.org/). There are currently no dependencies and it should work on 7.5x systems.
 
 ## Feature List
 I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16-tdd-testlist/) or feature lists before I start coding. It's my personal todo-list. Often the list is very domain-centric, this one is quite technical.
@@ -516,9 +517,7 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :black_square_button: your awesome idea
 
 ## Solution Architecture
-There are many frameworks out there for other programming languages which support Gherkin. Usually there are textfiles which contain the tests and test classes, which have annotations to map the scenarios to the different step methods. Thats great. But seemed quite complicated to me in the SAP world (textfile handling, parsing own sourcecode for annotations, maybe generating sourcecode or even writing a test framework). So I decided to implement it the way I did now just to see, if the general concept of BDD is something the ABAP community finds valueable. 
-
-You will find all architectural decisions for Cacamber documented as Architecture Decision Records [in this folder](https://github.com/dominikpanzer/cacamber-BDD-for-ABAP/tree/main/architecture) of the repository.
+You will find a product vision as well as all architectural decisions for Cacamber documented as Architecture Decision Records [in this folder](https://github.com/dominikpanzer/cacamber-BDD-for-ABAP/tree/main/architecture) of the repository.
 
 ## How to support this project
 PRs are welcome! You can also just pick one of the test list entries from above and implement the solution or implement your own idea. Fix a bug. Improve the docs... whatever suits you.
