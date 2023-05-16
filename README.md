@@ -1,7 +1,8 @@
 [![Run abaplint](https://github.com/dominikpanzer/cacamber-BDD-for-ABAP/actions/workflows/lint.yml/badge.svg)](https://github.com/dominikpanzer/cacamber-BDD-for-ABAP/actions/workflows/lint.yml)
 [![Run Unit Tests](https://github.com/dominikpanzer/cacamber-BDD-for-ABAP/actions/workflows/unittest.yml/badge.svg)](https://github.com/dominikpanzer/cacamber-BDD-for-ABAP/actions/workflows/unittest.yml)
-![abap package version](https://img.shields.io/endpoint?url=https://shield.abap.space/version-shield-json/github/dominikpanzer/cacamber-BDD-for-ABAP/src/zif_cacamber_version.intf.abap/version)
+[![abap package version](https://img.shields.io/endpoint?url=https://shield.abap.space/version-shield-json/github/dominikpanzer/cacamber-BDD-for-ABAP/src/zif_cacamber_version.intf.abap/version&label=version)]()
 [![Twitter](https://img.shields.io/twitter/follow/PanzerDominik?style=social)](https://twitter.com/PanzerDominik)
+
 
 # Cacamber - the BDD-Framework for ABAP
 
