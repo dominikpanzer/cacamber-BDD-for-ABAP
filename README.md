@@ -134,7 +134,7 @@ If this is too abstract or too high level for you, have a look at the example im
 * Automated BDD tests give the devs the security that the code still works and nothing breaks
 * Fosters unit testing to implement the scenarios
 * Hides compexity of implementations behind an abstraction layer
-* etc.
+* etc. 
 
 ## How does Cacamber technically work?
 Cacamber basically works like this:
