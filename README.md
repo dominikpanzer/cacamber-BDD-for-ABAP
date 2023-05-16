@@ -3,7 +3,6 @@
 [![abap package version](https://img.shields.io/endpoint?url=https://shield.abap.space/version-shield-json/github/dominikpanzer/cacamber-BDD-for-ABAP/src/zif_cacamber_version.intf.abap/version&label=version)]()
 [![Twitter](https://img.shields.io/twitter/follow/PanzerDominik?style=social)](https://twitter.com/PanzerDominik)
 
-
 # Cacamber - the BDD-Framework for ABAP
 
 Hi! Cacamber makes it possible for you to run BDD-style tests in a SAP-system. [Behavior driven development](https://en.wikipedia.org/wiki/Behavior-driven_development) is an agile approach to software development. It focusses on collaboration through a common language between the customer and developers, testers etc. by defining examples which describe the behavior of a software system in a natural language. This language has a specific format and is called [Gherkin](https://cucumber.io/docs/gherkin/). When using the [ubiquitous language](https://martinfowler.com/bliki/UbiquitousLanguage.html) it looks like this:
