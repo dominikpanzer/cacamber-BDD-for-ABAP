@@ -141,12 +141,10 @@ CLASS scaffolding_tests IMPLEMENTATION.
     DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'STRING' name = 'FIRST_NAME' ) ).
     DATA(variables) = VALUE string_table( ( first_name ) ).
 
-    DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = exporting name = 'FIRST_NAME' value = REF #( first_name ) ) ).
-
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
     DATA(temp_first_name_matched) = matched_parameters[ name = 'FIRST_NAME' ]-value.
-    ASSIGN temp_first_name_matched->* TO <first_name_matched> .
+    ASSIGN temp_first_name_matched->* TO <first_name_matched>.
 
     cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = first_name act = <first_name_matched> ).
     cl_abap_unit_assert=>assert_equals( msg = 'Kind doesnt match' exp = exporting act = matched_parameters[ name = 'FIRST_NAME' ]-kind ).
@@ -162,7 +160,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
     DATA(temp_first_name_matched) = matched_parameters[ name = 'FIRST_NAME' ]-value.
-    ASSIGN temp_first_name_matched->* TO <first_name_matched> .
+    ASSIGN temp_first_name_matched->* TO <first_name_matched>.
 
     cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = first_name act = <first_name_matched> ).
     cl_abap_unit_assert=>assert_equals( msg = 'Kind doesnt match' exp = exporting act = matched_parameters[ name = 'FIRST_NAME' ]-kind ).
@@ -198,7 +196,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
     DATA(temp_date_matched) = matched_parameters[ name = 'DATE' ]-value.
-    ASSIGN temp_date_matched->* TO <date_matched> .
+    ASSIGN temp_date_matched->* TO <date_matched>.
 
     cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = date act = <date_matched> ).
     cl_abap_unit_assert=>assert_equals( msg = 'Kind doesnt match' exp = exporting act = matched_parameters[ name = 'DATE' ]-kind ).
@@ -214,7 +212,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
     DATA(temp_time_matched) = matched_parameters[ name = 'TIME' ]-value.
-    ASSIGN temp_time_matched->* TO <time_matched> .
+    ASSIGN temp_time_matched->* TO <time_matched>.
 
     cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = time act = <time_matched> ).
     cl_abap_unit_assert=>assert_equals( msg = 'Kind doesnt match' exp = exporting act = matched_parameters[ name = 'TIME' ]-kind ).
@@ -230,7 +228,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
     DATA(temp_integer_matched) = matched_parameters[ name = 'INTEGER' ]-value.
-    ASSIGN temp_integer_matched->* TO <integer_matched> .
+    ASSIGN temp_integer_matched->* TO <integer_matched>.
 
     cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = integer act = <integer_matched> ).
     cl_abap_unit_assert=>assert_equals( msg = 'Kind doesnt match' exp = exporting act = matched_parameters[ name = 'INTEGER' ]-kind ).
@@ -246,7 +244,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
     DATA(temp_integer_matched) = matched_parameters[ name = 'INTEGER' ]-value.
-    ASSIGN temp_integer_matched->* TO <integer_matched> .
+    ASSIGN temp_integer_matched->* TO <integer_matched>.
 
     cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = integer act = <integer_matched> ).
     cl_abap_unit_assert=>assert_equals( msg = 'Kind doesnt match' exp = exporting act = matched_parameters[ name = 'INTEGER' ]-kind ).
