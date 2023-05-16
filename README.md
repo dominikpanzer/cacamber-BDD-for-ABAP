@@ -509,7 +509,7 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :white_check_mark: find beta testers
 :white_check_mark: add ADRs
 :white_check_mark: check compatibility to 7.5x-systems
-:black_square_button: introduce versioning (maybe currently not working because repo is private?)
+:black_square_button: introduce versioning
 :black_square_button: :boom: FIRST PUBLIC RELEASE :boom: Twitter + Blog 
 :black_square_button: write blog about ADRs
 :black_square_button: fix the unit tests runner (ticket pending)
