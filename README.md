@@ -118,7 +118,7 @@ So how does BDD work and how does Cacamber fit in? Let us have a look:
 1. If the scenario fails, you will most likely need to write a new method for your business logic. Use TDD for this: Red-Green-Refactor. When your TDD tests are green, place the newly created or changed method into your step method. There might be more than one method call to your business logic in a single step method. You will also need to save results of your business logic in attributes, so other step methods can access it (one step calculates a value, the next step validates it etc.)
 1. Repeat unti your scenario is green.
 1. Refactor.
-1. Start with the next scenario and reuse your steps methods.
+1. Start with the next scenario and reuse your steps methods. 
 
 If this is too abstract or too high level for you, have a look at the example implementation `ZCL_BDD_EXAMPLE` and `ZCL_BDD_EXAMPLE_2` or check out the Cacamber API documentation.
 
