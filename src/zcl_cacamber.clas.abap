@@ -77,7 +77,7 @@ CLASS zcl_cacamber DEFINITION
                      RETURNING VALUE(result) TYPE abap_bool,
       format_time IMPORTING variable    TYPE string
                   RETURNING VALUE(time) TYPE string,
-      convertion_exit_inbound IMPORTING variable                 TYPE string
+      conversion_exit_inbound IMPORTING variable                 TYPE string
                               RETURNING VALUE(variable_internal) TYPE string,
       get_method_by_method_name IMPORTING method_name               TYPE char30
                                           class_description         TYPE REF TO cl_abap_classdescr
@@ -162,23 +162,25 @@ CLASS zcl_cacamber IMPLEMENTATION.
   METHOD add_variables_to_parameters.
     CONSTANTS exporting TYPE string VALUE 'E' ##NO_TEXT.
     DATA: parameter_value TYPE REF TO data.
+    FIELD-SYMBOLS <parameter_value> TYPE any.
 
     LOOP AT parameters ASSIGNING FIELD-SYMBOL(<parameter>).
       CREATE DATA parameter_value TYPE (<parameter>-data_type).
+      ASSIGN parameter_value->* TO <parameter_value>.
       IF is_gregorian_dot_seperated( variables[ sy-tabix ] ).
         cl_abap_datfm=>conv_date_ext_to_int( EXPORTING im_datext = variables[ sy-tabix ]
                                                        im_datfmdes = '1'
-                                             IMPORTING ex_datint = parameter_value->* ).
+                                             IMPORTING ex_datint = CAST d( parameter_value )->* ).
       ELSEIF is_time_format( variables[ sy-tabix ] ).
-        parameter_value->* = format_time( variables[ sy-tabix ] ).
+        <parameter_value> = format_time( variables[ sy-tabix ] ).
       ELSE.
-        parameter_value->* = convertion_exit_inbound( variables[ sy-tabix ] ).
+        <parameter_value> = conversion_exit_inbound( variables[ sy-tabix ] ).
       ENDIF.
       matched_parameters = VALUE #( BASE matched_parameters ( name = <parameter>-name kind = exporting value = parameter_value ) ).
     ENDLOOP.
   ENDMETHOD.
 
-  METHOD convertion_exit_inbound.
+  METHOD conversion_exit_inbound.
     variable_internal = |{ variable ALPHA = IN }|.
   ENDMETHOD.
 
