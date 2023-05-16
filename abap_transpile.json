@@ -13,6 +13,7 @@
     "ignoreSyntaxCheck": true,
     "addFilenames": true,
     "addCommonJS": true,
+    "keywords": ["then", "in"],
     "unknownTypes": "runtimeError",
     "skip": []
   }
