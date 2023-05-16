@@ -162,15 +162,15 @@ CLASS zcl_cacamber IMPLEMENTATION.
   METHOD add_variables_to_parameters.
     CONSTANTS exporting TYPE string VALUE 'E' ##NO_TEXT.
     DATA: parameter_value TYPE REF TO data.
-    field-SYMBOLS <parameter_value> type any.
+    FIELD-SYMBOLS <parameter_value> TYPE any.
 
     LOOP AT parameters ASSIGNING FIELD-SYMBOL(<parameter>).
       CREATE DATA parameter_value TYPE (<parameter>-data_type).
-      assign parameter_value->* to <parameter_value>.
+      ASSIGN parameter_value->* TO <parameter_value>.
       IF is_gregorian_dot_seperated( variables[ sy-tabix ] ).
         cl_abap_datfm=>conv_date_ext_to_int( EXPORTING im_datext = variables[ sy-tabix ]
                                                        im_datfmdes = '1'
-                                             IMPORTING ex_datint = cast d( parameter_value )->* ).
+                                             IMPORTING ex_datint = CAST d( parameter_value )->* ).
       ELSEIF is_time_format( variables[ sy-tabix ] ).
         <parameter_value> = format_time( variables[ sy-tabix ] ).
       ELSE.

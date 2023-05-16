@@ -148,8 +148,8 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     cl_abap_unit_assert=>assert_equals(
       msg = 'Values dont match'
-      exp = cast string( expected_matched_parameters[ name = 'FIRST_NAME' ]-value )->*
-      act = cast string( matched_parameters[ name = 'FIRST_NAME' ]-value )->* ).
+      exp = CAST string( expected_matched_parameters[ name = 'FIRST_NAME' ]-value )->*
+      act = CAST string( matched_parameters[ name = 'FIRST_NAME' ]-value )->* ).
   ENDMETHOD.
 
   METHOD added_vars_to_paras_char30.
@@ -167,8 +167,8 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     cl_abap_unit_assert=>assert_equals(
       msg = 'Values dont match'
-      exp = cast char30( expected_matched_parameters[ name = 'FIRST_NAME' ]-value )->*
-      act = cast char30( matched_parameters[ name = 'FIRST_NAME' ]-value )->* ).
+      exp = CAST char30( expected_matched_parameters[ name = 'FIRST_NAME' ]-value )->*
+      act = CAST char30( matched_parameters[ name = 'FIRST_NAME' ]-value )->* ).
   ENDMETHOD.
 
 
@@ -202,8 +202,8 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     cl_abap_unit_assert=>assert_equals(
       msg = 'Values dont match'
-      exp = cast d( expected_matched_parameters[ name = 'DATE' ]-value )->*
-      act = cast d( matched_parameters[ name = 'DATE' ]-value )->* ).
+      exp = CAST d( expected_matched_parameters[ name = 'DATE' ]-value )->*
+      act = CAST d( matched_parameters[ name = 'DATE' ]-value )->* ).
   ENDMETHOD.
 
   METHOD added_vars_to_paras_tims.
@@ -217,8 +217,8 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     cl_abap_unit_assert=>assert_equals(
       msg = 'Values dont match'
-      exp = cast t( expected_matched_parameters[ name = 'TIME' ]-value )->*
-      act = cast t( matched_parameters[ name = 'TIME' ]-value )->* ).
+      exp = CAST t( expected_matched_parameters[ name = 'TIME' ]-value )->*
+      act = CAST t( matched_parameters[ name = 'TIME' ]-value )->* ).
   ENDMETHOD.
 
   METHOD added_vars_to_paras_int.
@@ -232,8 +232,8 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     cl_abap_unit_assert=>assert_equals(
       msg = 'Values dont match'
-      exp = cast i( expected_matched_parameters[ name = 'INTEGER' ]-value )->*
-      act = cast i( matched_parameters[ name = 'INTEGER' ]-value )->* ).
+      exp = CAST i( expected_matched_parameters[ name = 'INTEGER' ]-value )->*
+      act = CAST i( matched_parameters[ name = 'INTEGER' ]-value )->* ).
   ENDMETHOD.
 
   METHOD added_vars_to_paras_neg_int.
@@ -247,8 +247,8 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     cl_abap_unit_assert=>assert_equals(
       msg = 'Values dont match'
-      exp = cast i( expected_matched_parameters[ name = 'INTEGER' ]-value )->*
-      act = cast i( matched_parameters[ name = 'INTEGER' ]-value )->* ).
+      exp = CAST i( expected_matched_parameters[ name = 'INTEGER' ]-value )->*
+      act = CAST i( matched_parameters[ name = 'INTEGER' ]-value )->* ).
   ENDMETHOD.
 
   METHOD given_calls_a_method.
@@ -368,7 +368,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD can_extract_current_scenario.
-    DATA(steps) =  VALUE string_table( ( |Scenario: The One Where I Met David Hasselhoff| ) ( |non relevant stuff| ) ).
+    DATA(steps) = VALUE string_table( ( |Scenario: The One Where I Met David Hasselhoff| ) ( |non relevant stuff| ) ).
     DATA(scenario_expected) = |The One Where I Met David Hasselhoff|.
     DATA(steps_without_scenario_exp) = VALUE string_table( ( |non relevant stuff| ) ).
 
@@ -381,7 +381,7 @@ CLASS scaffolding_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD can_extract_current_rule.
-    DATA(steps) =  VALUE string_table( ( |Rule: Slow-Motion Running Only!| ) ( |non relevant stuff| ) ).
+    DATA(steps) = VALUE string_table( ( |Rule: Slow-Motion Running Only!| ) ( |non relevant stuff| ) ).
     DATA(rule_expected) = |Slow-Motion Running Only!|.
     DATA(steps_without_rule_exp) = VALUE string_table( ( |non relevant stuff| ) ).
 
