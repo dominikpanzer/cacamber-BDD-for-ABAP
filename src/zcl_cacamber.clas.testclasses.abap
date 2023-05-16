@@ -17,6 +17,7 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
 
 
   PRIVATE SECTION.
+    CONSTANTS exporting TYPE string VALUE 'E' ##NO_TEXT.
     DATA: cacamber TYPE REF TO zcl_cacamber.
     DATA: method_has_been_called TYPE abap_bool,
           datatable              TYPE REF TO zcl_datatable.
@@ -135,40 +136,36 @@ CLASS scaffolding_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD added_variables_to_params_ok.
+    FIELD-SYMBOLS <first_name_matched> TYPE any.
     DATA(first_name) = |Dominik|.
-    DATA(last_name) = |Panzer|.
-    DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'STRING' name = 'FIRST_NAME' )
-                                                          ( data_type = 'STRING' name = 'LAST_NAME' ) ).
-    DATA(variables) = VALUE string_table( ( first_name ) ( last_name ) ).
+    DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'STRING' name = 'FIRST_NAME' ) ).
+    DATA(variables) = VALUE string_table( ( first_name ) ).
 
-    DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'FIRST_NAME' value = REF #( first_name ) )
-                                                                 ( kind = 'E' name = 'LAST_NAME' value = REF #( last_name ) ) ).
+    DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = exporting name = 'FIRST_NAME' value = REF #( first_name ) ) ).
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
-    cl_abap_unit_assert=>assert_equals(
-      msg = 'Values dont match'
-      exp = CAST string( expected_matched_parameters[ name = 'FIRST_NAME' ]-value )->*
-      act = CAST string( matched_parameters[ name = 'FIRST_NAME' ]-value )->* ).
+    DATA(temp_first_name_matched) = matched_parameters[ name = 'FIRST_NAME' ]-value.
+    ASSIGN temp_first_name_matched->* TO <first_name_matched> .
+
+    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = first_name act = <first_name_matched> ).
+    cl_abap_unit_assert=>assert_equals( msg = 'Kind doesnt match' exp = exporting act = matched_parameters[ name = 'FIRST_NAME' ]-kind ).
   ENDMETHOD.
 
   METHOD added_vars_to_paras_char30.
+    FIELD-SYMBOLS <first_name_matched> TYPE any.
     DATA first_name TYPE char30 VALUE 'Dominik'.
-    DATA last_name TYPE char30 VALUE 'Panzer'.
 
-    DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'CHAR30' name = 'FIRST_NAME' )
-                                                          ( data_type = 'CHAR30' name = 'LAST_NAME' ) ).
-    DATA(variables) = VALUE string_table( ( CONV #( first_name ) ) ( CONV #( last_name ) ) ).
-
-    DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'FIRST_NAME' value = REF #( first_name ) )
-                                                                 ( kind = 'E' name = 'LAST_NAME' value = REF #( last_name ) ) ).
+    DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'CHAR30' name = 'FIRST_NAME' ) ).
+    DATA(variables) = VALUE string_table( ( CONV #( first_name ) ) ).
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
-    cl_abap_unit_assert=>assert_equals(
-      msg = 'Values dont match'
-      exp = CAST char30( expected_matched_parameters[ name = 'FIRST_NAME' ]-value )->*
-      act = CAST char30( matched_parameters[ name = 'FIRST_NAME' ]-value )->* ).
+    DATA(temp_first_name_matched) = matched_parameters[ name = 'FIRST_NAME' ]-value.
+    ASSIGN temp_first_name_matched->* TO <first_name_matched> .
+
+    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = first_name act = <first_name_matched> ).
+    cl_abap_unit_assert=>assert_equals( msg = 'Kind doesnt match' exp = exporting act = matched_parameters[ name = 'FIRST_NAME' ]-kind ).
   ENDMETHOD.
 
 
@@ -192,63 +189,67 @@ CLASS scaffolding_tests IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD added_vars_to_paras_dats.
+    FIELD-SYMBOLS <date_matched> TYPE any.
     DATA date TYPE dats VALUE '20230430'.
 
     DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'DATS' name = 'DATE' ) ).
     DATA(variables) = VALUE string_table( ( |30.04.2023| ) ).
-    DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'DATE' value = REF #( date ) ) ).
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
-    cl_abap_unit_assert=>assert_equals(
-      msg = 'Values dont match'
-      exp = CAST d( expected_matched_parameters[ name = 'DATE' ]-value )->*
-      act = CAST d( matched_parameters[ name = 'DATE' ]-value )->* ).
+    DATA(temp_date_matched) = matched_parameters[ name = 'DATE' ]-value.
+    ASSIGN temp_date_matched->* TO <date_matched> .
+
+    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = date act = <date_matched> ).
+    cl_abap_unit_assert=>assert_equals( msg = 'Kind doesnt match' exp = exporting act = matched_parameters[ name = 'DATE' ]-kind ).
   ENDMETHOD.
 
   METHOD added_vars_to_paras_tims.
+    FIELD-SYMBOLS <time_matched> TYPE any.
     DATA time TYPE t VALUE '130001'.
 
     DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'T' name = 'TIME' ) ).
     DATA(variables) = VALUE string_table( ( |13:00:01| ) ).
-    DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'TIME' value = REF #( time ) ) ).
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
-    cl_abap_unit_assert=>assert_equals(
-      msg = 'Values dont match'
-      exp = CAST t( expected_matched_parameters[ name = 'TIME' ]-value )->*
-      act = CAST t( matched_parameters[ name = 'TIME' ]-value )->* ).
+    DATA(temp_time_matched) = matched_parameters[ name = 'TIME' ]-value.
+    ASSIGN temp_time_matched->* TO <time_matched> .
+
+    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = time act = <time_matched> ).
+    cl_abap_unit_assert=>assert_equals( msg = 'Kind doesnt match' exp = exporting act = matched_parameters[ name = 'TIME' ]-kind ).
   ENDMETHOD.
 
   METHOD added_vars_to_paras_int.
+    FIELD-SYMBOLS <integer_matched> TYPE any.
     DATA integer TYPE int4 VALUE '666'.
 
     DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'INT4' name = 'INTEGER' ) ).
     DATA(variables) = VALUE string_table( ( |666| ) ).
-    DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'INTEGER' value = REF #( integer ) ) ).
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
-    cl_abap_unit_assert=>assert_equals(
-      msg = 'Values dont match'
-      exp = CAST i( expected_matched_parameters[ name = 'INTEGER' ]-value )->*
-      act = CAST i( matched_parameters[ name = 'INTEGER' ]-value )->* ).
+    DATA(temp_integer_matched) = matched_parameters[ name = 'INTEGER' ]-value.
+    ASSIGN temp_integer_matched->* TO <integer_matched> .
+
+    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = integer act = <integer_matched> ).
+    cl_abap_unit_assert=>assert_equals( msg = 'Kind doesnt match' exp = exporting act = matched_parameters[ name = 'INTEGER' ]-kind ).
   ENDMETHOD.
 
   METHOD added_vars_to_paras_neg_int.
+    FIELD-SYMBOLS <integer_matched> TYPE any.
     DATA integer TYPE int4 VALUE '-666'.
 
     DATA(parameters) = VALUE zcl_cacamber=>parameters_tt( ( data_type = 'INT4' name = 'INTEGER' ) ).
     DATA(variables) = VALUE string_table( ( |-666| ) ).
-    DATA(expected_matched_parameters) = VALUE abap_parmbind_tab( ( kind = 'E' name = 'INTEGER' value = REF #( integer ) ) ).
 
     DATA(matched_parameters) = cacamber->add_variables_to_parameters( parameters = parameters variables = variables ).
 
-    cl_abap_unit_assert=>assert_equals(
-      msg = 'Values dont match'
-      exp = CAST i( expected_matched_parameters[ name = 'INTEGER' ]-value )->*
-      act = CAST i( matched_parameters[ name = 'INTEGER' ]-value )->* ).
+    DATA(temp_integer_matched) = matched_parameters[ name = 'INTEGER' ]-value.
+    ASSIGN temp_integer_matched->* TO <integer_matched> .
+
+    cl_abap_unit_assert=>assert_equals( msg = 'Values dont match' exp = integer act = <integer_matched> ).
+    cl_abap_unit_assert=>assert_equals( msg = 'Kind doesnt match' exp = exporting act = matched_parameters[ name = 'INTEGER' ]-kind ).
   ENDMETHOD.
 
   METHOD given_calls_a_method.
