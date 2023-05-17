@@ -49,9 +49,9 @@ when_the_price_is_calculated_for( 'Slayer Album' ).
 then_the_discount_is_correct( ).
 ENDMETHOD
 ```
-Thats way better! Persoanlly I only know one ABAP project with such kind of tests. Most of the details and complexity are hidden behind well named methods - another level of abstraction has been introduced. Also there is the possibility to change the test parameters. This make the steps of the test more flexible and reusable. But using parameterless methods would make the code more readable.
+That's way better! Personally I only know one ABAP project with such kind of tests. Most of the details and complexity are hidden behind well named methods - another level of abstraction has been introduced. Also, there is the possibility to change the test parameters. This makes the steps of the test more flexible and reusable. But using parameterless methods would make the code more readable.
 
-But this solution is no way near our original testcase description. It's not natural language, it is mainly code. Also this approach is limited by ABAPs maximum method length. Developers are forced to use abbreviations etc.
+But this solution is no way near our original test case description. It's not natural language, it is mainly code. Also, this approach is limited by ABAPs maximum method length. Developers are forced to use abbreviations etc.
 
 If you choose to use Cacamber as a bridge between the scenario written in plain Gherkin and ABAP Unit, your test steps will look like this:
 ```ABAP
@@ -89,7 +89,7 @@ ENDMETHOD.
 Or like that:
 ```ABAP
 METHOD no_discount_on_shopping_cart.
-verify( 'Scenario: Customer is not eligable for a discount on the shopping cart' &&
+verify( 'Scenario: Customer is not eligible for a discount on the shopping cart' &&
         'Given the customers first name is Dominik and his last name is Panzer' &&
         'And his birthdate according to our CRM system is 06.06.2006' &&
         'And in his shopping cart are the following items:' &&
@@ -110,13 +110,13 @@ If you don't like to read docs, check out the example class `ZCL_BDD_EXAMPLE` an
 BDDs main target is to deliver quality software by making the communication between different team members easier. But most people just think about tools like Cucumber (or Cacamber ;-)) and test automation whenever they hear about BDD.
 
 So how does BDD work and how does Cacamber fit in? Let us have a look:
-1. Identify the important business features for your software and prioritize them.
+1. Identify the important business features of your software and prioritize them.
 1. Identify different scenarios of these features and prioritize them.
 1. Define acceptance test descriptions for these scenarios. Use the Gherkin language for this. Make sure the whole team understands them. Scenarios are no technical descriptions. They describe the users intention, what the user actually does and what he wants to achieve.
 1. Write the first scenario with Cacamber consisting of the relevant steps and place an `ASSERT` in the `THEN` step method. A step method needs to be a public method of your test class. Make sure there is just one `THEN`. You will need to inherit your test class from `ZCL_CACAMBER` and define a `FEATURE` and the `CONFIGURATION` for the steps in the `SETUP` of your test class. You will also need a test method `FOR TESTING`, put a `SCENARIO` and different steps using `GIVEN`, `WHEN`, `THEN` and the other available methods into the test method.
-1. The new test method will most likely fail with an exception, because the step methods are not implemented or the `ASSERT` failed. It might also go green, if the step methods are already implemented and the existing business logic is able to pass the criteria of the `ASSERT`. Then you are done.
-1. If the scenario fails, you will most likely need to write a new method for your business logic. Use TDD for this: Red-Green-Refactor. When your TDD tests are green, place the newly created or changed method into your step method. There might be more than one method call to your business logic in a single step method. You will also need to save results of your business logic in attributes, so other step methods can access it (one step calculates a value, the next step validates it etc.)
-1. Repeat unti your scenario is green.
+1. The new test method will most likely fail with an exception because the step methods are not implemented or the `ASSERT` failed. It might also go green if the step methods are already implemented and the existing business logic is able to pass the criteria of the `ASSERT`. Then you are done.
+1. If the scenario fails, you will most likely need to write a new method for your business logic. Use TDD for this: Red-Green-Refactor. When your TDD tests are green, place the newly created or changed method into your step method. There might be more than one method call to your business logic in a single step method. You will also need to save the results of your business logic in attributes, so other step methods can access it (one step calculates a value, the next step validates it etc.)
+1. Repeat until your scenario is green.
 1. Refactor.
 1. Start with the next scenario and reuse your steps methods. 
 
@@ -126,25 +126,25 @@ If this is too abstract or too high level for you, have a look at the example im
 * Increases / improves collaboration between business, development and QA
 * Makes communication in the team easier by using natural domain centric language
 * The team can talk about the system behavior instead of technical implementation details
-* Devs know when they are "done", because the clearly defined scenarios can be used as are acceptance criteria
+* Devs know when they are "done", because the clearly defined scenarios can be used as acceptance criteria
 * Test scenarios are easily readable for new devs because they are written in a natural language
 * Test steps can be reused
 * Tests can be easily parameterized
-* Tests are a living and up to date documentation
+* Tests are a living and up-to-date documentation
 * Testing is shifted to the left of the dev process
 * Automated BDD tests give the devs the security that the code still works and nothing breaks
 * Fosters unit testing to implement the scenarios
-* Hides compexity of implementations behind an abstraction layer
+* Hides complexity of implementations behind an abstraction layer
 * etc. 
 
 ## How does Cacamber technically work?
 Cacamber basically works like this:
-* When you call one of Cacambers methods like `GIVEN`, `WHEN`, `THEN` etc or `VERIFIY`, you provide a string as a parameter of these methods. This string is a single step in your test (when using `GIVEN` etc.) or also a complete scenario (when using `VERIFY`) written in natural language.
+* When you call one of Cacambers methods like `GIVEN`, `WHEN`, `THEN`, etc or `VERIFY`, you provide a string as a parameter of these methods. This string is a single step in your test (when using `GIVEN` etc.) or also a complete scenario (when using `VERIFY`) written in natural language.
 * Cacamber will take this string and check it against the configuration that was provided via the `CONFIGURE` method in the `SETUP` of your test class.
-* The configuration consists of different entries. The first entry will be used to check if the regular expression ("pattern") and the provides string macht. If it does Cacamber will extract the variables from the string.
-* It then will call the method thats was provided via the configuration and use the variables as parameters.
-* If no regular expression matches, the next configuration entry will be used etc.
-* If no configuration entry can be found, Cacamber throws and exception.
+* The configuration consists of different entries. The first entry will be used to check if the regular expression ("pattern") and the provided string match. If it does Cacamber will extract the variables from the string.
+* It then will call the method that was provided via the configuration and use the variables as parameters.
+* If no regular expression matches, the next configuration entry will be checked etc.
+* If no configuration entry can be found, Cacamber throws an exception.
 
 ## Cacamber API
 
@@ -420,7 +420,7 @@ shopping_cart = zcl_datatable=>from_string( shopping_cart_raw ).
 ENDMETHOD.
 
 METHOD no_discount_on_shopping_cart.
-scenario( 'Customer is not eligable for a discount on the shopping cart' ).
+scenario( 'Customer is not eligible for a discount on the shopping cart' ).
 given( 'in his shopping cart are the following items:' &&
          '| 1 | Scooter - Hyper Hyper |' &&
          '| 1 | Scooter - How Much Is The Fish |' &&
