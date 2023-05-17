@@ -512,9 +512,9 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :black_square_button: introduce versioning
 :black_square_button: :boom: FIRST PUBLIC RELEASE :boom: Twitter + Blog 
 :black_square_button: write blog about ADRs
-:black_square_button: fix the unit tests runner (ticket pending)
+:black_square_button: [fix the unit tests runner](https://github.com/open-abap/open-abap-core/issues/674)
 :black_square_button: enable some kind of i18n to support german Gherkin keywords
-:black_square_button: refactor to `RESULT` and improve error handling
+:black_square_button: refactor to [RESULT](https://github.com/dominikpanzer/RESULT-for-ABAP) and improve error handling
 :black_square_button: get rid of ddic objects
 :black_square_button: maybe text file parsing is a good idea? maybe not?
 :black_square_button: your awesome idea
