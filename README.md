@@ -103,6 +103,9 @@ verify( 'Scenario: Customer is not eligible for a discount on the shopping cart'
   
 Have I sparked your interest? Great.
 
+## Give a Star! :star:
+If you like or are using this project please give it a star. Thanks!
+
 ## Examples
 If you don't like to read docs, check out the example class `ZCL_BDD_EXAMPLE` and `ZCL_BDD_EXAMPLE_2`, which show how to use Cacamber. They provide implementations of the above scenario "Discount on Slayer albums for VIP Slayer fans (exclusive contract with BMG)".
 
