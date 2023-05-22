@@ -43,55 +43,55 @@ CLASS zcl_cacamber_german IMPLEMENTATION.
 
   ENDMETHOD.
   METHOD aber.
-
+    cacamber->given( step ).
   ENDMETHOD.
 
   METHOD angenommen.
-
+    cacamber->given( step ).
   ENDMETHOD.
 
   METHOD beispiel.
-
+    cacamber->scenario( example ).
   ENDMETHOD.
 
   METHOD configure.
-
+    cacamber->configure( pattern = pattern method_name = method_name ).
   ENDMETHOD.
 
   METHOD dann.
-
+    cacamber->given( step ).
   ENDMETHOD.
 
   METHOD funktion.
-
+    cacamber->feature( feature ).
   ENDMETHOD.
 
   METHOD oder.
-
+    cacamber->given( step ).
   ENDMETHOD.
 
   METHOD pruefe.
-
+    cacamber->verify( scenario ).
   ENDMETHOD.
 
   METHOD regel.
-
+    cacamber->rule( rule ).
   ENDMETHOD.
 
   METHOD szenario.
-
+    cacamber->scenario( scenario ).
   ENDMETHOD.
 
   METHOD und.
-
+    cacamber->given( step ).
   ENDMETHOD.
 
   METHOD wenn.
-
+    cacamber->given( step ).
   ENDMETHOD.
 
   METHOD _.
-
+    cacamber->given( step ).
   ENDMETHOD.
 
 ENDCLASS.
