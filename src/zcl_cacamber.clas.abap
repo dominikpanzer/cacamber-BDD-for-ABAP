@@ -56,6 +56,7 @@ CLASS zcl_cacamber DEFINITION
 
   PRIVATE SECTION.
     CLASS-DATA test_class_instance TYPE REF TO object.
+    DATA: keywords TYPE string_table.
 
     METHODS get_method_parameters IMPORTING method_name              TYPE char30
                                             local_testclass_instance TYPE REF TO object
@@ -104,7 +105,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_CACAMBER IMPLEMENTATION.
+CLASS zcl_cacamber IMPLEMENTATION.
 
 
   METHOD configure.
@@ -287,12 +288,12 @@ CLASS ZCL_CACAMBER IMPLEMENTATION.
 
   METHOD verify.
     DATA(strings) = map_scenario_to_string_table( scenario ).
-    strings = split( strings = strings keyword = |Given | ).
-    strings = split( strings = strings keyword = |When | ).
-    strings = split( strings = strings keyword = |Then | ).
-    strings = split( strings = strings keyword = |Or | ).
-    strings = split( strings = strings keyword = |And | ).
-    strings = split( strings = strings keyword = |But | ).
+    keywords = VALUE string_table( ( |Given | ) ( |When | ) ( |Then | ) ( |Or | ) ( |And | ) ( |But | ) ).
+
+    LOOP AT keywords REFERENCE INTO DATA(keyword).
+      strings = split( strings = strings keyword = keyword->* ).
+    ENDLOOP.
+
     extract_scenario_from_steps( EXPORTING steps = strings
                                  IMPORTING scenario = current_scenario
                                            steps_without_scenario = strings ).
