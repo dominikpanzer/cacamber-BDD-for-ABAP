@@ -1,4 +1,4 @@
-INTERFACE zif_cacamber_version
-  PUBLIC.
-  CONSTANTS version TYPE string VALUE '1.0.0' ##NO_TEXT.
-ENDINTERFACE.
+interface ZIF_CACAMBER_VERSION
+  public .
+
+endinterface.
