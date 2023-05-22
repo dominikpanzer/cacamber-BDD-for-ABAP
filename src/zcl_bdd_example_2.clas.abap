@@ -1,13 +1,13 @@
 CLASS zcl_bdd_example_2 DEFINITION
   PUBLIC
   FINAL
-  CREATE PUBLIC .
+  CREATE PUBLIC.
 
   PUBLIC SECTION.
-    METHODS  set_first_name IMPORTING first_name TYPE char30.
-    METHODS: set_last_name IMPORTING last_name TYPE char30.
-    METHODS: set_birth_date IMPORTING birth_date TYPE dats.
-    METHODS: calculate_discount IMPORTING product         TYPE string
+    METHODS set_first_name IMPORTING first_name TYPE char30.
+    METHODS set_last_name IMPORTING last_name TYPE char30.
+    METHODS set_birth_date IMPORTING birth_date TYPE dats.
+    METHODS calculate_discount IMPORTING product TYPE string
                                 RETURNING VALUE(discount) TYPE int4.
   PRIVATE SECTION.
     DATA first_name TYPE char30.

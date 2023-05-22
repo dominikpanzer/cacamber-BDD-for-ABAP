@@ -24,8 +24,10 @@ CLASS zcl_cacamber DEFINITION
                  RAISING   zcx_cacamber_error.
     METHODS: _ IMPORTING step TYPE string
                RAISING   zcx_cacamber_error.
-    METHODS constructor IMPORTING test_class_instance TYPE REF TO object OPTIONAL
-                                  keywords_for_verfiy TYPE string_table OPTIONAL
+    METHODS constructor IMPORTING test_class_instance         TYPE REF TO object OPTIONAL
+                                  keywords_for_verfiy         TYPE string_table OPTIONAL
+                                  rule_keyword_for_verify     TYPE string OPTIONAL
+                                  scenario_keyword_for_verify TYPE string OPTIONAL
                                     PREFERRED PARAMETER test_class_instance.
     METHODS feature IMPORTING feature TYPE feature_t.
     METHODS scenario IMPORTING scenario TYPE scenario_t.
@@ -54,7 +56,9 @@ CLASS zcl_cacamber DEFINITION
 
   PRIVATE SECTION.
     CLASS-DATA test_class_instance TYPE REF TO object.
-    DATA: keywords_for_verify TYPE string_table.
+    DATA: keywords_for_verify         TYPE string_table,
+          scenario_keyword_for_verify TYPE string,
+          rule_keyword_for_verfiy     TYPE string.
 
     METHODS get_method_parameters IMPORTING method_name              TYPE char30
                                             local_testclass_instance TYPE REF TO object
@@ -241,6 +245,16 @@ CLASS zcl_cacamber IMPLEMENTATION.
     ELSE.
       me->keywords_for_verify = keywords_for_verify.
     ENDIF.
+    IF scenario_keyword_for_verify IS INITIAL.
+      me->scenario_keyword_for_verify = |Scenario|.
+    ELSE.
+      me->scenario_keyword_for_verify = scenario_keyword_for_verify.
+    ENDIF.
+    IF rule_keyword_for_verfiy IS INITIAL.
+      me->rule_keyword_for_verfiy = |Rule|.
+    ELSE.
+      me->rule_keyword_for_verfiy = rule_keyword_for_verfiy.
+    ENDIF.
   ENDMETHOD.
 
 
@@ -299,8 +313,9 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
   METHOD extract_scenario_from_steps.
     steps_without_scenario = steps.
+    DATA(scenario_regex) = |{ scenario_keyword_for_verify }: (.*)|.
     LOOP AT steps REFERENCE INTO DATA(step).
-      FIND ALL OCCURRENCES OF REGEX 'Scenario: (.*)' IN step->* RESULTS DATA(findings).
+      FIND ALL OCCURRENCES OF REGEX scenario_regex IN step->* RESULTS DATA(findings).
       CHECK findings IS NOT INITIAL.
       scenario = substring( val = step->* off = findings[ 1 ]-submatches[ 1 ]-offset len = findings[ 1 ]-submatches[ 1 ]-length ).
       DELETE steps_without_scenario INDEX sy-tabix.
@@ -311,8 +326,9 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
   METHOD extract_rule_from_steps.
     steps_without_rule = steps.
+    DATA(rule_regex) = |{ rule_keyword_for_verfiy }: (.*)|.
     LOOP AT steps REFERENCE INTO DATA(step).
-      FIND ALL OCCURRENCES OF REGEX 'Rule: (.*)' IN step->* RESULTS DATA(findings).
+      FIND ALL OCCURRENCES OF REGEX rule_regex IN step->* RESULTS DATA(findings).
       CHECK findings IS NOT INITIAL.
       rule = substring( val = step->* off = findings[ 1 ]-submatches[ 1 ]-offset len = findings[ 1 ]-submatches[ 1 ]-length ).
       DELETE steps_without_rule INDEX sy-tabix.
