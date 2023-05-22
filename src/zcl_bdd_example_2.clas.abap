@@ -15,7 +15,6 @@ CLASS zcl_bdd_example_2 DEFINITION
     DATA birth_date TYPE dats.
 ENDCLASS.
 
-
 CLASS zcl_bdd_example_2 IMPLEMENTATION.
 
 
