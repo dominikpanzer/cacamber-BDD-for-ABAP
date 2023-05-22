@@ -58,7 +58,7 @@ CLASS zcl_cacamber DEFINITION
     CLASS-DATA test_class_instance TYPE REF TO object.
     DATA: keywords_for_verify         TYPE string_table,
           scenario_keyword_for_verify TYPE string,
-          rule_keyword_for_verfiy     TYPE string.
+          rule_keyword_for_verify     TYPE string.
 
     METHODS get_method_parameters IMPORTING method_name              TYPE char30
                                             local_testclass_instance TYPE REF TO object
@@ -232,6 +232,9 @@ CLASS zcl_cacamber IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD constructor.
+    DATA(english_keywords) = VALUE string_table( ( |Given| ) ( |When| ) ( |Then| ) ( |Or| ) ( |And| ) ( |But| ) ).
+    DATA(english_scenario) = |Scenario|.
+    DATA(english_rule) = |Rule|.
 * A test class is not allowed to have mandatory constructor parameters
 * but the parameter is needed for the test for ZCL_CACAMBER to inject
 * a self-reference of the local test class
@@ -239,22 +242,15 @@ CLASS zcl_cacamber IMPLEMENTATION.
     me->test_class_instance = COND #( WHEN test_class_instance IS INITIAL THEN me
                                      ELSE test_class_instance ).
 
-* dito, but for multi-language support.
-    IF keywords_for_verfiy IS INITIAL.
-      me->keywords_for_verify = VALUE string_table( ( |Given | ) ( |When | ) ( |Then | ) ( |Or | ) ( |And | ) ( |But | ) ).
-    ELSE.
-      me->keywords_for_verify = keywords_for_verify.
-    ENDIF.
-    IF scenario_keyword_for_verify IS INITIAL.
-      me->scenario_keyword_for_verify = |Scenario|.
-    ELSE.
-      me->scenario_keyword_for_verify = scenario_keyword_for_verify.
-    ENDIF.
-    IF rule_keyword_for_verfiy IS INITIAL.
-      me->rule_keyword_for_verfiy = |Rule|.
-    ELSE.
-      me->rule_keyword_for_verfiy = rule_keyword_for_verfiy.
-    ENDIF.
+* Multi language support for VERIFY-method, defaults to english
+    me->keywords_for_verify = COND #( WHEN keywords_for_verify IS INITIAL THEN english_keywords
+                                      ELSE keywords_for_verfiy ).
+
+    me->scenario_keyword_for_verify = COND #( WHEN scenario_keyword_for_verify IS INITIAL THEN english_scenario
+                                      ELSE scenario_keyword_for_verify ).
+
+    me->rule_keyword_for_verify = COND #( WHEN rule_keyword_for_verify IS INITIAL THEN english_rule
+                                      ELSE rule_keyword_for_verify ).
   ENDMETHOD.
 
 
@@ -282,7 +278,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
     DATA(strings) = map_scenario_to_string_table( scenario ).
 
     LOOP AT keywords_for_verify REFERENCE INTO DATA(keyword).
-      strings = split( strings = strings keyword = keyword->* ).
+      strings = split( strings = strings keyword = |{ keyword->* } | ).
     ENDLOOP.
 
     extract_scenario_from_steps( EXPORTING steps = strings
@@ -326,7 +322,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
   METHOD extract_rule_from_steps.
     steps_without_rule = steps.
-    DATA(rule_regex) = |{ rule_keyword_for_verfiy }: (.*)|.
+    DATA(rule_regex) = |{ rule_keyword_for_verify }: (.*)|.
     LOOP AT steps REFERENCE INTO DATA(step).
       FIND ALL OCCURRENCES OF REGEX rule_regex IN step->* RESULTS DATA(findings).
       CHECK findings IS NOT INITIAL.
