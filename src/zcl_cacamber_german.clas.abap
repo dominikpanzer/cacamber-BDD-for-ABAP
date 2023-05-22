@@ -37,7 +37,7 @@ CLASS zcl_cacamber_german IMPLEMENTATION.
     DATA(german_keywords) = VALUE string_table( ( |Angenommen| ) ( |Wenn| ) ( |Dann| ) ( |Oder| ) ( |Und| ) ( |Aber| ) ).
     DATA(german_scenario) = |Szenario|.
     DATA(german_rule) = |Regel|.
-    cacamber = NEW zcl_cacamber( keywords_for_verfiy =  german_keywords
+    cacamber = NEW zcl_cacamber( keywords_for_verify =  german_keywords
                                  scenario_keyword_for_verify = german_scenario
                                  rule_keyword_for_verify = german_rule ).
 

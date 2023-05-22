@@ -25,7 +25,7 @@ CLASS zcl_cacamber DEFINITION
     METHODS: _ IMPORTING step TYPE string
                RAISING   zcx_cacamber_error.
     METHODS constructor IMPORTING test_class_instance         TYPE REF TO object OPTIONAL
-                                  keywords_for_verfiy         TYPE string_table OPTIONAL
+                                  keywords_for_verify         TYPE string_table OPTIONAL
                                   rule_keyword_for_verify     TYPE string OPTIONAL
                                   scenario_keyword_for_verify TYPE string OPTIONAL
                                     PREFERRED PARAMETER test_class_instance.
@@ -244,7 +244,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
 * Multi language support for VERIFY-method, defaults to english
     me->keywords_for_verify = COND #( WHEN keywords_for_verify IS INITIAL THEN english_keywords
-                                      ELSE keywords_for_verfiy ).
+                                      ELSE keywords_for_verify ).
 
     me->scenario_keyword_for_verify = COND #( WHEN scenario_keyword_for_verify IS INITIAL THEN english_scenario
                                       ELSE scenario_keyword_for_verify ).
