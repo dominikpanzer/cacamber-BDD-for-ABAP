@@ -24,16 +24,14 @@ CLASS zcl_cacamber DEFINITION
                  RAISING   zcx_cacamber_error.
     METHODS: _ IMPORTING step TYPE string
                RAISING   zcx_cacamber_error.
-    METHODS constructor IMPORTING test_class_instance TYPE REF TO object OPTIONAL.
+    METHODS constructor IMPORTING test_class_instance TYPE REF TO object OPTIONAL
+                                  keywords_for_verfiy TYPE string_table OPTIONAL
+                                    PREFERRED PARAMETER test_class_instance.
     METHODS feature IMPORTING feature TYPE feature_t.
     METHODS scenario IMPORTING scenario TYPE scenario_t.
     METHODS example IMPORTING example TYPE scenario_t.
     METHODS rule IMPORTING rule TYPE rule_t.
-
-    METHODS verify
-      IMPORTING
-        scenario TYPE string.
-
+    METHODS verify IMPORTING scenario TYPE string.
 
 
   PROTECTED SECTION.
@@ -56,58 +54,47 @@ CLASS zcl_cacamber DEFINITION
 
   PRIVATE SECTION.
     CLASS-DATA test_class_instance TYPE REF TO object.
-    DATA: keywords TYPE string_table.
+    DATA: keywords_for_verify TYPE string_table.
 
     METHODS get_method_parameters IMPORTING method_name              TYPE char30
                                             local_testclass_instance TYPE REF TO object
                                   RETURNING VALUE(parameters)        TYPE parameters_tt
                                   RAISING   zcx_cacamber_error .
-    METHODS: extract_variables_from_step IMPORTING step             TYPE string
-                                         RETURNING VALUE(variables) TYPE string_table,
-      match_step_to_method_name IMPORTING step               TYPE string
-                                RETURNING VALUE(method_name) TYPE char30,
-      add_variables_to_parameters IMPORTING variables                 TYPE string_table
-                                            parameters                TYPE parameters_tt
-                                  RETURNING VALUE(matched_parameters) TYPE abap_parmbind_tab,
-      paramaters_dont_match_variable IMPORTING parameters    TYPE zcl_cacamber=>parameters_tt
-                                               variables     TYPE string_table
-                                     RETURNING VALUE(result) TYPE abap_bool,
-      is_gregorian_dot_seperated IMPORTING variable      TYPE string
-                                 RETURNING VALUE(result) TYPE abap_bool,
-      is_time_format IMPORTING variable      TYPE string
-                     RETURNING VALUE(result) TYPE abap_bool,
-      format_time IMPORTING variable    TYPE string
-                  RETURNING VALUE(time) TYPE string,
-      conversion_exit_inbound IMPORTING variable                 TYPE string
-                              RETURNING VALUE(variable_internal) TYPE string,
-      get_method_by_method_name IMPORTING method_name               TYPE char30
-                                          class_description         TYPE REF TO cl_abap_classdescr
-                                RETURNING VALUE(method_description) TYPE REF TO abap_methdescr.
+    METHODS extract_variables_from_step IMPORTING step             TYPE string
+                                        RETURNING VALUE(variables) TYPE string_table.
+    METHODS match_step_to_method_name IMPORTING step               TYPE string
+                                      RETURNING VALUE(method_name) TYPE char30.
+    METHODS add_variables_to_parameters IMPORTING variables                 TYPE string_table
+                                                  parameters                TYPE parameters_tt
+                                        RETURNING VALUE(matched_parameters) TYPE abap_parmbind_tab.
+    METHODS paramaters_dont_match_variable IMPORTING parameters    TYPE zcl_cacamber=>parameters_tt
+                                                     variables     TYPE string_table
+                                           RETURNING VALUE(result) TYPE abap_bool.
+    METHODS is_gregorian_dot_seperated IMPORTING variable      TYPE string
+                                       RETURNING VALUE(result) TYPE abap_bool.
+    METHODS is_time_format IMPORTING variable      TYPE string
+                           RETURNING VALUE(result) TYPE abap_bool.
+    METHODS format_time IMPORTING variable    TYPE string
+                        RETURNING VALUE(time) TYPE string.
+    METHODS conversion_exit_inbound IMPORTING variable                 TYPE string
+                                    RETURNING VALUE(variable_internal) TYPE string.
+    METHODS get_method_by_method_name IMPORTING method_name               TYPE char30
+                                                class_description         TYPE REF TO cl_abap_classdescr
+                                      RETURNING VALUE(method_description) TYPE REF TO abap_methdescr.
     METHODS split IMPORTING strings            TYPE string_table
                             keyword            TYPE string
                   RETURNING VALUE(new_strings) TYPE string_table.
-    METHODS extract_rule_from_steps
-      IMPORTING
-        steps              TYPE string_table
-      EXPORTING
-        rule               TYPE rule_t
-        steps_without_rule TYPE string_table.
-    METHODS extract_scenario_from_steps
-      IMPORTING steps                  TYPE string_table
-      EXPORTING scenario               TYPE scenario_t
-                steps_without_scenario TYPE string_table.
-    METHODS map_scenario_to_string_table
-      IMPORTING
-        scenario       TYPE string
-      RETURNING
-        VALUE(strings) TYPE string_table.
+    METHODS extract_rule_from_steps IMPORTING steps              TYPE string_table
+                                    EXPORTING rule               TYPE rule_t
+                                              steps_without_rule TYPE string_table.
+    METHODS extract_scenario_from_steps IMPORTING steps                  TYPE string_table
+                                        EXPORTING scenario               TYPE scenario_t
+                                                  steps_without_scenario TYPE string_table.
+    METHODS map_scenario_to_string_table IMPORTING scenario       TYPE string
+                                         RETURNING VALUE(strings) TYPE string_table.
 ENDCLASS.
 
-
-
 CLASS zcl_cacamber IMPLEMENTATION.
-
-
   METHOD configure.
     CHECK pattern IS NOT INITIAL.
     CHECK method_name IS NOT INITIAL.
@@ -141,7 +128,6 @@ CLASS zcl_cacamber IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
-
   METHOD get_method_parameters.
     DATA: class_description TYPE REF TO cl_abap_classdescr.
     DATA: object_description TYPE REF TO cl_abap_objectdescr.
@@ -159,11 +145,9 @@ CLASS zcl_cacamber IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
-
   METHOD get_method_by_method_name.
     READ TABLE class_description->methods REFERENCE INTO method_description  WITH KEY name = method_name.
   ENDMETHOD.
-
 
   METHOD add_variables_to_parameters.
     CONSTANTS exporting TYPE string VALUE 'E' ##NO_TEXT.
@@ -186,28 +170,23 @@ CLASS zcl_cacamber IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
-
   METHOD conversion_exit_inbound.
     variable_internal = |{ variable ALPHA = IN }|.
   ENDMETHOD.
 
-
   METHOD format_time.
     time = translate( val = variable  from = `:`  to = `` ).
   ENDMETHOD.
-
 
   METHOD is_time_format.
     CONSTANTS time_format_hhmmss_with_colon TYPE string VALUE '^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$'.
     result = xsdbool( matches( val = variable regex = time_format_hhmmss_with_colon ) ).
   ENDMETHOD.
 
-
   METHOD is_gregorian_dot_seperated.
     CONSTANTS ddmmyyyy_dot_seperated TYPE string VALUE '^(0[0-9]|[12][0-9]|3[01])[- \..](0[0-9]|1[012])[- \..]\d\d\d\d$'.
     result = xsdbool( matches( val = variable regex = ddmmyyyy_dot_seperated ) ).
   ENDMETHOD.
-
 
   METHOD given.
     DATA(method_name) = match_step_to_method_name( step ).
@@ -220,49 +199,48 @@ CLASS zcl_cacamber IMPLEMENTATION.
     CALL METHOD me->test_class_instance->(method_name) PARAMETER-TABLE matched_parameters.
   ENDMETHOD.
 
-
   METHOD when.
     given( step ).
   ENDMETHOD.
-
 
   METHOD and.
     given( step ).
   ENDMETHOD.
 
-
   METHOD or.
     given( step ).
   ENDMETHOD.
-
 
   METHOD then.
     given( step ).
   ENDMETHOD.
 
-
   METHOD example.
     scenario( example ).
   ENDMETHOD.
-
 
   METHOD but.
     given( step ).
   ENDMETHOD.
 
-
   METHOD _.
     given( step ).
   ENDMETHOD.
 
-
   METHOD constructor.
 * A test class is not allowed to have mandatory constructor parameters
-* but the parameter is needed for the test for ZCL_CACAMBE to inject
+* but the parameter is needed for the test for ZCL_CACAMBER to inject
 * a self-reference of the local test class
 * it's a tradeoff
     me->test_class_instance = COND #( WHEN test_class_instance IS INITIAL THEN me
                                      ELSE test_class_instance ).
+
+* dito, but for multi-language support.
+    IF keywords_for_verfiy IS INITIAL.
+      me->keywords_for_verify = VALUE string_table( ( |Given | ) ( |When | ) ( |Then | ) ( |Or | ) ( |And | ) ( |But | ) ).
+    ELSE.
+      me->keywords_for_verify = keywords_for_verify.
+    ENDIF.
   ENDMETHOD.
 
 
@@ -288,9 +266,8 @@ CLASS zcl_cacamber IMPLEMENTATION.
 
   METHOD verify.
     DATA(strings) = map_scenario_to_string_table( scenario ).
-    keywords = VALUE string_table( ( |Given | ) ( |When | ) ( |Then | ) ( |Or | ) ( |And | ) ( |But | ) ).
 
-    LOOP AT keywords REFERENCE INTO DATA(keyword).
+    LOOP AT keywords_for_verify REFERENCE INTO DATA(keyword).
       strings = split( strings = strings keyword = keyword->* ).
     ENDLOOP.
 

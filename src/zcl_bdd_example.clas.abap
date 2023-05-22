@@ -9,17 +9,13 @@ CLASS zcl_bdd_example DEFINITION
     METHODS: set_birth_date IMPORTING birth_date TYPE dats.
     METHODS: calculate_discount IMPORTING product         TYPE string
                                 RETURNING VALUE(discount) TYPE int4.
-  PROTECTED SECTION.
   PRIVATE SECTION.
     DATA first_name TYPE char30.
     DATA last_name TYPE char30.
     DATA birth_date TYPE dats.
 ENDCLASS.
 
-
-
 CLASS zcl_bdd_example IMPLEMENTATION.
-
 
   METHOD set_first_name.
     me->first_name = first_name.
