@@ -143,7 +143,10 @@ CLASS zcl_cacamber IMPLEMENTATION.
     object_description ?= cl_abap_objectdescr=>describe_by_object_ref( local_testclass_instance ).
     DATA(method) = get_method_by_method_name( method_name = method_name class_description = class_description ).
     IF method IS INITIAL.
-      RAISE EXCEPTION TYPE zcx_cacamber_error.
+      RAISE EXCEPTION TYPE zcx_cacamber_error
+        EXPORTING
+          textid = zcx_cacamber_error=>method_not_found
+          text1  = CONV #( method_name ).
     ENDIF.
     LOOP AT method->parameters REFERENCE INTO DATA(method_parameter).
       DATA(parameter_description) = object_description->get_method_parameter_type( p_method_name = method_name

@@ -50,6 +50,7 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
     METHODS can_split_a_string_into_steps FOR TESTING RAISING cx_static_check.
     METHODS can_extract_current_scenario FOR TESTING RAISING cx_static_check.
     METHODS can_extract_current_rule FOR TESTING RAISING cx_static_check.
+    METHODS cant_get_method_parameters FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -390,6 +391,17 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     cl_abap_unit_assert=>assert_equals( msg = 'Rule hasnt been extracted' exp = rule_expected act = rule ).
     cl_abap_unit_assert=>assert_equals( msg = 'Rule still in step list' exp = steps_without_rule_exp act = steps_without_rule ).
+  ENDMETHOD.
+
+  METHOD cant_get_method_parameters.
+    TRY.
+        DATA(parameters) = cacamber->get_method_parameters( method_name = 'DOES_NOT_EXIST'
+                                                            local_testclass_instance = me ).
+        cl_abap_unit_assert=>fail( ).
+      CATCH  zcx_cacamber_error INTO DATA(exception).
+        DATA(text) = exception->get_text( ).
+        cl_abap_unit_assert=>assert_equals( exp = |Public method DOES_NOT_EXIST not found in your test class.| act = text ).
+    ENDTRY.
   ENDMETHOD.
 
 ENDCLASS.
