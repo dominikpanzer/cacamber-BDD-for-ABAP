@@ -17,7 +17,15 @@ CLASS zcx_cacamber_error DEFINITION
         attr2 TYPE scx_attrname VALUE 'TEXT2',
         attr3 TYPE scx_attrname VALUE 'TEXT3',
         attr4 TYPE scx_attrname VALUE 'TEXT4',
-      END OF method_not_found.
+      END OF method_not_found,
+      BEGIN OF parameters_dont_match,
+        msgid TYPE symsgid VALUE 'Z_CACAMBER',
+        msgno TYPE symsgno VALUE '002',
+        attr1 TYPE scx_attrname VALUE 'TEXT1',
+        attr2 TYPE scx_attrname VALUE 'TEXT2',
+        attr3 TYPE scx_attrname VALUE 'TEXT3',
+        attr4 TYPE scx_attrname VALUE 'TEXT4',
+      END OF parameters_dont_match.
     DATA text1 TYPE string .
     DATA text2 TYPE string .
     DATA text3 TYPE string .

@@ -12,7 +12,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
                                       packed  TYPE zde_bdd_packed ##NEEDED,
       local_method_for_test_exportin EXPORTING dummy         TYPE string
                                                another_dummy TYPE string ##NEEDED,
-      local_method_for_test_table IMPORTING table_as_string TYPE string ##NEEDED.
+      local_method_for_test_table IMPORTING table_as_string TYPE string ##NEEDED,
+      method_without_parameters.
   PROTECTED SECTION.
 
 
@@ -51,6 +52,7 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
     METHODS can_extract_current_scenario FOR TESTING RAISING cx_static_check.
     METHODS can_extract_current_rule FOR TESTING RAISING cx_static_check.
     METHODS cant_get_method_parameters FOR TESTING RAISING cx_static_check.
+    METHODS wrong_number_of_parameters FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -402,6 +404,21 @@ CLASS scaffolding_tests IMPLEMENTATION.
         DATA(text) = exception->get_text( ).
         cl_abap_unit_assert=>assert_equals( exp = |Public method DOES_NOT_EXIST not found in your test class.| act = text ).
     ENDTRY.
+  ENDMETHOD.
+
+  METHOD wrong_number_of_parameters.
+    TRY.
+        cacamber->configure( pattern = '^your name is (.+) (.+)$' method_name = 'METHOD_WITHOUT_PARAMETERS' ).
+        cacamber->given( 'your name is Marty McFly' ).
+        cl_abap_unit_assert=>fail( ).
+      CATCH  zcx_cacamber_error INTO DATA(exception).
+        DATA(text) = exception->get_text( ).
+        cl_abap_unit_assert=>assert_equals( exp = |Step method METHOD_WITHOUT_PARAMETERS has wrong # of parameters.| act = text ).
+    ENDTRY.
+  ENDMETHOD.
+
+  METHOD method_without_parameters.
+" dummy method for tests
   ENDMETHOD.
 
 ENDCLASS.

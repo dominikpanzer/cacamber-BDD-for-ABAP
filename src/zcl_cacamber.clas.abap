@@ -203,7 +203,10 @@ CLASS zcl_cacamber IMPLEMENTATION.
     DATA(variables) = extract_variables_from_step( step ).
     DATA(parameters) = get_method_parameters( local_testclass_instance = me->test_class_instance method_name = method_name ).
     IF paramaters_dont_match_variable( parameters = parameters variables = variables ).
-      RAISE EXCEPTION TYPE zcx_cacamber_error.
+      RAISE EXCEPTION TYPE zcx_cacamber_error
+        EXPORTING
+          textid = zcx_cacamber_error=>parameters_dont_match
+          text1  = CONV #( method_name ).
     ENDIF.
     DATA(matched_parameters) = add_variables_to_parameters( variables = variables parameters = parameters ).
     CALL METHOD me->test_class_instance->(method_name) PARAMETER-TABLE matched_parameters.
