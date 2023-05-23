@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- none
+- in the past Cacamber threw the exception `ZCX_CACAMBER_ERROR` when the framework couldn't find a step method or something else was wrong. The exception now has aadditional texts that descibe the actual problem so the user can change his configuration/coding accordingly.
 
 ### Removed
 
