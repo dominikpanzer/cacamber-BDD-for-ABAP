@@ -6,7 +6,7 @@
 
 # Cacamber - the BDD-Framework for ABAP
 
-Hi! Cacamber makes it possible for you to run BDD-style tests in a SAP-system. [Behavior driven development](https://en.wikipedia.org/wiki/Behavior-driven_development) is an agile approach to software development. It focusses on collaboration through a common language between the customer and developers, testers etc. by defining examples which describe the behavior of a software system in a natural language. This language has a specific format and is called [Gherkin](https://cucumber.io/docs/gherkin/). When using the [ubiquitous language](https://martinfowler.com/bliki/UbiquitousLanguage.html) it looks like this:
+Hi! Cacamber makes it possible for you to run BDD-style tests in a SAP-system. [Behavior driven development](https://en.wikipedia.org/wiki/Behavior-driven_development) is an agile approach to software development. It focusses on collaboration through a common language between the customer and developers, testers etc. by defining examples which describe the behavior of a software system in a natural language. This language has a specific format and is called [Gherkin](https://cucumber.io/docs/gherkin/). When using the [ubiquitous language](https://martinfowler.com/bliki/UbiquitousLanguage.html) it looks like this (note: Cacamber supports different languages):
 ```
 Feature: Discount calculation
 
@@ -100,7 +100,7 @@ verify( 'Scenario: Customer is not eligible for a discount on the shopping cart'
         'Then the discount is 0% \m/' ).
  ENDMETHOD.
 ```
-  
+Cacamber supports keywords in different languages, so there is no need for you to translate your test cases to english. 
 Have I sparked your interest? Great.
 
 ## Give a Star! :star:
@@ -151,7 +151,25 @@ Cacamber basically works like this:
 
 ## Cacamber API
 
-This part of the document describes the public methods of Cacamber. To get startet, your local test class needs to inherit from `ZCL_CACAMBER`.
+This part of the document describes the public methods of Cacambers main class `ZCL_CACAMBER`. It provies methods for english Gherkin keywords. If you want to use another language, have a look at this mapping table:
+| English | German |
+|---------|----------|
+| `ZCL_CACAMBER` | `ZCL_CACAMBER_GERMAN` |
+| Given | Angenommen |
+| And | Und |
+| Or | Oder |
+| But | Aber |
+| _ | _ |
+| When | Wenn |
+| Then | Dann |
+| Feature | Funktion |
+| Scenario | Sczenario |
+| Example | Beispiel |
+| Rule | Regel |
+
+
+
+To get startet with Cacamber using english keywords, your local test class needs to inherit from `ZCL_CACAMBER`. For other languages have a look at the previous table.
 
 `ZCL_CACAMBER` as your superclass provides the following public methods:
 
@@ -388,6 +406,46 @@ ENDMETHOD.
 ...
 ```
 
+### GET_CURRENT_FEATURE 
+Returns the name of the current feature which was set with `FEATURE`.
+
+Returning parameters:
+* `CURRENT_FEATURE` - a string describing the current feature.
+
+Example:
+```ABAP 
+...
+DATA(feature) = get_current_feature( ).
+...
+```
+
+### GET_CURRENT_SCENARIO 
+Returns the name of the current scenario which was set with `SCENARIO` / `EXAMPLE` or during a `VERIFY`.
+
+Returning parameters:
+* `CURRENT_SCENARIO` - a string describing the current scenario.
+
+Example:
+```ABAP 
+...
+DATA(scenario) = get_current_scenario( ).
+...
+```
+
+### GET_CURRENT_RULE 
+Returns the name of the current rule which was set with `RULE` or during a `VERIFY`.
+
+Returning parameters:
+* `CURRENT_RULE` - a string describing the current rule.
+
+Example:
+```ABAP 
+...
+DATA(rule) = get_current_rule( ).
+...
+```
+
+
 ## Datatable API
 If you want to use datatables in your steps, you can use the class `ZCL_DATATABLE` to work with them in your test methods.
 
@@ -514,10 +572,9 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 :white_check_mark: check compatibility to 7.5x-systems
 :white_check_mark: introduce versioning
 :white_check_mark: :boom: FIRST PUBLIC RELEASE :boom: Twitter + Blog 
+:white_check_mark: enable some kind of i18n to support german Gherkin keywords
 :black_square_button: write blog about ADRs
 :black_square_button: [fix the unit tests runner](https://github.com/open-abap/open-abap-core/issues/674)
-:black_square_button: enable some kind of i18n to support german Gherkin keywords
-:black_square_button: refactor to [RESULT](https://github.com/dominikpanzer/RESULT-for-ABAP) and improve error handling
 :black_square_button: get rid of ddic objects
 :black_square_button: maybe text file parsing is a good idea? maybe not?
 :black_square_button: your awesome idea
@@ -526,7 +583,7 @@ I like to create a simple [acceptance test list](https://agiledojo.de/2018-12-16
 You will find a product vision as well as all architectural decisions for Cacamber documented as Architecture Decision Records [in this folder](https://github.com/dominikpanzer/cacamber-BDD-for-ABAP/tree/main/architecture) of the repository.
 
 ## How to support this project
-PRs are welcome! You can also just pick one of the test list entries from above and implement the solution or implement your own idea. Fix a bug. Improve the docs... whatever suits you.
+PRs are welcome! You can also just pick one of the test list entries from above and implement the solution, add your favourite language or implement your own idea. Fix a bug. Improve the docs... whatever suits you.
 Please keep the current [ADRs](https://github.com/dominikpanzer/cacamber-BDD-for-ABAP/tree/main/architecture) in mind.
 
 Greetings, 
