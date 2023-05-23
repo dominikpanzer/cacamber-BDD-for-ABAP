@@ -34,6 +34,9 @@ CLASS zcl_cacamber DEFINITION
     METHODS example IMPORTING example TYPE scenario_t.
     METHODS rule IMPORTING rule TYPE rule_t.
     METHODS verify IMPORTING scenario TYPE string.
+    METHODS get_current_feature RETURNING VALUE(current_feature) TYPE feature_t.
+    METHODS get_current_scenario RETURNING VALUE(current_scenario) TYPE scenario_t.
+    METHODS get_current_rule RETURNING VALUE(current_rule) TYPE rule_t.
 
 
   PROTECTED SECTION.
@@ -49,16 +52,16 @@ CLASS zcl_cacamber DEFINITION
            END OF parameter_ts.
     TYPES: parameters_tt TYPE STANDARD TABLE OF parameter_ts WITH DEFAULT KEY.
 
-    DATA: configuration TYPE configuration_tt.
-    DATA: current_feature TYPE feature_t.
-    DATA: current_scenario TYPE scenario_t.
-    DATA: current_rule TYPE rule_t.
+    DATA configuration TYPE configuration_tt.
+    DATA current_feature TYPE feature_t.
+    DATA current_scenario TYPE scenario_t.
+    DATA current_rule TYPE rule_t.
 
   PRIVATE SECTION.
     CLASS-DATA test_class_instance TYPE REF TO object.
-    DATA: keywords_for_verify         TYPE string_table,
-          scenario_keyword_for_verify TYPE string,
-          rule_keyword_for_verify     TYPE string.
+    DATA keywords_for_verify TYPE string_table.
+    DATA scenario_keyword_for_verify TYPE string.
+    DATA rule_keyword_for_verify TYPE string.
 
     METHODS get_method_parameters IMPORTING method_name              TYPE char30
                                             local_testclass_instance TYPE REF TO object
@@ -232,9 +235,9 @@ CLASS zcl_cacamber IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD constructor.
-    DATA(english_keywords) = VALUE string_table( ( |Given| ) ( |When| ) ( |Then| ) ( |Or| ) ( |And| ) ( |But| ) ).
     DATA(english_scenario) = |Scenario|.
     DATA(english_rule) = |Rule|.
+    DATA(english_keywords) = VALUE string_table( ( |Given | ) ( |When | ) ( |Then | ) ( |Or | ) ( |And | ) ( |But | ) ).
 * A test class is not allowed to have mandatory constructor parameters
 * but the parameter is needed for the test for ZCL_CACAMBER to inject
 * a self-reference of the local test class
@@ -278,7 +281,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
     DATA(strings) = map_scenario_to_string_table( scenario ).
 
     LOOP AT keywords_for_verify REFERENCE INTO DATA(keyword).
-      strings = split( strings = strings keyword = |{ keyword->* } | ).
+      strings = split( strings = strings keyword = |{ keyword->* }| ).
     ENDLOOP.
 
     extract_scenario_from_steps( EXPORTING steps = strings
@@ -331,4 +334,17 @@ CLASS zcl_cacamber IMPLEMENTATION.
       RETURN.
     ENDLOOP.
   ENDMETHOD.
+
+  METHOD get_current_feature.
+    current_feature = me->current_feature.
+  ENDMETHOD.
+
+  METHOD get_current_rule.
+    current_rule = me->current_rule.
+  ENDMETHOD.
+
+  METHOD get_current_scenario.
+    current_scenario = me->current_scenario.
+  ENDMETHOD.
+
 ENDCLASS.

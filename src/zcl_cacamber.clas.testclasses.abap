@@ -21,35 +21,35 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
     DATA: cacamber TYPE REF TO zcl_cacamber.
     DATA: method_has_been_called TYPE abap_bool,
           datatable              TYPE REF TO zcl_datatable.
-    METHODS: setup.
-    METHODS: can_store_configuration FOR TESTING RAISING cx_static_check.
-    METHODS: can_store_two_configurations FOR TESTING RAISING cx_static_check.
-    METHODS: ignores_empty_pattern_config FOR TESTING RAISING cx_static_check.
-    METHODS: ignores_empty_methodnme_config FOR TESTING RAISING cx_static_check.
-    METHODS: matching_step_found FOR TESTING RAISING cx_static_check.
-    METHODS: extract_first_string FOR TESTING RAISING cx_static_check.
-    METHODS: extract_two_middle_strings FOR TESTING RAISING cx_static_check.
-    METHODS: extract_string_at_end FOR TESTING RAISING cx_static_check.
-    METHODS: get_method_parameter_list FOR TESTING RAISING cx_static_check.
-    METHODS: added_variables_to_params_ok FOR TESTING RAISING cx_static_check.
-    METHODS: added_vars_to_paras_char30 FOR TESTING RAISING cx_static_check.
-    METHODS: added_vars_to_paras_dats FOR TESTING RAISING cx_static_check.
-    METHODS: call_a_method_dynamically FOR TESTING RAISING cx_static_check.
-    METHODS: added_vars_to_paras_int FOR TESTING RAISING cx_static_check.
-    METHODS: given_calls_a_method FOR TESTING RAISING cx_static_check.
-    METHODS: can_set_a_feature FOR TESTING RAISING cx_static_check.
-    METHODS: can_set_a_scenario FOR TESTING RAISING cx_static_check.
-    METHODS: underscore_calls_a_method FOR TESTING RAISING cx_static_check.
-    METHODS: can_set_a_rule FOR TESTING RAISING cx_static_check.
-    METHODS: wrong_paramter_count FOR TESTING RAISING cx_static_check.
-    METHODS: no_method_for_step_found FOR TESTING RAISING cx_static_check.
-    METHODS: dynamic_method_call_failed FOR TESTING RAISING cx_static_check.
-    METHODS: added_vars_to_paras_neg_int FOR TESTING RAISING cx_static_check.
-    METHODS: added_vars_to_paras_tims FOR TESTING RAISING cx_static_check,
-      can_run_a_one_step_scenario FOR TESTING RAISING cx_static_check,
-      can_split_a_string_into_steps FOR TESTING RAISING cx_static_check,
-      can_extract_current_scenario FOR TESTING RAISING cx_static_check,
-      can_extract_current_rule FOR TESTING RAISING cx_static_check.
+    METHODS setup.
+    METHODS can_store_configuration FOR TESTING RAISING cx_static_check.
+    METHODS can_store_two_configurations FOR TESTING RAISING cx_static_check.
+    METHODS ignores_empty_pattern_config FOR TESTING RAISING cx_static_check.
+    METHODS ignores_empty_methodnme_config FOR TESTING RAISING cx_static_check.
+    METHODS matching_step_found FOR TESTING RAISING cx_static_check.
+    METHODS extract_first_string FOR TESTING RAISING cx_static_check.
+    METHODS extract_two_middle_strings FOR TESTING RAISING cx_static_check.
+    METHODS extract_string_at_end FOR TESTING RAISING cx_static_check.
+    METHODS get_method_parameter_list FOR TESTING RAISING cx_static_check.
+    METHODS added_variables_to_params_ok FOR TESTING RAISING cx_static_check.
+    METHODS added_vars_to_paras_char30 FOR TESTING RAISING cx_static_check.
+    METHODS added_vars_to_paras_dats FOR TESTING RAISING cx_static_check.
+    METHODS call_a_method_dynamically FOR TESTING RAISING cx_static_check.
+    METHODS added_vars_to_paras_int FOR TESTING RAISING cx_static_check.
+    METHODS given_calls_a_method FOR TESTING RAISING cx_static_check.
+    METHODS can_set_a_feature FOR TESTING RAISING cx_static_check.
+    METHODS can_set_a_scenario FOR TESTING RAISING cx_static_check.
+    METHODS underscore_calls_a_method FOR TESTING RAISING cx_static_check.
+    METHODS can_set_a_rule FOR TESTING RAISING cx_static_check.
+    METHODS wrong_paramter_count FOR TESTING RAISING cx_static_check.
+    METHODS no_method_for_step_found FOR TESTING RAISING cx_static_check.
+    METHODS dynamic_method_call_failed FOR TESTING RAISING cx_static_check.
+    METHODS added_vars_to_paras_neg_int FOR TESTING RAISING cx_static_check.
+    METHODS added_vars_to_paras_tims FOR TESTING RAISING cx_static_check.
+    METHODS can_run_a_one_step_scenario FOR TESTING RAISING cx_static_check.
+    METHODS can_split_a_string_into_steps FOR TESTING RAISING cx_static_check.
+    METHODS can_extract_current_scenario FOR TESTING RAISING cx_static_check.
+    METHODS can_extract_current_rule FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
