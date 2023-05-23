@@ -51,12 +51,12 @@ CLASS acceptance_german_language IMPLEMENTATION.
 
   METHOD can_run_a_scenario.
     cacamber_under_test->pruefe( 'Szenario: A Scenario' && "Scenario
-                      'Angenommen a variable has the value 0' && "Given
-                      'Und I increase it by 1' && "And
-                      'Oder I add 1 to it again' && "Or
-                      'Aber then I add 1 once more' && "But
-                      'Wenn I double it' && "when
-                      'Dann the value is 6 and feature and scenario have values.' ). "then
+                                 'Angenommen a variable has the value 0' && "Given
+                                 'Und I increase it by 1' && "And
+                                 'Oder I add 1 to it again' && "Or
+                                 'Aber then I add 1 once more' && "But
+                                 'Wenn I double it' && "when
+                                 'Dann the value is 6 and feature and scenario have values.' ). "then
   ENDMETHOD.
 
 ENDCLASS.

@@ -28,11 +28,9 @@ CLASS zcl_cacamber_german DEFINITION
     METHODS get_current_feature RETURNING VALUE(current_feature) TYPE zcl_cacamber=>feature_t.
     METHODS get_current_scenario RETURNING VALUE(current_scenario) TYPE zcl_cacamber=>scenario_t.
     METHODS get_current_rule RETURNING VALUE(current_rule) TYPE zcl_cacamber=>rule_t.
+
   PROTECTED SECTION.
-
     DATA cacamber TYPE REF TO zcl_cacamber.
-  PRIVATE SECTION.
-
 ENDCLASS.
 
 CLASS zcl_cacamber_german IMPLEMENTATION.
