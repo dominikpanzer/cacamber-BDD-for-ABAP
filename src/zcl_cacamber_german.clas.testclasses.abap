@@ -11,8 +11,7 @@ CLASS acceptance_german_language DEFINITION FINAL FOR TESTING INHERITING FROM zc
 
 
   PRIVATE SECTION.
-    DATA: cacamber_under_test TYPE REF TO zcl_cacamber_german,
-          sum                 TYPE int4.
+    DATA: cacamber_under_test TYPE REF TO zcl_cacamber_german.
     METHODS can_run_a_scenario_via_verfiy FOR TESTING RAISING cx_static_check.
     METHODS can_run_a_scenario_via_calls FOR TESTING RAISING cx_static_check.
     METHODS setup.
