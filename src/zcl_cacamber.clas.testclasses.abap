@@ -397,10 +397,10 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
   METHOD cant_get_method_parameters.
     TRY.
-        DATA(parameters) = cacamber->get_method_parameters( method_name = 'DOES_NOT_EXIST'
+        cacamber->get_method_parameters( method_name = 'DOES_NOT_EXIST'
                                                             local_testclass_instance = me ).
         cl_abap_unit_assert=>fail( ).
-      CATCH  zcx_cacamber_error INTO DATA(exception).
+      CATCH zcx_cacamber_error INTO DATA(exception).
         DATA(text) = exception->get_text( ).
         cl_abap_unit_assert=>assert_equals( exp = |Public method DOES_NOT_EXIST not found in your test class.| act = text ).
     ENDTRY.
@@ -411,14 +411,14 @@ CLASS scaffolding_tests IMPLEMENTATION.
         cacamber->configure( pattern = '^your name is (.+) (.+)$' method_name = 'METHOD_WITHOUT_PARAMETERS' ).
         cacamber->given( 'your name is Marty McFly' ).
         cl_abap_unit_assert=>fail( ).
-      CATCH  zcx_cacamber_error INTO DATA(exception).
+      CATCH zcx_cacamber_error INTO DATA(exception).
         DATA(text) = exception->get_text( ).
         cl_abap_unit_assert=>assert_equals( exp = |Step method METHOD_WITHOUT_PARAMETERS has wrong # of parameters.| act = text ).
     ENDTRY.
   ENDMETHOD.
 
   METHOD method_without_parameters.
-" dummy method for tests
+    " dummy method for tests
   ENDMETHOD.
 
 ENDCLASS.

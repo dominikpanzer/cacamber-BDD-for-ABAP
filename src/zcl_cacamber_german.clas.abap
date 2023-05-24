@@ -40,7 +40,7 @@ CLASS zcl_cacamber_german IMPLEMENTATION.
     DATA(german_rule) = |Regel|.
     DATA(german_keywords) = VALUE string_table( ( |Angenommen | ) ( |Wenn | ) ( |Dann | ) ( |Oder | ) ( |Und | ) ( |Aber | ) ).
     cacamber = NEW zcl_cacamber( test_class_instance = test_class_instance
-                                 keywords_for_verify =  german_keywords
+                                 keywords_for_verify = german_keywords
                                  scenario_keyword_for_verify = german_scenario
                                  rule_keyword_for_verify = german_rule ).
 
@@ -99,15 +99,15 @@ CLASS zcl_cacamber_german IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_current_feature.
-    current_feature = cacamber->get_current_feature(  ).
+    current_feature = cacamber->get_current_feature( ).
   ENDMETHOD.
 
   METHOD get_current_rule.
-    current_rule = cacamber->get_current_rule(  ).
+    current_rule = cacamber->get_current_rule( ).
   ENDMETHOD.
 
   METHOD get_current_scenario.
-    current_scenario = cacamber->get_current_scenario(  ).
+    current_scenario = cacamber->get_current_scenario( ).
   ENDMETHOD.
 
 ENDCLASS.

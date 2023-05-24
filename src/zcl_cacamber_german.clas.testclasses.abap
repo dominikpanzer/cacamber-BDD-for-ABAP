@@ -47,7 +47,7 @@ CLASS acceptance_german_language IMPLEMENTATION.
   METHOD verfiy.
     cl_abap_unit_assert=>assert_equals( msg = 'Counter value is wrong' exp = expected_value act = counter ).
     cl_abap_unit_assert=>assert_not_initial( cacamber_under_test->get_current_feature( ) ).
-    cl_abap_unit_assert=>assert_not_initial( cacamber_under_test->get_current_scenario(  ) ).
+    cl_abap_unit_assert=>assert_not_initial( cacamber_under_test->get_current_scenario( ) ).
   ENDMETHOD.
 
   METHOD can_run_a_scenario_via_verfiy.
