@@ -73,7 +73,7 @@ CLASS acceptance_discount_calculatio IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD evaluate_applied_discount.
-    cl_abap_unit_assert=>assert_equals( msg = |{ current_feature }: { current_scenario }| exp = expected act = discount ).
+    cl_abap_unit_assert=>assert_equals( msg = |{ get_current_feature( ) }: { get_current_scenario( ) }| exp = expected act = discount ).
   ENDMETHOD.
 
   METHOD process_shopping_cart.

@@ -4,6 +4,7 @@
   <asx:values>
    <DEVC>
     <CTEXT>Cacamber - ABAP BDD Framework</CTEXT>
+    <TPCLASS>X</TPCLASS>
    </DEVC>
   </asx:values>
  </asx:abap>

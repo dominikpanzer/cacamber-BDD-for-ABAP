@@ -12,7 +12,8 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
                                       packed  TYPE zde_bdd_packed ##NEEDED,
       local_method_for_test_exportin EXPORTING dummy         TYPE string
                                                another_dummy TYPE string ##NEEDED,
-      local_method_for_test_table IMPORTING table_as_string TYPE string ##NEEDED.
+      local_method_for_test_table IMPORTING table_as_string TYPE string ##NEEDED,
+      method_without_parameters.
   PROTECTED SECTION.
 
 
@@ -21,35 +22,37 @@ CLASS scaffolding_tests DEFINITION FINAL FOR TESTING
     DATA: cacamber TYPE REF TO zcl_cacamber.
     DATA: method_has_been_called TYPE abap_bool,
           datatable              TYPE REF TO zcl_datatable.
-    METHODS: setup.
-    METHODS: can_store_configuration FOR TESTING RAISING cx_static_check.
-    METHODS: can_store_two_configurations FOR TESTING RAISING cx_static_check.
-    METHODS: ignores_empty_pattern_config FOR TESTING RAISING cx_static_check.
-    METHODS: ignores_empty_methodnme_config FOR TESTING RAISING cx_static_check.
-    METHODS: matching_step_found FOR TESTING RAISING cx_static_check.
-    METHODS: extract_first_string FOR TESTING RAISING cx_static_check.
-    METHODS: extract_two_middle_strings FOR TESTING RAISING cx_static_check.
-    METHODS: extract_string_at_end FOR TESTING RAISING cx_static_check.
-    METHODS: get_method_parameter_list FOR TESTING RAISING cx_static_check.
-    METHODS: added_variables_to_params_ok FOR TESTING RAISING cx_static_check.
-    METHODS: added_vars_to_paras_char30 FOR TESTING RAISING cx_static_check.
-    METHODS: added_vars_to_paras_dats FOR TESTING RAISING cx_static_check.
-    METHODS: call_a_method_dynamically FOR TESTING RAISING cx_static_check.
-    METHODS: added_vars_to_paras_int FOR TESTING RAISING cx_static_check.
-    METHODS: given_calls_a_method FOR TESTING RAISING cx_static_check.
-    METHODS: can_set_a_feature FOR TESTING RAISING cx_static_check.
-    METHODS: can_set_a_scenario FOR TESTING RAISING cx_static_check.
-    METHODS: underscore_calls_a_method FOR TESTING RAISING cx_static_check.
-    METHODS: can_set_a_rule FOR TESTING RAISING cx_static_check.
-    METHODS: wrong_paramter_count FOR TESTING RAISING cx_static_check.
-    METHODS: no_method_for_step_found FOR TESTING RAISING cx_static_check.
-    METHODS: dynamic_method_call_failed FOR TESTING RAISING cx_static_check.
-    METHODS: added_vars_to_paras_neg_int FOR TESTING RAISING cx_static_check.
-    METHODS: added_vars_to_paras_tims FOR TESTING RAISING cx_static_check,
-      can_run_a_one_step_scenario FOR TESTING RAISING cx_static_check,
-      can_split_a_string_into_steps FOR TESTING RAISING cx_static_check,
-      can_extract_current_scenario FOR TESTING RAISING cx_static_check,
-      can_extract_current_rule FOR TESTING RAISING cx_static_check.
+    METHODS setup.
+    METHODS can_store_configuration FOR TESTING RAISING cx_static_check.
+    METHODS can_store_two_configurations FOR TESTING RAISING cx_static_check.
+    METHODS ignores_empty_pattern_config FOR TESTING RAISING cx_static_check.
+    METHODS ignores_empty_methodnme_config FOR TESTING RAISING cx_static_check.
+    METHODS matching_step_found FOR TESTING RAISING cx_static_check.
+    METHODS extract_first_string FOR TESTING RAISING cx_static_check.
+    METHODS extract_two_middle_strings FOR TESTING RAISING cx_static_check.
+    METHODS extract_string_at_end FOR TESTING RAISING cx_static_check.
+    METHODS get_method_parameter_list FOR TESTING RAISING cx_static_check.
+    METHODS added_variables_to_params_ok FOR TESTING RAISING cx_static_check.
+    METHODS added_vars_to_paras_char30 FOR TESTING RAISING cx_static_check.
+    METHODS added_vars_to_paras_dats FOR TESTING RAISING cx_static_check.
+    METHODS call_a_method_dynamically FOR TESTING RAISING cx_static_check.
+    METHODS added_vars_to_paras_int FOR TESTING RAISING cx_static_check.
+    METHODS given_calls_a_method FOR TESTING RAISING cx_static_check.
+    METHODS can_set_a_feature FOR TESTING RAISING cx_static_check.
+    METHODS can_set_a_scenario FOR TESTING RAISING cx_static_check.
+    METHODS underscore_calls_a_method FOR TESTING RAISING cx_static_check.
+    METHODS can_set_a_rule FOR TESTING RAISING cx_static_check.
+    METHODS wrong_paramter_count FOR TESTING RAISING cx_static_check.
+    METHODS no_method_for_step_found FOR TESTING RAISING cx_static_check.
+    METHODS dynamic_method_call_failed FOR TESTING RAISING cx_static_check.
+    METHODS added_vars_to_paras_neg_int FOR TESTING RAISING cx_static_check.
+    METHODS added_vars_to_paras_tims FOR TESTING RAISING cx_static_check.
+    METHODS can_run_a_one_step_scenario FOR TESTING RAISING cx_static_check.
+    METHODS can_split_a_string_into_steps FOR TESTING RAISING cx_static_check.
+    METHODS can_extract_current_scenario FOR TESTING RAISING cx_static_check.
+    METHODS can_extract_current_rule FOR TESTING RAISING cx_static_check.
+    METHODS cant_get_method_parameters FOR TESTING RAISING cx_static_check.
+    METHODS wrong_number_of_parameters FOR TESTING RAISING cx_static_check.
 
 ENDCLASS.
 
@@ -390,6 +393,32 @@ CLASS scaffolding_tests IMPLEMENTATION.
 
     cl_abap_unit_assert=>assert_equals( msg = 'Rule hasnt been extracted' exp = rule_expected act = rule ).
     cl_abap_unit_assert=>assert_equals( msg = 'Rule still in step list' exp = steps_without_rule_exp act = steps_without_rule ).
+  ENDMETHOD.
+
+  METHOD cant_get_method_parameters.
+    TRY.
+        cacamber->get_method_parameters( method_name = 'DOES_NOT_EXIST'
+                                                            local_testclass_instance = me ).
+        cl_abap_unit_assert=>fail( ).
+      CATCH zcx_cacamber_error INTO DATA(exception).
+        DATA(text) = exception->get_text( ).
+        cl_abap_unit_assert=>assert_equals( exp = |Public method DOES_NOT_EXIST not found in your test class.| act = text ).
+    ENDTRY.
+  ENDMETHOD.
+
+  METHOD wrong_number_of_parameters.
+    TRY.
+        cacamber->configure( pattern = '^your name is (.+) (.+)$' method_name = 'METHOD_WITHOUT_PARAMETERS' ).
+        cacamber->given( 'your name is Marty McFly' ).
+        cl_abap_unit_assert=>fail( ).
+      CATCH zcx_cacamber_error INTO DATA(exception).
+        DATA(text) = exception->get_text( ).
+        cl_abap_unit_assert=>assert_equals( exp = |Step method METHOD_WITHOUT_PARAMETERS has wrong # of parameters.| act = text ).
+    ENDTRY.
+  ENDMETHOD.
+
+  METHOD method_without_parameters.
+    " dummy method for tests
   ENDMETHOD.
 
 ENDCLASS.

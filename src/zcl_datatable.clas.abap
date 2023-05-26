@@ -21,7 +21,6 @@ CLASS zcl_datatable DEFINITION
                        RAISING   zcx_cacamber_error.
     METHODS: to_table IMPORTING ddic_table_type_name TYPE tabname
                       EXPORTING VALUE(table)         TYPE any.
-
   PRIVATE SECTION.
     DATA datatable TYPE datatable_tt.
     METHODS parse IMPORTING table_as_string TYPE string.
@@ -30,6 +29,7 @@ ENDCLASS.
 
 
 CLASS zcl_datatable IMPLEMENTATION.
+
   METHOD from_string.
     IF table_as_string IS INITIAL.
       RAISE EXCEPTION TYPE zcx_cacamber_error.
@@ -37,6 +37,7 @@ CLASS zcl_datatable IMPLEMENTATION.
     datatable = NEW zcl_datatable( ).
     datatable->parse( table_as_string ).
   ENDMETHOD.
+
 
   METHOD parse.
     DATA datatable_line TYPE datatable_line_ts.

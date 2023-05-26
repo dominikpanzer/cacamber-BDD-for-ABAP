@@ -3,23 +3,15 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>ZCX_CACAMBER_ERROR</CLSNAME>
+    <CLSNAME>ZCL_CACAMBER_GERMAN</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>Cacamber Exception</DESCRIPT>
-    <CATEGORY>40</CATEGORY>
+    <DESCRIPT>Cacamber - ABAP BDD Framework (german keywords)</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
+    <WITH_UNIT_TESTS>X</WITH_UNIT_TESTS>
    </VSEOCLASS>
-   <DESCRIPTIONS>
-    <SEOCOMPOTX>
-     <CLSNAME>ZCX_CACAMBER_ERROR</CLSNAME>
-     <CMPNAME>CONSTRUCTOR</CMPNAME>
-     <LANGU>E</LANGU>
-     <DESCRIPT>CONSTRUCTOR</DESCRIPT>
-    </SEOCOMPOTX>
-   </DESCRIPTIONS>
   </asx:values>
  </asx:abap>
 </abapGit>
