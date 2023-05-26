@@ -163,7 +163,7 @@ This part of the document describes the public methods of Cacambers main class `
 | When | Wenn |
 | Then | Dann |
 | Feature | Funktion |
-| Scenario | Sczenario |
+| Scenario | Szenario |
 | Example | Beispiel |
 | Rule | Regel |
 
