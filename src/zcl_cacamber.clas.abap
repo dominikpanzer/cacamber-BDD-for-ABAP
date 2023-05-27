@@ -167,14 +167,15 @@ CLASS zcl_cacamber IMPLEMENTATION.
     LOOP AT parameters ASSIGNING FIELD-SYMBOL(<parameter>).
       CREATE DATA parameter_value TYPE (<parameter>-data_type).
       ASSIGN parameter_value->* TO <parameter_value>.
-      IF is_gregorian_dot_seperated( variables[ sy-tabix ] ).
-        cl_abap_datfm=>conv_date_ext_to_int( EXPORTING im_datext = variables[ sy-tabix ]
+      DATA(current_variable) = variables[ sy-tabix ].
+      IF is_gregorian_dot_seperated( current_variable ).
+        cl_abap_datfm=>conv_date_ext_to_int( EXPORTING im_datext = current_variable
                                                        im_datfmdes = '1'
                                              IMPORTING ex_datint = CAST d( parameter_value )->* ).
-      ELSEIF is_time_format( variables[ sy-tabix ] ).
-        <parameter_value> = format_time( variables[ sy-tabix ] ).
+      ELSEIF is_time_format( current_variable ).
+        <parameter_value> = format_time( current_variable ).
       ELSE.
-        <parameter_value> = conversion_exit_inbound( variables[ sy-tabix ] ).
+        <parameter_value> = conversion_exit_inbound( current_variable ).
       ENDIF.
       matched_parameters = VALUE #( BASE matched_parameters ( name = <parameter>-name kind = exporting value = parameter_value ) ).
     ENDLOOP.
