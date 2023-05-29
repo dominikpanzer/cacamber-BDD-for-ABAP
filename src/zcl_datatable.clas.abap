@@ -98,7 +98,7 @@ CLASS zcl_datatable IMPLEMENTATION.
       ENDIF.
       ASSIGN COMPONENT datatable_line->column OF STRUCTURE <line> TO <cell>.
       CHECK <cell> IS ASSIGNED.
-      <cell> = |{ datatable_line->value ALPHA = IN }|.
+      <cell> = datatable_line->value.
       UNASSIGN <cell>.
     ENDLOOP.
     APPEND <line> TO <table>.
