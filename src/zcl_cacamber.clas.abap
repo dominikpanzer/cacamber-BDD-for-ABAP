@@ -101,7 +101,11 @@ CLASS zcl_cacamber DEFINITION
                                          RETURNING VALUE(strings) TYPE string_table.
 ENDCLASS.
 
-CLASS zcl_cacamber IMPLEMENTATION.
+
+
+CLASS ZCL_CACAMBER IMPLEMENTATION.
+
+
   METHOD configure.
     CHECK pattern IS NOT INITIAL.
     CHECK method_name IS NOT INITIAL.
@@ -135,6 +139,7 @@ CLASS zcl_cacamber IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
+
   METHOD get_method_parameters.
     DATA: class_description TYPE REF TO cl_abap_classdescr.
     DATA: object_description TYPE REF TO cl_abap_objectdescr.
@@ -155,9 +160,11 @@ CLASS zcl_cacamber IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
+
   METHOD get_method_by_method_name.
     READ TABLE class_description->methods REFERENCE INTO method_description  WITH KEY name = method_name.
   ENDMETHOD.
+
 
   METHOD add_variables_to_parameters.
     CONSTANTS exporting TYPE string VALUE 'E' ##NO_TEXT.
@@ -181,23 +188,28 @@ CLASS zcl_cacamber IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
+
   METHOD conversion_exit_inbound.
     variable_internal = |{ variable ALPHA = IN }|.
   ENDMETHOD.
 
+
   METHOD format_time.
     time = translate( val = variable  from = `:`  to = `` ).
   ENDMETHOD.
+
 
   METHOD is_time_format.
     CONSTANTS time_format_hhmmss_with_colon TYPE string VALUE '^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$'.
     result = xsdbool( matches( val = variable regex = time_format_hhmmss_with_colon ) ).
   ENDMETHOD.
 
+
   METHOD is_gregorian_dot_seperated.
     CONSTANTS ddmmyyyy_dot_seperated TYPE string VALUE '^(0[0-9]|[12][0-9]|3[01])[- \..](0[0-9]|1[012])[- \..]\d\d\d\d$'.
     result = xsdbool( matches( val = variable regex = ddmmyyyy_dot_seperated ) ).
   ENDMETHOD.
+
 
   METHOD given.
     DATA(method_name) = match_step_to_method_name( step ).
@@ -213,33 +225,41 @@ CLASS zcl_cacamber IMPLEMENTATION.
     CALL METHOD me->test_class_instance->(method_name) PARAMETER-TABLE matched_parameters.
   ENDMETHOD.
 
+
   METHOD when.
     given( step ).
   ENDMETHOD.
+
 
   METHOD and.
     given( step ).
   ENDMETHOD.
 
+
   METHOD or.
     given( step ).
   ENDMETHOD.
+
 
   METHOD then.
     given( step ).
   ENDMETHOD.
 
+
   METHOD example.
     scenario( example ).
   ENDMETHOD.
+
 
   METHOD but.
     given( step ).
   ENDMETHOD.
 
+
   METHOD _.
     given( step ).
   ENDMETHOD.
+
 
   METHOD constructor.
     DATA(english_scenario) = |Scenario|.
@@ -342,16 +362,18 @@ CLASS zcl_cacamber IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
+
   METHOD get_current_feature.
     current_feature = me->current_feature.
   ENDMETHOD.
+
 
   METHOD get_current_rule.
     current_rule = me->current_rule.
   ENDMETHOD.
 
+
   METHOD get_current_scenario.
     current_scenario = me->current_scenario.
   ENDMETHOD.
-
 ENDCLASS.
