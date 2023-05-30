@@ -23,6 +23,10 @@ CLASS zcl_datatable DEFINITION
                      EXPORTING VALUE(table)         TYPE any.
     METHODS is_gregorian_dot_seperated IMPORTING variable      TYPE string
                                        RETURNING VALUE(result) TYPE abap_bool.
+    METHODS is_time_format IMPORTING variable      TYPE string
+                           RETURNING VALUE(result) TYPE abap_bool.
+    METHODS format_time IMPORTING variable    TYPE string
+                        RETURNING VALUE(time) TYPE string.
   PRIVATE SECTION.
     DATA datatable TYPE datatable_tt.
     METHODS parse IMPORTING table_as_string TYPE string.
@@ -106,6 +110,8 @@ CLASS zcl_datatable IMPLEMENTATION.
         cl_abap_datfm=>conv_date_ext_to_int( EXPORTING im_datext = datatable_line->value
                                                        im_datfmdes = '1'
                                              IMPORTING ex_datint = <cell> ).
+      ELSEIF is_time_format( datatable_line->value ).
+        <cell> = format_time( datatable_line->value ).
       ELSE.
         <cell> = datatable_line->value.
       ENDIF.
@@ -119,5 +125,14 @@ CLASS zcl_datatable IMPLEMENTATION.
   METHOD is_gregorian_dot_seperated.
     CONSTANTS ddmmyyyy_dot_seperated TYPE string VALUE '^(0[0-9]|[12][0-9]|3[01])[- \..](0[0-9]|1[012])[- \..]\d\d\d\d$'.
     result = xsdbool( matches( val = variable regex = ddmmyyyy_dot_seperated ) ).
+  ENDMETHOD.
+
+  METHOD is_time_format.
+    CONSTANTS time_format_hhmmss_with_colon TYPE string VALUE '^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$'.
+    result = xsdbool( matches( val = variable regex = time_format_hhmmss_with_colon ) ).
+  ENDMETHOD.
+
+  METHOD format_time.
+    time = translate( val = variable  from = `:`  to = `` ).
   ENDMETHOD.
 ENDCLASS.
