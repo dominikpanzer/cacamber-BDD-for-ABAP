@@ -123,8 +123,8 @@ CLASS acceptance_tests IMPLEMENTATION.
 
   METHOD transforms_to_internal_table.
     DATA internal_table  TYPE ztt_bdd_demo.
-    DATA(internal_table_expected) = VALUE ztt_bdd_demo( (  birthdate = '17.07.1952' first_name = 'David' last_name = 'Hasselhoff' age = 0 )
-                                                        (  birthdate = '30.07.1947' first_name = 'Arnold' last_name = 'Schwarzenegger' age = 100 ) ).
+    DATA(internal_table_expected) = VALUE ztt_bdd_demo( (  birthdate = '19520717' first_name = 'David' last_name = 'Hasselhoff' age = 0 )
+                                                        (  birthdate = '19470730' first_name = 'Arnold' last_name = 'Schwarzenegger' age = 100 ) ).
 
     DATA(datatable) = zcl_datatable=>from_string( '| 17.07.1952 | David | Hasselhoff      |     |' &&
                                                   '| 30.07.1947 | Arnold | Schwarzenegger | 100 |' ).
