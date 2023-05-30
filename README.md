@@ -168,8 +168,16 @@ This part of the document describes the public methods of Cacambers main class `
 | Rule | Regel |
 
 
+To get startet with Cacamber using english keywords, your local test class needs to inherit from `ZCL_CACAMBER`.
 
-To get startet with Cacamber using english keywords, your local test class needs to inherit from `ZCL_CACAMBER`. For other languages have a look at the previous table.
+For other languages have a look at the previous table. e.g. you will need your local test class to inhert from `ZCL_CACAMBER_GERMAN` and add your own constructor like this:
+```ABAP
+  METHOD constructor.
+    super->constructor( test_class_instance = me ).
+  ENDMETHOD.
+```
+Otherwise your step methods won't be accessible.
+
 
 `ZCL_CACAMBER` as your superclass provides the following public methods:
 
