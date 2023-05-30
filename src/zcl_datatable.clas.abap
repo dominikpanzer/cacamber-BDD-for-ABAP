@@ -28,7 +28,8 @@ ENDCLASS.
 
 
 
-CLASS zcl_datatable IMPLEMENTATION.
+CLASS ZCL_DATATABLE IMPLEMENTATION.
+
 
   METHOD from_string.
     IF table_as_string IS INITIAL.
