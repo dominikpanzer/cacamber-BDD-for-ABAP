@@ -197,7 +197,7 @@ cl_abap_unit_assert=>assert_equals( msg = current_feature exp = expected act = a
 ```
 
 ### CONFIGURE
-The method `CONFIGURE` maps a regex-string to a method, which should be executed whenever the regex matches. This is called a step. If you are not a regex-pro, you can use tools like [regex101](https://regex101.com/) to make things easier. Inside the regex you can use (.+) or other matchers to extract the variables from the string, which will be used by Cacamber as parameters for the method call. The order of the variables must match the order of the parameters of the step method which should be called when the regex matches. Your method is only allowed to have `IMPORTING`parameters. The configuration is usually done in the `SETUP`-method of your test class.
+The method `CONFIGURE` maps a regex-string to a method, which should be executed whenever the regex matches. This is called a step. If you are not a regex-pro, you can use tools like [regex101](https://regex101.com/) to make things easier. Inside the regex you can use (.+) or other matchers to extract the variables from the string, which will be used by Cacamber as parameters for the method call. The order of the variables must match the order of the parameters of the step method which should be called when the regex matches. Your method is only allowed to have `IMPORTING`parameters. The configuration is usually done in the `SETUP`-method of your test class. 
 
 Supported types and regular expressions:
 Currently Cacamber is able to handle the following basic datatypes, which you can use in your step methods parameters. You can also use DDIC types based on these.
@@ -210,6 +210,14 @@ Currently Cacamber is able to handle the following basic datatypes, which you ca
 | `INTEGER`| ^I am (.+) years old$ | for positive or negative integers | -200 |
 | `PACKED` | ^the price is (.+)$ | a number with decimals seperated by a _dot_ | 1001.50 |
 | datatable | ^Slayer had the following members:(.+)$ | a line or a table | see section about datatables |
+
+If you want your regular expressions to match more flexible, you can also use non-capturing groups. Maybe they don't care about the bandname as long as it's one of the "Big 4"? Only the ticket price is relevant and should be extracted. The pattern `^(?:Slayer|Metallica|Megadeth|Anthrax|) ticket price is (.+)€$` will match the following strings:
+* Slayer ticket price is 60€
+* Metallica ticket price is 100€
+* Megadeth ticket price is 40€
+* Anthrax ticket price is 30€
+
+The bandname is in a non-capturing group, so it won't be extracted. The ticket price will be extracted and can be used as a method parameter for your step method.
 
 
 Importing parameters:
